@@ -29,22 +29,14 @@ public class Game{
 		panel = new JPanel();
 		panel.setLayout(new BorderLayout(0, 0));
 		
+		JPanel top = new JPanel();
+		top.setPreferredSize(new Dimension(1000,30));
+		panel.add(top, BorderLayout.NORTH);
+		
 		JPanel west = new JPanel();
 		west.setPreferredSize(new Dimension(200,300));
 		panel.add(west, BorderLayout.WEST);
 		west.setLayout(new BorderLayout(0, 0));
-		
-		JPanel title = new JPanel();
-		FlowLayout flowLayout = (FlowLayout) title.getLayout();
-		flowLayout.setAlignment(FlowLayout.LEFT);
-		title.setPreferredSize(new Dimension(200,50));
-		west.add(title, BorderLayout.NORTH);
-		
-		JLabel lblPlaceYourShip = new JLabel("Place your ship");
-		lblPlaceYourShip.setVerticalAlignment(SwingConstants.BOTTOM);
-		lblPlaceYourShip.setFont(new Font("Lucida Grande", Font.BOLD, 16));
-		lblPlaceYourShip.setHorizontalAlignment(SwingConstants.LEFT);
-		title.add(lblPlaceYourShip);
 		
 		JPanel bottom1 = new JPanel();
 		bottom1.setPreferredSize(new Dimension(200,50));
@@ -58,18 +50,16 @@ public class Game{
 		JPanel east = new JPanel();
 		east.setPreferredSize(new Dimension(200,300));
 		panel.add(east, BorderLayout.EAST);
-		
-		JPanel top = new JPanel();
-		top.setPreferredSize(new Dimension (200,50));
-		east.add(top);
+		east.setLayout(new BorderLayout(0, 0));
 		
 		JPanel player2 = new JPanel();
+		player2.setBackground(Color.LIGHT_GRAY);
 		player2.setPreferredSize(new Dimension(200,200));
-		east.add(player2, BorderLayout.CENTER);
+		east.add(player2,BorderLayout.CENTER);
 		
 		JPanel bottom2 = new JPanel();
 		bottom2.setPreferredSize(new Dimension(200,50));
-		east.add(bottom2, BorderLayout.SOUTH);
+		east.add(bottom2,BorderLayout.SOUTH);
 		
 		
 		JPanel center = new JPanel();
