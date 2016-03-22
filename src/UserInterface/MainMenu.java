@@ -8,7 +8,6 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
-
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
@@ -20,9 +19,6 @@ public class MainMenu {
 	public JPanel panel;
 	private ModeSelectDialog popUpDialog;
 
-	/**
-	 * Create the panel.
-	 */
 	public MainMenu() {
 		initialize();
 	}

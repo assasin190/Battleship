@@ -7,6 +7,7 @@ public class Main {
 
 	public static JFrame frame;
 	GameStateManager gsm;
+	public boolean isClient;
 
 	/**
 	 * Launch the application.
