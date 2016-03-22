@@ -45,7 +45,8 @@ public class Game{
 		leftTop.setPreferredSize(new Dimension(150,100));
 		rightTop.setPreferredSize(new Dimension(150,100));
 		
-		JLabel lblPlaceYourShip = new JLabel("Place your ship");
+		JLabel lblPlaceYourShip = new JLabel("Place your ships");
+		lblPlaceYourShip.setVerticalAlignment(SwingConstants.BOTTOM);
 		lblPlaceYourShip.setFont(new Font("Avenir", Font.BOLD, 20));
 		lblPlaceYourShip.setHorizontalAlignment(SwingConstants.CENTER);
 		
@@ -87,6 +88,7 @@ public class Game{
 		
 		leftCol.setLayout(new BorderLayout(0,0));
 		leftCol.add(topP1,BorderLayout.NORTH);
+		topP1.setLayout(new GridLayout(1, 0, 0, 0));
 		leftCol.add(player1, BorderLayout.CENTER);
 		leftCol.add(bottomP1 , BorderLayout.SOUTH);
 		GridLayout tableLayout = new GridLayout(8,8);
@@ -107,8 +109,11 @@ public class Game{
 		rightCol.setPreferredSize(new Dimension(300,568));
 		center.add(rightCol, BorderLayout.EAST);
 		
+		JPanel statusPanel = new JPanel();
+		statusPanel.setPreferredSize(new Dimension(300,50));
+		statusPanel.setLayout( new BorderLayout(0,0));
 		JPanel topP2 = new JPanel();
-		topP2.setPreferredSize(new Dimension(300, 50));
+	;
 		
 		JPanel bottomP2 = new JPanel();
 		bottomP2.setPreferredSize(new Dimension(300,100));	
@@ -118,6 +123,36 @@ public class Game{
 		
 		rightCol.setLayout(new BorderLayout(0,0));
 		rightCol.add(topP2, BorderLayout.NORTH);
+		
+		topP2.setLayout(new BorderLayout(0,0));
+		
+		JPanel leftTopP2 = new JPanel();
+		leftTopP2.setPreferredSize(new Dimension(80,40));
+		JLabel status = new JLabel("STATUS");
+		status.setHorizontalAlignment(SwingConstants.CENTER);
+		status.setFont(new Font("Avenir", Font.PLAIN, 16));
+		leftTopP2.add(status);
+		topP2.add(leftTopP2,BorderLayout.WEST);
+		
+		JPanel rightTopP2 = new JPanel();
+		rightTopP2.setPreferredSize(new Dimension(220,40));
+		topP2.add(rightTopP2,BorderLayout.EAST);
+		
+		rightTopP2.setLayout(new GridLayout(1, 4, 0, 0));
+		JLabel p1 = new JLabel ("YOU");
+		p1.setHorizontalAlignment(SwingConstants.CENTER);
+		p1.setFont(new Font("Avenir", Font.PLAIN, 13));
+		JButton b1 = new JButton("READY");
+		JLabel p2 = new JLabel ("ENEMY");
+		p2.setHorizontalAlignment(SwingConstants.CENTER);
+		p2.setFont(new Font("Avenir", Font.PLAIN, 13));
+		JButton b2 = new JButton("READY");
+		rightTopP2.add(p1);
+		rightTopP2.add(b1);
+		rightTopP2.add(p2);
+	
+		rightTopP2.add(b2);
+		
 		rightCol.add(player2,BorderLayout.CENTER);
 		rightCol.add(bottomP2, BorderLayout.SOUTH);
 		
@@ -129,7 +164,8 @@ public class Game{
 		
 		
 		/*PLAYER PANEL*/
-		JPanel profile = new JPanel();
+		JButton profile = new JButton("");
+		profile.setIcon(new ImageIcon("avatar.png"));
 		profile.setBackground(Color.GRAY);
 		profile.setPreferredSize(new Dimension(100,100));
 		northPlayer2.add(profile, BorderLayout.WEST);
@@ -147,16 +183,28 @@ public class Game{
 		FlowLayout flowLayout = (FlowLayout) namePanel.getLayout();
 		flowLayout.setAlignment(FlowLayout.LEFT);
 		namePanel.setPreferredSize(new Dimension(190, 40));
-		JLabel name = new JLabel("NAME: ");
+		JLabel name = new JLabel("YOU:");
 		name.setFont(new Font("Avenir", Font.PLAIN, 13));
 		name.setHorizontalAlignment(SwingConstants.LEFT);
 		namePanel.add(name);
 		buttonPanel.add(namePanel, BorderLayout.NORTH);
 		
+		JPanel keyButton = new JPanel();
+		keyButton.setPreferredSize(new Dimension(190,69));
+		buttonPanel.add(keyButton,BorderLayout.CENTER);
+		keyButton.setLayout(new BorderLayout(0,0));
+		
+		JButton cancelButton = new JButton("Cancel");
+		cancelButton.setFont(new Font("Avenir", Font.PLAIN, 13));
+		cancelButton.setPreferredSize(new Dimension(95, 60));
+		keyButton.add(cancelButton, BorderLayout.WEST);
+		
 		JButton readyButton = new JButton("Ready");
 		readyButton.setFont(new Font("Avenir", Font.PLAIN, 13));
-		readyButton.setPreferredSize(new Dimension(190, 60));
-		buttonPanel.add(readyButton, BorderLayout.CENTER);
+		readyButton.setPreferredSize(new Dimension(95, 60));
+		keyButton.add(readyButton, BorderLayout.EAST);
+		
+	
 		
 		JButton randomButton = new JButton("Random Place");
 		randomButton.setFont(new Font("Avenir", Font.PLAIN, 13));
