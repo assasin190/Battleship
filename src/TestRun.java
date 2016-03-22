@@ -1,3 +1,5 @@
+import java.awt.Dimension;
+
 import javax.swing.JFrame;
 import UserInterface.Game;
 
@@ -14,6 +16,8 @@ public class TestRun {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.pack();
 		frame.setVisible(true);
+		frame.setPreferredSize(new Dimension(1024,768));
+		frame.setResizable(false);
 	}
 
 }
