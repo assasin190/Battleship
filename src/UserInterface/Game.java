@@ -167,18 +167,18 @@ public class Game{
 		
 		
 		/*SHIP PANEL*/
+		
+//		logo.setIcon ( new ImageIcon ( "logo.png" ) );
+		
 		JPanel shipPanel = new JPanel();
 		shipPanel.setPreferredSize(new Dimension(300,150));
 		player2.add(shipPanel, BorderLayout.SOUTH);
 		shipPanel.setLayout(new GridLayout(4, 0, 0, 0));
-		JPanel ship1 = new JPanel();
-		ship1.setBorder(new LineBorder(new Color(0, 0, 0)));
-		JPanel ship2 = new JPanel();
-		ship2.setBorder(new LineBorder(new Color(0, 0, 0)));
-		JPanel ship3 = new JPanel();
-		ship3.setBorder(new LineBorder(new Color(0, 0, 0)));
-		JPanel ship4 = new JPanel();
-		ship4.setBorder(new LineBorder(new Color(0, 0, 0)));
+		JButton ship1 = new JButton("");
+		JButton ship2 = new JButton("");
+		JButton ship3 = new JButton("");
+		JButton ship4 = new JButton("");
+
 		shipPanel.add(ship1);
 		shipPanel.add(ship2);
 		shipPanel.add(ship3);
