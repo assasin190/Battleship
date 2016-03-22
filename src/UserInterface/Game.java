@@ -175,9 +175,13 @@ public class Game{
 		player2.add(shipPanel, BorderLayout.SOUTH);
 		shipPanel.setLayout(new GridLayout(4, 0, 0, 0));
 		JButton ship1 = new JButton("");
+		ship1.setIcon(new ImageIcon("ship1.gif"));
 		JButton ship2 = new JButton("");
+		ship2.setIcon(new ImageIcon("ship2.gif"));
 		JButton ship3 = new JButton("");
+		ship3.setIcon(new ImageIcon("ship3.gif"));
 		JButton ship4 = new JButton("");
+		ship4.setIcon(new ImageIcon("ship4.gif"));
 
 		shipPanel.add(ship1);
 		shipPanel.add(ship2);
