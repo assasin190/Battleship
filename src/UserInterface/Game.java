@@ -19,6 +19,9 @@ import javax.swing.JTextField;
 import javax.swing.JFormattedTextField;
 import javax.swing.JTextPane;
 import javax.swing.border.LineBorder;
+import java.awt.SystemColor;
+import javax.swing.border.BevelBorder;
+import javax.swing.border.CompoundBorder;
 
 public class Game{
 	public JPanel panel;
@@ -45,16 +48,13 @@ public class Game{
 		leftTop.setPreferredSize(new Dimension(150,100));
 		rightTop.setPreferredSize(new Dimension(150,100));
 		
-		JLabel lblPlaceYourShip = new JLabel("Place your ships");
-		lblPlaceYourShip.setVerticalAlignment(SwingConstants.BOTTOM);
-		lblPlaceYourShip.setFont(new Font("Avenir", Font.BOLD, 20));
-		lblPlaceYourShip.setHorizontalAlignment(SwingConstants.CENTER);
+	
 		
 		JButton logo = new JButton("");
 		logo.setIcon ( new ImageIcon ( "logo.png" ) );
 		top.add(leftTop,BorderLayout.WEST);
 		top.add(logo, BorderLayout.CENTER);
-		top.add(lblPlaceYourShip,BorderLayout.SOUTH);
+		//top.add(lblPlaceYourShip,BorderLayout.SOUTH);
 		top.add(rightTop,BorderLayout.EAST);
 		
 		/*LEFT BORDER*/
@@ -82,6 +82,12 @@ public class Game{
 		
 		JPanel topP1 = new JPanel();
 		topP1.setPreferredSize(new Dimension(300, 50));
+		
+		JLabel lblPlaceYourShip = new JLabel("PLACE YOUR SHIPS!");
+		lblPlaceYourShip.setFont(new Font("Avenir", Font.BOLD, 20));
+		lblPlaceYourShip.setHorizontalAlignment(SwingConstants.LEFT);
+		topP1.add(lblPlaceYourShip);
+		
 		
 		JPanel bottomP1 = new JPanel();
 		bottomP1.setPreferredSize(new Dimension(300,100));	
@@ -127,30 +133,38 @@ public class Game{
 		topP2.setLayout(new BorderLayout(0,0));
 		
 		JPanel leftTopP2 = new JPanel();
-		leftTopP2.setPreferredSize(new Dimension(80,40));
-		JLabel status = new JLabel("STATUS");
-		status.setHorizontalAlignment(SwingConstants.CENTER);
-		status.setFont(new Font("Avenir", Font.PLAIN, 16));
+		leftTopP2.setPreferredSize(new Dimension(70, 40));
+		leftTopP2.setLayout(new BoxLayout(leftTopP2, BoxLayout.X_AXIS));
+		JLabel status = new JLabel("STATUS:");
+		status.setHorizontalAlignment(SwingConstants.RIGHT);
+		status.setFont(new Font("Avenir", Font.PLAIN, 12));
 		leftTopP2.add(status);
 		topP2.add(leftTopP2,BorderLayout.WEST);
 		
 		JPanel rightTopP2 = new JPanel();
-		rightTopP2.setPreferredSize(new Dimension(220,40));
+		rightTopP2.setBorder(new LineBorder(null, 1, true));
+		rightTopP2.setBackground(SystemColor.control);
+		rightTopP2.setPreferredSize(new Dimension(230, 40));
 		topP2.add(rightTopP2,BorderLayout.EAST);
+		
+		JPanel gap2 = new JPanel();
+		gap2.setPreferredSize(new Dimension(220,10));
+		topP2.add(gap2, BorderLayout.SOUTH);
 		
 		rightTopP2.setLayout(new GridLayout(1, 4, 0, 0));
 		JLabel p1 = new JLabel ("YOU");
 		p1.setHorizontalAlignment(SwingConstants.CENTER);
-		p1.setFont(new Font("Avenir", Font.PLAIN, 13));
+		p1.setFont(new Font("Avenir", Font.PLAIN, 10));
 		JButton b1 = new JButton("READY");
+		b1.setFont(new Font("Lucida Grande", Font.PLAIN, 9));
 		JLabel p2 = new JLabel ("ENEMY");
 		p2.setHorizontalAlignment(SwingConstants.CENTER);
-		p2.setFont(new Font("Avenir", Font.PLAIN, 13));
+		p2.setFont(new Font("Avenir", Font.PLAIN, 10));
 		JButton b2 = new JButton("READY");
+		b2.setFont(new Font("Lucida Grande", Font.PLAIN, 9));
 		rightTopP2.add(p1);
 		rightTopP2.add(b1);
 		rightTopP2.add(p2);
-	
 		rightTopP2.add(b2);
 		
 		rightCol.add(player2,BorderLayout.CENTER);
@@ -195,11 +209,13 @@ public class Game{
 		keyButton.setLayout(new BorderLayout(0,0));
 		
 		JButton cancelButton = new JButton("Cancel");
+		cancelButton.setBackground(new Color(255, 0, 0));
 		cancelButton.setFont(new Font("Avenir", Font.PLAIN, 13));
 		cancelButton.setPreferredSize(new Dimension(95, 60));
 		keyButton.add(cancelButton, BorderLayout.WEST);
 		
 		JButton readyButton = new JButton("Ready");
+		readyButton.setBackground(new Color(153, 204, 0));
 		readyButton.setFont(new Font("Avenir", Font.PLAIN, 13));
 		readyButton.setPreferredSize(new Dimension(95, 60));
 		keyButton.add(readyButton, BorderLayout.EAST);
