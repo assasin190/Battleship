@@ -1,6 +1,7 @@
 import java.awt.EventQueue;
 import javax.swing.JFrame;
 import GameState.GameStateManager;
+import UserInterface.MainMenu;
 
 public class Main {
 
@@ -38,7 +39,7 @@ public class Main {
 		frame.setBounds(100, 100, 450, 300);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		MainMenu main = new MainMenu();
-		
+		frame.getContentPane().add(main.panel);
 	}
 
 }

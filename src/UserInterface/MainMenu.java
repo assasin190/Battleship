@@ -1,3 +1,4 @@
+package UserInterface;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.JButton;
@@ -10,7 +11,7 @@ import java.awt.event.ActionListener;
 import javax.swing.BoxLayout;
 
 public class MainMenu {
-	private JPanel panel;
+	public JPanel panel;
 	private JDialog popUpDialog;
 
 	/**

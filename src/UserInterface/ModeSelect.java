@@ -1,3 +1,4 @@
+package UserInterface;
 import javax.swing.JPanel;
 import java.awt.BorderLayout;
 
