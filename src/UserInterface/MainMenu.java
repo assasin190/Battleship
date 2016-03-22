@@ -2,6 +2,7 @@ package UserInterface;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -9,6 +10,7 @@ import javax.swing.SwingConstants;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.BoxLayout;
+import javax.swing.InputVerifier;
 
 public class MainMenu {
 	public JPanel panel;
@@ -51,7 +53,7 @@ public class MainMenu {
 }
 
 class ModeSelectDialog extends JDialog implements ActionListener{
-	private String inputText;
+	private JTextField inputText;
 	private JTextField ipField;
 	private JTextField portField;
 	
@@ -60,7 +62,23 @@ class ModeSelectDialog extends JDialog implements ActionListener{
 		initialize();
 	}
 	private void initialize() {
-		//TODO implements mode selection dialog
+		inputText = new JTextField();
+		portField = new JTextField();
+		inputText.setInputVerifier(new InputVerifier() {
+			@Override
+			public boolean verify(JComponent input) {
+				String ipText = ((JTextField) input).getText();
+				return false;
+			}
+		});
+		portField.setInputVerifier(new InputVerifier() {
+			@Override
+			public boolean verify(JComponent input) {
+				String portText = ((JTextField) input).getText();
+				return false;
+			}
+		});
+		
 	}
 	@Override
 	public void actionPerformed(ActionEvent e) {
