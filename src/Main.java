@@ -5,7 +5,7 @@ import UserInterface.MainMenu;
 
 public class Main {
 
-	private JFrame frame;
+	public static JFrame frame;
 	GameStateManager gsm;
 
 	/**

@@ -7,6 +7,7 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.BoxLayout;
@@ -32,22 +33,20 @@ public class MainMenu {
 		label.setAlignmentX(0.5f);
 		panel.add(label);
 		
-		JButton button_2 = new JButton("Client");
-		button_2.setAlignmentX(0.5f);
-		button_2.addActionListener(new ActionListener() {
-
+		JButton clientBtn = new JButton("Client");
+		clientBtn.setAlignmentX(0.5f);
+		clientBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				popUpDialog = new JDialog();
-				
+				popUpDialog = new ModeSelectDialog(Main.frame, "Select Mode");
 			}
 			
 		});
-		panel.add(button_2);
+		panel.add(clientBtn);
 		
-		JButton button_3 = new JButton("Server");
-		button_3.setAlignmentX(0.5f);
-		panel.add(button_3);
+		JButton serverBtn = new JButton("Server");
+		serverBtn.setAlignmentX(0.5f);
+		panel.add(serverBtn);
 	}
 
 }
@@ -57,7 +56,7 @@ class ModeSelectDialog extends JDialog implements ActionListener{
 	private JTextField ipField;
 	private JTextField portField;
 	
-	private ModeSelectDialog(JFrame parent, String title) {
+	protected ModeSelectDialog(JFrame parent, String title) {
 		super(parent, title);
 		initialize();
 	}
