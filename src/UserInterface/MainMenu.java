@@ -62,7 +62,7 @@ class ModeSelectDialog extends JDialog implements ActionListener{
 		initialize();
 	}
 	private void initialize() {
-		inputText = new JTextField();
+		ipField = new JTextField();
 		portField = new JTextField();
 		inputText.setInputVerifier(new InputVerifier() {
 			@Override
@@ -78,6 +78,8 @@ class ModeSelectDialog extends JDialog implements ActionListener{
 				return false;
 			}
 		});
+		getContentPane().add(ipField);
+		getContentPane().add(portField);
 		
 	}
 	@Override
