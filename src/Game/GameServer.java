@@ -9,7 +9,9 @@ import UserInterface.GameUI;
 public class GameServer implements Runnable {
 	//Network attributes
 	private ServerSocket serverSocket;
-	private Socket otherClientSocket;
+	private Socket clientSocket;
+	private ObjectInputStream ois;
+	private ObjectOutputStream oos;
 	private PrintWriter out;
 	private BufferedReader in;
 	//Game attributes
@@ -21,22 +23,24 @@ public class GameServer implements Runnable {
 	}
 	
 	protected GameServer(InputStream is, OutputStream os){
-		initialize(is, os);
+		try {
+			initialize(is, os);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
-	private void initialize(InputStream is, OutputStream os) {
-		
+	private void initialize(InputStream is, OutputStream os) throws IOException {
+		in = new BufferedReader(new InputStreamReader(is));
+		out = new PrintWriter(os);
+		//Wait for the two client to ready
 		
 		
 	}
 
 	@Override
 	public void run() {
-		while(true) {
-			if(turn == 1) {
-				
-			}
-		}
+		
 		
 	}
 	

@@ -53,24 +53,32 @@ public class Main {
 	
 	//P2P Server case
 	protected void waitForConnection() throws IOException{
-		ServerSocket serverSocket = new ServerSocket(65536);
-		Socket socket = serverSocket.accept();
-		/* Change main UI State
-		 ...
-		 */
-		
-		InputStream input = socket.getInputStream();
-		OutputStream output = socket.getOutputStream();
-		GameServer gameServer = new GameServer(input, output);
-		//create the local client
-		gameServer.setClient(new GameClient(), true);
-		// run the game server
-		gameServer.run();
+		Thread wfct = new WaitForConnectionReadyThread();
+		wfct.start();
 		
 	}
 	
 	//P2P Client case
 	protected void Connect() throws UnknownHostException, IOException {
 		Socket socket = new Socket("Server Address", 65536);
+	}
+	
+	private class WaitForConnectionReadyThread extends Thread {
+		public void run(boolean isLocal) throws IOException {
+			ServerSocket serverSocket = new ServerSocket(65536);
+			Socket socket = serverSocket.accept();
+			/* Change main UI State
+			 ...
+			 */
+			
+			InputStream input = socket.getInputStream();
+			OutputStream output = socket.getOutputStream();
+			GameServer gameServer = new GameServer(input, output);
+			//create the local client
+			gameServer.setClient(new GameClient(), true);
+			
+			// run the game server
+			gameServer.run();
+		}
 	}
 }
