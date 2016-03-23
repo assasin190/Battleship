@@ -1,8 +1,8 @@
 package Game;
 
-public class GameBoard {
+public class BoardGame {
 
-	public GameBoard() {
+	public BoardGame() {
 		
 	}
 	// TODO implements a boardgame's actions
