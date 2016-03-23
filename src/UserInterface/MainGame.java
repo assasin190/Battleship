@@ -183,7 +183,6 @@ public class MainGame{
 		player2.add(gap3,BorderLayout.WEST);
 		player2.add(southPlayer2, BorderLayout.CENTER);
 		southPlayer2.setLayout(new GridLayout(8, 8, 0, 0));
-		southPlayer2.setLayout(tableLayout);
 		for(int i =0; i<64; i++) {
 			southPlayer2.add(new JButton("Button"));
 		}
