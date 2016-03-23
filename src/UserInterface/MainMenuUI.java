@@ -1,29 +1,22 @@
 package UserInterface;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
-import javax.swing.JButton;
-import javax.swing.JComponent;
-import javax.swing.JDialog;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.SwingConstants;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.BoxLayout;
-import javax.swing.InputVerifier;
+import Game.Main;
 
-public class MainMenu {
+public class MainMenuUI {
+	Main main;
 	public JPanel panel;
 	private ModeSelectDialog popUpDialog;
 
-	public MainMenu() {
-		initialize();
+	public MainMenuUI(Main main) {
+		initialize(main);
 	}
 	
-	private void initialize() {
+	private void initialize(Main main) {
+		this.main = main;
 		panel = new JPanel();
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 		JLabel label = new JLabel("Mode");
@@ -82,6 +75,7 @@ class ModeSelectDialog extends JDialog{
 		north.add(ipTextLabel);
 		north.add(ipTextField);
 		
+		//South
 		JPanel south = new JPanel();
 		south.setLayout(new FlowLayout());
 		portTextField = new JTextField();
@@ -93,19 +87,6 @@ class ModeSelectDialog extends JDialog{
 		getContentPane().add(south, BorderLayout.PAGE_END);
 		pack();
 		setVisible(true);
-		
-	}
-}
-
-class IPTextField extends JTextField {
-	String inputText;
-	
-	private IPTextField() {
-		super();
-		
-	}
-	@Override
-	public void validate() {
 		
 	}
 }

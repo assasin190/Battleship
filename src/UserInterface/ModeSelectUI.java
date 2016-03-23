@@ -2,12 +2,12 @@ package UserInterface;
 import javax.swing.JPanel;
 import java.awt.BorderLayout;
 
-public class ModeSelect {
+public class ModeSelectUI {
 	JPanel panel;
 	/**
 	 * Create the panel.
 	 */
-	public ModeSelect() {
+	public ModeSelectUI() {
 		initialize();
 	}
 	

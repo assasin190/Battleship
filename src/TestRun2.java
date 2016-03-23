@@ -1,7 +1,7 @@
 import java.awt.Dimension;
 
 import javax.swing.JFrame;
-import UserInterface.Game;
+import UserInterface.GameUI;
 import UserInterface.MainGame;
 
 public class TestRun2 {

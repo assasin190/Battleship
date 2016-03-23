@@ -23,13 +23,11 @@ import java.awt.SystemColor;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.CompoundBorder;
 
-public class Game{
+public class GameUI{
+	
 	public JPanel panel;
 
-	/**
-	 * Create the panel.
-	 */
-	public Game() {
+	public GameUI() {
 		initialize();
 	}
 	
