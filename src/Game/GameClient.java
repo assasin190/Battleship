@@ -4,15 +4,17 @@ import java.net.Socket;
 
 public class GameClient {
 		protected GameServer gameServer;
-		protected Player self;
-		protected Player opponent;
+		protected Player player;
 		protected BoardGame board;
 		protected boolean isYourTurn;
-		protected boolean isLocal;
-	
-		protected GameClient(boolean isLocal) {
-			if(isLocal) {
-				
-			}
+		
+		public static void main(String [] args) {
+			
 		}
+	
+		protected GameClient() {
+			player = new Player();
+			board = new BoardGame();
+		}
+		
 }

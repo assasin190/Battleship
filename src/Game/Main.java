@@ -62,9 +62,11 @@ public class Main {
 		InputStream input = socket.getInputStream();
 		OutputStream output = socket.getOutputStream();
 		GameServer gameServer = new GameServer(input, output);
+		//create the local client
+		gameServer.setClient(new GameClient(), true);
 		// run the game server
 		gameServer.run();
-		GameClient client = new GameClient();
+		
 	}
 	
 	//P2P Client case

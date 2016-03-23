@@ -39,4 +39,10 @@ public class GameServer implements Runnable {
 		}
 		
 	}
+	
+	protected void setClient(GameClient client, boolean isLocal) {
+		if(isLocal) {
+			localClient = client;
+		}
+	}
 }
