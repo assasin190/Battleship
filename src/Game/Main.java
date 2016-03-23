@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.UnknownHostException;
 
 import javax.swing.JFrame;
 import GameState.GameStateManager;
@@ -53,19 +54,21 @@ public class Main {
 	//P2P Server case
 	protected void waitForConnection() throws IOException{
 		ServerSocket serverSocket = new ServerSocket(65536);
-		Socket otherClientSocket = serverSocket.accept();
+		Socket socket = serverSocket.accept();
 		/* Change main UI State
 		 ...
 		 */
-		InputStream input = otherClientSocket.getInputStream();
-		OutputStream output = otherClientSocket.getOutputStream();
+		
+		InputStream input = socket.getInputStream();
+		OutputStream output = socket.getOutputStream();
 		GameServer gameServer = new GameServer(input, output);
 		// run the game server
 		gameServer.run();
+		GameClient client = new GameClient();
 	}
 	
 	//P2P Client case
-	protected void Connect() {
-		
+	protected void Connect() throws UnknownHostException, IOException {
+		Socket socket = new Socket("Server Address", 65536);
 	}
 }

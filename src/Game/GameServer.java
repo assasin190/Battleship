@@ -21,27 +21,12 @@ public class GameServer implements Runnable {
 	}
 	
 	protected GameServer(InputStream is, OutputStream os){
-		openConnection();
+		initialize(is, os);
 	}
 	
-	private void openConnection() {
-		//Establish a socket connection
-		try {
-			serverSocket = new ServerSocket(65536);
-			otherClientSocket = serverSocket.accept();
-			out = new PrintWriter(otherClientSocket.getOutputStream() , true);
-			in = new BufferedReader(new InputStreamReader(otherClientSocket.getInputStream()));
-			
-			//Change client state to GameUI
-			
-			localClient = new GameClient();
-			
-			
-			
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+	private void initialize(InputStream is, OutputStream os) {
+		
+		
 		
 	}
 
