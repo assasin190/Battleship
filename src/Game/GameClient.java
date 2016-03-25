@@ -24,4 +24,8 @@ public class GameClient implements Runnable{
 			
 		}
 		
+		public void gameSetup() {
+			
+		}
+		
 }

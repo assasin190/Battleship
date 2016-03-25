@@ -52,13 +52,27 @@ public class Main {
 	}
 	
 	//P2P Server case
-	protected void startLocalServer() {
-		GameServer gameServer = new GameServer();
+	protected void startLocalServer() throws InterruptedException {
+		GameServer gameServer = new GameServer(true);
 		Thread serverThread = new Thread(gameServer);
 		//Run server on new thread
-		serverThread.run();
-		//Run local game client on the main thread
-		new GameClient().run();
+		serverThread.start();
+		//Run local client's game setup
+		GameClient localClient = new GameClient();
+		/*change UI state
+		 ...
+		 */
+		localClient.run();
+		
+		//Wait for server to completes the connection with another client
+		synchronized(serverThread) {
+			serverThread.wait();
+		}
+		//Run the game
+		localClient.run();
+		/*
+		 ...Change UI State
+		 */
 		
 		
 	}
