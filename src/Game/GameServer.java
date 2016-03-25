@@ -22,19 +22,7 @@ public class GameServer implements Runnable {
 	public static void main(String [] args) {
 	}
 	
-	protected GameServer(InputStream is, OutputStream os){
-		try {
-			initialize(is, os);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-	
-	private void initialize(InputStream is, OutputStream os) throws IOException {
-		in = new BufferedReader(new InputStreamReader(is));
-		out = new PrintWriter(os);
-		//Wait for the two client to ready
-		
+	protected GameServer(){
 		
 	}
 
