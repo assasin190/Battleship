@@ -59,6 +59,7 @@ public class Main {
 		serverThread.run();
 		int n = 1;
 		n++;
+		n--;
 		
 	}
 	
