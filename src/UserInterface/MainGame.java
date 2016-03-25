@@ -170,68 +170,80 @@ public class MainGame{
 		northPlayer2.setPreferredSize(new Dimension(300, 100));
 		player2.add(northPlayer2, BorderLayout.NORTH);
 		northPlayer2.setLayout(new BorderLayout(0, 0));
-		JPanel scoreClient = new JPanel();
-		scoreClient.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
-		JPanel scoreServer = new JPanel();
-		scoreServer.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
+		JPanel clientPanel = new JPanel();
+		clientPanel.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
+		JPanel serverPanel = new JPanel();
+		serverPanel.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
 		JPanel gap4 = new JPanel(); //vertical gap
 		JPanel gap5 = new JPanel(); //horizontal gap
 		JPanel scorePanel = new JPanel();
 		scorePanel.setPreferredSize(new Dimension(250, 90));
-		scoreClient.setPreferredSize(new Dimension(110,40));
-		scoreServer.setPreferredSize(new Dimension(110,40));
+		clientPanel.setPreferredSize(new Dimension(100, 90));
+		serverPanel.setPreferredSize(new Dimension(100, 90));
 		gap4.setPreferredSize(new Dimension(50,10));
 		gap5.setPreferredSize(new Dimension(300,10));
 		scorePanel.setLayout(new BorderLayout(0, 0));
 		northPlayer2.add(gap4, BorderLayout.WEST);
 		northPlayer2.add(scorePanel, BorderLayout.CENTER);
 		northPlayer2.add(gap5, BorderLayout.SOUTH);
-		scorePanel.add(scoreClient, BorderLayout.WEST);
-		scorePanel.add(scoreServer, BorderLayout.EAST);
-		//profile player
-		JPanel profileClient = new JPanel();
-		profileClient.setPreferredSize(new Dimension(30,40));
-		profileClient.setBackground(Color.PINK);
-		scoreClient.setLayout(new BorderLayout(0, 0));
-		//scoreClient.add(profileClient, BorderLayout.WEST);
+		scorePanel.add(clientPanel, BorderLayout.WEST);
+		scorePanel.add(serverPanel, BorderLayout.EAST);
 		
-		JPanel client = new JPanel();
-		scoreClient.add(client, BorderLayout.CENTER);
-		client.setLayout(new BorderLayout(0, 0));
-		
+		//Client
+		clientPanel.setLayout(new BorderLayout(0, 0));
 		JPanel nameClient = new JPanel();
 		nameClient.setBackground(Color.GRAY);
-		nameClient.setPreferredSize(new Dimension(60,30));
-		client.add(nameClient, BorderLayout.NORTH);
+		nameClient.setPreferredSize(new Dimension(100, 30));
+		clientPanel.add(nameClient, BorderLayout.NORTH);
 		
-		JLabel lblPlayer = new JLabel("PLAYER1");
-		lblPlayer.setVerticalAlignment(SwingConstants.TOP);
-		lblPlayer.setFont(new Font("Avenir", Font.PLAIN, 12));
-		lblPlayer.setHorizontalAlignment(SwingConstants.CENTER);
-		nameClient.add(lblPlayer);
+		JLabel lblClient = new JLabel("PLAYER2");
+		lblClient.setVerticalAlignment(SwingConstants.TOP);
+		lblClient.setFont(new Font("Avenir", Font.PLAIN, 12));
+		lblClient.setHorizontalAlignment(SwingConstants.CENTER);
+		nameClient.add(lblClient);
 		
-		JPanel clientScore = new JPanel();
-		clientScore.setPreferredSize(new Dimension(30, 60));
-		client.add(clientScore, BorderLayout.SOUTH);
+		JPanel client = new JPanel();
+		client.setPreferredSize(new Dimension(100, 60));
+		client.setBackground(Color.WHITE);
+		client.setLayout(new BorderLayout(0, 0));
+		clientPanel.add(client, BorderLayout.SOUTH);
+		
+		JPanel profileClient = new JPanel();
+		profileClient.setPreferredSize(new Dimension(50, 60));
+		profileClient.setBackground(Color.PINK);
+		client.add(profileClient,BorderLayout.WEST);
+		
+		JPanel scoreClient = new JPanel();
+		scoreClient.setPreferredSize(new Dimension(50, 60));
+		client.add(scoreClient, BorderLayout.EAST);
 		
 		
-		JPanel profileServer = new JPanel();
-		profileServer.setPreferredSize(new Dimension(30,40));
-		profileServer.setBackground(Color.PINK);
-		scoreServer.setLayout(new BorderLayout(0, 0));
-		scoreServer.add(profileServer, BorderLayout.EAST);
+		serverPanel.setLayout(new BorderLayout(0, 0));
+		JPanel nameServer = new JPanel();
+		nameServer.setBackground(Color.GRAY);
+		nameServer.setPreferredSize(new Dimension(100, 30));
+		serverPanel.add(nameServer, BorderLayout.NORTH);
 		
 		JPanel server = new JPanel();
-		scoreServer.add(server, BorderLayout.CENTER);
+		server.setPreferredSize(new Dimension(100, 60));
+		server.setBackground(Color.WHITE);
 		server.setLayout(new BorderLayout(0, 0));
+		serverPanel.add(server, BorderLayout.SOUTH);
 		
-		JPanel nameServer = new JPanel();
-		server.add(nameServer, BorderLayout.NORTH);
+		JLabel lblServer = new JLabel("PLAYER2");
+		lblServer.setVerticalAlignment(SwingConstants.TOP);
+		lblServer.setFont(new Font("Avenir", Font.PLAIN, 12));
+		lblServer.setHorizontalAlignment(SwingConstants.CENTER);
+		nameServer.add(lblServer);
 		
-		JPanel panel_1 = new JPanel();
-		server.add(panel_1, BorderLayout.SOUTH);
+		JPanel scoreServer = new JPanel();
+		scoreServer.setPreferredSize(new Dimension(50, 30));
+		server.add(scoreServer, BorderLayout.WEST);
+		
+		
 		
 		JPanel vsPanel = new JPanel();
+		vsPanel.setPreferredSize(new Dimension(70, 90));
 		scorePanel.add(vsPanel, BorderLayout.CENTER);
 		
 		JLabel lblVs = new JLabel("VS");
