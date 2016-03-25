@@ -52,9 +52,11 @@ public class Main {
 	}
 	
 	//P2P Server case
-	protected void waitForConnection() throws IOException{
-		Thread wfct = new WaitForConnectionReadyThread();
-		wfct.start();
+	protected void startLocalServer() {
+		GameServer gameServer = new GameServer();
+		Thread serverThread = new Thread(gameServer);
+		//Run server
+		serverThread.run();
 		
 	}
 	
@@ -71,14 +73,6 @@ public class Main {
 			 ...
 			 */
 			
-			InputStream input = socket.getInputStream();
-			OutputStream output = socket.getOutputStream();
-			GameServer gameServer = new GameServer(input, output);
-			//create the local client
-			gameServer.setClient(new GameClient(), true);
-			
-			// run the game server
-			gameServer.run();
 		}
 	}
 }
