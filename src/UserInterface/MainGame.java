@@ -132,19 +132,20 @@ public class MainGame{
 		
 		topP2.setLayout(new BorderLayout(0,0));
 		
+		
 		JPanel leftTopP2 = new JPanel();
-		leftTopP2.setPreferredSize(new Dimension(70, 40));
+		leftTopP2.setPreferredSize(new Dimension(100, 40));
 		leftTopP2.setLayout(new BoxLayout(leftTopP2, BoxLayout.X_AXIS));
-		JLabel status = new JLabel("STATUS:");
-		status.setHorizontalAlignment(SwingConstants.RIGHT);
+		JLabel status = new JLabel("TIMER:");
+		status.setHorizontalAlignment(SwingConstants.CENTER);
 		status.setFont(new Font("Avenir", Font.PLAIN, 12));
-		leftTopP2.add(status);
 		topP2.add(leftTopP2,BorderLayout.WEST);
+		topP2.add(status,BorderLayout.CENTER);
 		
 		JPanel rightTopP2 = new JPanel();
 		rightTopP2.setBorder(new LineBorder(null, 1, true));
 		rightTopP2.setBackground(SystemColor.control);
-		rightTopP2.setPreferredSize(new Dimension(230, 40));
+		rightTopP2.setPreferredSize(new Dimension(130, 40));
 		topP2.add(rightTopP2,BorderLayout.EAST);
 		
 		JPanel gap2 = new JPanel();
@@ -152,34 +153,24 @@ public class MainGame{
 		topP2.add(gap2, BorderLayout.SOUTH);
 		
 		rightTopP2.setLayout(new GridLayout(1, 4, 0, 0));
-		JLabel p1 = new JLabel ("YOU");
-		p1.setHorizontalAlignment(SwingConstants.CENTER);
-		p1.setFont(new Font("Avenir", Font.PLAIN, 10));
-		JButton b1 = new JButton("READY");
-		b1.setFont(new Font("Lucida Grande", Font.PLAIN, 9));
-		JLabel p2 = new JLabel ("ENEMY");
-		p2.setHorizontalAlignment(SwingConstants.CENTER);
-		p2.setFont(new Font("Avenir", Font.PLAIN, 10));
-		JButton b2 = new JButton("READY");
-		b2.setFont(new Font("Lucida Grande", Font.PLAIN, 9));
-		rightTopP2.add(p1);
-		rightTopP2.add(b1);
-		rightTopP2.add(p2);
-		rightTopP2.add(b2);
+		
+		JLabel lblMinsec = new JLabel("MIN:SEC");
+		lblMinsec.setHorizontalAlignment(SwingConstants.CENTER);
+		rightTopP2.add(lblMinsec);
 		
 		rightCol.add(player2,BorderLayout.CENTER);
 		rightCol.add(bottomP2, BorderLayout.SOUTH);
 		
 		player2.setLayout(new BorderLayout(0, 0));
 		JPanel northPlayer2 = new JPanel();
-		northPlayer2.setPreferredSize(new Dimension(300, 50));
+		northPlayer2.setPreferredSize(new Dimension(300, 100));
 		player2.add(northPlayer2, BorderLayout.NORTH);
 		
 		JPanel gap3 = new JPanel();
-		gap3.setPreferredSize(new Dimension(50, 250));
+		gap3.setPreferredSize(new Dimension(100, 250));
 		JPanel southPlayer2 = new JPanel();
 		southPlayer2.setBackground(new Color(204, 204, 255));
-		southPlayer2.setPreferredSize(new Dimension(250, 250));
+		southPlayer2.setPreferredSize(new Dimension(200, 200));
 		player2.add(gap3,BorderLayout.WEST);
 		player2.add(southPlayer2, BorderLayout.CENTER);
 		southPlayer2.setLayout(new GridLayout(8, 8, 0, 0));
