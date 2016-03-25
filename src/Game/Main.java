@@ -57,7 +57,6 @@ public class Main {
 		Thread serverThread = new Thread(gameServer);
 		//Run server
 		serverThread.run();
-		int n = 0;
 		
 	}
 	
