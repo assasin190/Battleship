@@ -3,7 +3,7 @@ package Game;
 import java.net.Socket;
 import UserInterface.MainGame;
 
-public class GameClient {
+public class GameClient implements Runnable{
 		protected GameServer gameServer;
 		protected Player player;
 		protected BoardGame board;
@@ -17,6 +17,11 @@ public class GameClient {
 		protected GameClient() {
 			player = new Player();
 			board = new BoardGame();
+		}
+
+		@Override
+		public void run() {
+			
 		}
 		
 }

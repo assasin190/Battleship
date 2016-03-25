@@ -55,8 +55,11 @@ public class Main {
 	protected void startLocalServer() {
 		GameServer gameServer = new GameServer();
 		Thread serverThread = new Thread(gameServer);
-		//Run server
+		//Run server on new thread
 		serverThread.run();
+		//Run local game client on the main thread
+		new GameClient().run();
+		
 		
 	}
 	
