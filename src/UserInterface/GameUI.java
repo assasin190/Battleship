@@ -79,9 +79,10 @@ public class GameUI{
 		player1.setPreferredSize(new Dimension(300,300));
 		
 		JPanel topP1 = new JPanel();
-		topP1.setPreferredSize(new Dimension(300, 50));
+		topP1.setPreferredSize(new Dimension(300, 100));
 		
 		JLabel lblPlaceYourShip = new JLabel("PLACE YOUR SHIPS!");
+		lblPlaceYourShip.setVerticalAlignment(SwingConstants.BOTTOM);
 		lblPlaceYourShip.setFont(new Font("Avenir", Font.BOLD, 20));
 		lblPlaceYourShip.setHorizontalAlignment(SwingConstants.LEFT);
 		topP1.add(lblPlaceYourShip);
@@ -98,9 +99,8 @@ public class GameUI{
 		GridLayout tableLayout = new GridLayout(8,8);
 		player1.setLayout(tableLayout);
 		for(int i =0; i<64; i++) {
-			player1.add(new JButton("Button"));
+			player1.add( new JButton(""));
 		}
-		
 		
 		/*CENTER GAP*/
 		JPanel centerCol = new JPanel();
@@ -127,7 +127,6 @@ public class GameUI{
 		
 		rightCol.setLayout(new BorderLayout(0,0));
 		rightCol.add(topP2, BorderLayout.NORTH);
-		
 		topP2.setLayout(new BorderLayout(0,0));
 		
 		JPanel leftTopP2 = new JPanel();
@@ -170,36 +169,49 @@ public class GameUI{
 		
 		player2.setLayout(new BorderLayout(0, 0));
 		JPanel northPlayer2 = new JPanel();
+		northPlayer2.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
 		northPlayer2.setPreferredSize(new Dimension(300,130));
 		player2.add(northPlayer2, BorderLayout.NORTH);
 		northPlayer2.setLayout(new BorderLayout(0, 0));
 		
 		
 		/*PLAYER PANEL*/
+	
+		
+
+		JPanel namePanel = new JPanel();
+		namePanel.setPreferredSize(new Dimension(190, 30));
+		namePanel.setLayout(new BorderLayout(0, 0));
+		JLabel name = new JLabel("Player1");
+		name.setFont(new Font("Avenir", Font.PLAIN, 13));
+		name.setHorizontalAlignment(SwingConstants.CENTER);
+		namePanel.add(name);
+		namePanel.setBackground(Color.GRAY);
+		northPlayer2.add(namePanel, BorderLayout.NORTH);
+		
+		JPanel playerPanel = new JPanel();
+		playerPanel.setPreferredSize(new Dimension(300, 100));
+		northPlayer2.add(playerPanel, BorderLayout.SOUTH);
+		playerPanel.setLayout(new BorderLayout(0, 0));
+		
+		
 		JButton profile = new JButton("");
-		profile.setIcon(new ImageIcon("avatar.png"));
+		profile.setIcon(new ImageIcon("avatarr.png"));
 		profile.setBackground(Color.GRAY);
-		profile.setPreferredSize(new Dimension(100,100));
-		northPlayer2.add(profile, BorderLayout.WEST);
+		profile.setPreferredSize(new Dimension(80, 100));
+		playerPanel.add(profile, BorderLayout.WEST);
+		
+	
 		
 		JPanel gapCol=new JPanel();
 		gapCol.setPreferredSize(new Dimension(10,100));
-		northPlayer2.add(gapCol, BorderLayout.CENTER);
+		playerPanel.add(gapCol, BorderLayout.CENTER);
 		
 		JPanel buttonPanel = new JPanel();
 		buttonPanel.setPreferredSize(new Dimension(190,100));
-		northPlayer2.add(buttonPanel, BorderLayout.EAST);
+		playerPanel.add(buttonPanel, BorderLayout.EAST);
 		buttonPanel.setLayout(new BorderLayout(0, 0));
 		
-		JPanel namePanel = new JPanel();
-		FlowLayout flowLayout = (FlowLayout) namePanel.getLayout();
-		flowLayout.setAlignment(FlowLayout.LEFT);
-		namePanel.setPreferredSize(new Dimension(190, 40));
-		JLabel name = new JLabel("YOU:");
-		name.setFont(new Font("Avenir", Font.PLAIN, 13));
-		name.setHorizontalAlignment(SwingConstants.LEFT);
-		namePanel.add(name);
-		buttonPanel.add(namePanel, BorderLayout.NORTH);
 		
 		JPanel keyButton = new JPanel();
 		keyButton.setPreferredSize(new Dimension(190,69));
@@ -224,6 +236,7 @@ public class GameUI{
 		randomButton.setFont(new Font("Avenir", Font.PLAIN, 13));
 		randomButton.setPreferredSize(new Dimension(190, 30));
 		buttonPanel.add(randomButton, BorderLayout.SOUTH);
+		
 		
 	
 		
@@ -258,7 +271,7 @@ public class GameUI{
 		
 		
 		JPanel bottom = new JPanel();
-		bottom.setPreferredSize(new Dimension(1024,100));
+		bottom.setPreferredSize(new Dimension(1024,50));
 		panel.add(bottom, BorderLayout.SOUTH);
 	}
 
