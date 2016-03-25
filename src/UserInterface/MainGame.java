@@ -293,7 +293,6 @@ public class MainGame{
 		panel.add(east, BorderLayout.EAST);
 		east.setLayout(new BorderLayout(0, 0));
 		
-		
 		JPanel bottom = new JPanel();
 		bottom.setPreferredSize(new Dimension(1024,50));
 		bottom.setBackground(Color.BLACK);
