@@ -104,7 +104,7 @@ public class MainGame{
 		GridLayout tableLayout = new GridLayout(8,8);
 		player1.setLayout(tableLayout);
 		for(int i =0; i<64; i++) {
-			player1.add(new JButton("Button"));
+			player1.add( new JButton(""));
 		}
 		
 		
@@ -196,7 +196,7 @@ public class MainGame{
 		nameClient.setPreferredSize(new Dimension(100, 30));
 		clientPanel.add(nameClient, BorderLayout.NORTH);
 		
-		JLabel lblClient = new JLabel("PLAYER2");
+		JLabel lblClient = new JLabel("PLAYER1");
 		lblClient.setVerticalAlignment(SwingConstants.TOP);
 		lblClient.setFont(new Font("Avenir", Font.PLAIN, 12));
 		lblClient.setHorizontalAlignment(SwingConstants.CENTER);
@@ -210,14 +210,22 @@ public class MainGame{
 		
 		JPanel profileClient = new JPanel();
 		profileClient.setPreferredSize(new Dimension(50, 60));
-		profileClient.setBackground(Color.PINK);
+		JLabel P1 = new JLabel();
+		P1.setIcon ( new ImageIcon ( "profile.png" ) );
+		profileClient.add(P1);
 		client.add(profileClient,BorderLayout.WEST);
 		
 		JPanel scoreClient = new JPanel();
 		scoreClient.setPreferredSize(new Dimension(50, 60));
 		client.add(scoreClient, BorderLayout.EAST);
+		scoreClient.setLayout(new BorderLayout(0, 0));
+		
+		JLabel P1Score = new JLabel("XX");
+		P1Score.setHorizontalAlignment(SwingConstants.CENTER);
+		scoreClient.add(P1Score, BorderLayout.CENTER);
 		
 		
+		//Server
 		serverPanel.setLayout(new BorderLayout(0, 0));
 		JPanel nameServer = new JPanel();
 		nameServer.setBackground(Color.GRAY);
@@ -239,7 +247,18 @@ public class MainGame{
 		JPanel scoreServer = new JPanel();
 		scoreServer.setPreferredSize(new Dimension(50, 30));
 		server.add(scoreServer, BorderLayout.WEST);
+		scoreServer.setLayout(new BorderLayout(0, 0));
 		
+		JLabel P2Score = new JLabel("XX");
+		P2Score.setHorizontalAlignment(SwingConstants.CENTER);
+		scoreServer.add(P2Score, BorderLayout.CENTER);
+		
+		JPanel profileServer = new JPanel();
+		profileServer.setPreferredSize(new Dimension(50, 30));
+		server.add(profileServer, BorderLayout.EAST);
+		JLabel P2 = new JLabel();
+		P2.setIcon ( new ImageIcon ( "profile.png" ) );
+		profileServer.add(P2);
 		
 		
 		JPanel vsPanel = new JPanel();
