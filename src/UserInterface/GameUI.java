@@ -267,6 +267,15 @@ public class GameUI{
 		shipPanel.add(ship3);
 		shipPanel.add(ship4);
 		
+		JPanel toolTip = new JPanel();
+		player2.add(toolTip, BorderLayout.CENTER);
+		toolTip.setLayout(new BorderLayout(0, 0));
+		
+		JLabel lblPressReady = new JLabel("Press Ready !!");
+		lblPressReady.setFont(new Font("Avenir", Font.BOLD, 15));
+		lblPressReady.setHorizontalAlignment(SwingConstants.CENTER);
+		toolTip.add(lblPressReady);
+		
 		/*RIGHT BORDER*/
 		JPanel east = new JPanel();
 		east.setPreferredSize(new Dimension(150,300));
