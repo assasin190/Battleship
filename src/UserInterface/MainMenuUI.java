@@ -136,9 +136,21 @@ class ModeSelectDialog extends JDialog{
 		JPanel north = new JPanel();
 		north.setLayout(new BorderLayout());
 		ipTextField = new JTextField();
+		ipTextField.setColumns(10);
 		JLabel ipTextLabel = new JLabel("IP Address:");
-		north.add(ipTextLabel,BorderLayout.WEST);
-		north.add(ipTextField,BorderLayout.EAST);
+		
+		
+		JPanel ipLabel = new JPanel();
+		ipLabel.setPreferredSize(new Dimension(250,200));
+		JPanel ipField = new JPanel();
+		ipField.setPreferredSize(new Dimension(250,200));
+		//ipLabel.setLayout(new BorderLayout());
+		//ipField.setLayout(new BorderLayout());
+		ipLabel.add(ipTextLabel);
+		ipField.add(ipTextField);
+		north.add(ipLabel,BorderLayout.WEST);
+		north.add(ipField,BorderLayout.EAST);
+		
 		ipTextLabel.setHorizontalAlignment(SwingConstants.RIGHT);
 		ipTextField.setHorizontalAlignment(SwingConstants.LEFT);
 		

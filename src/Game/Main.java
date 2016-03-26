@@ -1,6 +1,7 @@
 package Game;
 import java.awt.Dimension;
 import java.awt.EventQueue;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -8,6 +9,11 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.JFrame;
 import GameState.GameStateManager;
 import UserInterface.MainMenuUI;
@@ -17,7 +23,7 @@ public class Main {
 	public JFrame frame;
 	public GameStateManager gsm;
 	public boolean isClient;
-
+	boolean start = true;
 	/**
 	 * Launch the application.
 	 */
@@ -38,6 +44,8 @@ public class Main {
 	 * Create the application.
 	 */
 	private Main() {
+		insertBGM("login.wav");
+		start = false;
 		initialize();
 	}
 	
@@ -91,6 +99,26 @@ public class Main {
 			 ...
 			 */
 			
+		}
+	}
+	public void insertBGM(String sound) {
+		File soundFile = new File(sound);
+		AudioInputStream audioIn = null;
+		try {
+			audioIn = AudioSystem.getAudioInputStream(soundFile);
+			Clip clip = AudioSystem.getClip();
+			clip.open(audioIn);
+			if(start){
+				clip.loop(Clip.LOOP_CONTINUOUSLY);
+			} else {
+				clip.start();
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (UnsupportedAudioFileException e) {
+			e.printStackTrace();
+		} catch (LineUnavailableException e) {
+			e.printStackTrace();
 		}
 	}
 }
