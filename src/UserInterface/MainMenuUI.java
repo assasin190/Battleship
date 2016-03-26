@@ -28,10 +28,10 @@ public class MainMenuUI {
 		panel.setLayout(new BorderLayout(0, 0));
 		panel.setPreferredSize(new Dimension(1024,768));
 		
-		/*
-		ImageIcon icon = new ImageIcon("bg.png"); 
+		/*ImageIcon icon = new ImageIcon("bg.png"); 
 		JLabel bg = new JLabel();
-		bg.setIcon(icon);*/
+		bg.setIcon(icon);
+		panel.add(bg); */
 		
 		
 		JPanel gapLeft = new JPanel();
@@ -125,14 +125,22 @@ class ModeSelectDialog extends JDialog{
 			}
 		});
 		getContentPane().setLayout(new BorderLayout());
+		
 		//Inside Panel
+		JPanel socketPanel = new JPanel();
+		socketPanel.setPreferredSize(new Dimension(500,400));
+		getContentPane().add(socketPanel);
+		socketPanel.setLayout(new BorderLayout());
+		
 		//North
 		JPanel north = new JPanel();
-		north.setLayout(new FlowLayout());
+		north.setLayout(new BorderLayout());
 		ipTextField = new JTextField();
 		JLabel ipTextLabel = new JLabel("IP Address:");
-		north.add(ipTextLabel);
-		north.add(ipTextField);
+		north.add(ipTextLabel,BorderLayout.WEST);
+		north.add(ipTextField,BorderLayout.EAST);
+		ipTextLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+		ipTextField.setHorizontalAlignment(SwingConstants.LEFT);
 		
 		//South
 		JPanel south = new JPanel();
@@ -142,8 +150,11 @@ class ModeSelectDialog extends JDialog{
 		south.add(portTextLabel);
 		south.add(portTextField);
 		
-		getContentPane().add(north, BorderLayout.PAGE_START);
-		getContentPane().add(south, BorderLayout.PAGE_END);
+		
+		socketPanel.add(north,BorderLayout.NORTH);
+		socketPanel.add(south,BorderLayout.SOUTH);
+		
+		
 		pack();
 		setVisible(true);
 		
