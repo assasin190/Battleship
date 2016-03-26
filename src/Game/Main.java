@@ -1,4 +1,5 @@
 package Game;
+import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.io.IOException;
 import java.io.InputStream;
@@ -45,7 +46,7 @@ public class Main {
 	 */
 	private void initialize() {
 		frame = new JFrame();
-		frame.setBounds(100, 100, 450, 300);
+		frame.setBounds(100, 100, 1024, 768);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		MainMenuUI main = new MainMenuUI(this);
 		frame.getContentPane().add(main.panel);
