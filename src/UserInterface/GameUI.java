@@ -182,15 +182,16 @@ public class GameUI{
 		JPanel namePanel = new JPanel();
 		namePanel.setPreferredSize(new Dimension(190, 30));
 		namePanel.setLayout(new BorderLayout(0, 0));
-		JLabel name = new JLabel("Player1");
+		JLabel name = new JLabel("PLAYER1");
 		name.setFont(new Font("Avenir", Font.PLAIN, 13));
 		name.setHorizontalAlignment(SwingConstants.CENTER);
 		namePanel.add(name);
 		namePanel.setBackground(Color.GRAY);
 		northPlayer2.add(namePanel, BorderLayout.NORTH);
 		
+		
 		JPanel playerPanel = new JPanel();
-		playerPanel.setPreferredSize(new Dimension(300, 100));
+		playerPanel.setPreferredSize(new Dimension(300, 100)); 
 		northPlayer2.add(playerPanel, BorderLayout.SOUTH);
 		playerPanel.setLayout(new BorderLayout(0, 0));
 		
@@ -201,7 +202,6 @@ public class GameUI{
 		profile.setPreferredSize(new Dimension(80, 100));
 		playerPanel.add(profile, BorderLayout.WEST);
 		
-	
 		
 		JPanel gapCol=new JPanel();
 		gapCol.setPreferredSize(new Dimension(10,100));
@@ -229,6 +229,10 @@ public class GameUI{
 		readyButton.setFont(new Font("Avenir", Font.PLAIN, 13));
 		readyButton.setPreferredSize(new Dimension(95, 60));
 		keyButton.add(readyButton, BorderLayout.EAST);
+		
+		JPanel gapName = new JPanel();
+		gapName.setPreferredSize(new Dimension(190, 10));
+		keyButton.add(gapName, BorderLayout.NORTH);
 		
 	
 		
