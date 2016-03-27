@@ -105,6 +105,7 @@ class ModeSelectDialog extends JDialog{
 	
 	protected ModeSelectDialog(JFrame parent, String title) {
 		super(parent, title);
+		setLocation(350,200); //262
 		initialize();
 	}
 	private void initialize() {
