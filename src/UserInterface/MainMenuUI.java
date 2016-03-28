@@ -1,13 +1,18 @@
 package UserInterface;
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
+
 import Game.Main;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Color;
 
@@ -22,7 +27,19 @@ public class MainMenuUI {
 	
 	private void initialize(Main main) {
 		this.main = main;
-		panel = new JPanel();
+		//panel = new JPanel();
+		
+		ImageIcon bgIcon = createImageIcon("bg.png",1024, 768);
+		Image img = bgIcon.getImage();
+		
+		panel = new JPanel() {
+			public void paintComponent(Graphics g) {
+				super.paintComponent(g);
+				Graphics2D g2d = (Graphics2D) g.create();
+				g2d.drawImage(img, 0, 0, 1024, 768, this);
+				
+			}
+		};
 		panel.setBackground(new Color(0, 0, 0));
 		
 		panel.setLayout(new BorderLayout(0, 0));
@@ -63,6 +80,7 @@ public class MainMenuUI {
 		JPanel modePanel = new JPanel();
 		modePanel.setPreferredSize(new Dimension(200, 80));
 		modePanel.setLayout(new BorderLayout(0, 0));
+		modePanel.setOpaque(false);
 		
 		JLabel label = new JLabel("Mode");
 		label.setFont(new Font("Avenir", Font.BOLD, 20));
@@ -96,6 +114,15 @@ public class MainMenuUI {
 				
 			}
 		});
+	}
+	public static ImageIcon createImageIcon(String path, int width, int height) {
+		Image img = null;
+		try {
+			img = ImageIO.read(new File(path));
+		} catch (IOException e) {
+		}
+		Image resizedImage = img.getScaledInstance(width, height, 0);
+		return new ImageIcon(resizedImage);
 	}
 }
 
@@ -190,4 +217,6 @@ class ModeSelectDialog extends JDialog{
 		setVisible(true);
 		
 	}
+	
 }
+

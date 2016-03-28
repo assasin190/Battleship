@@ -50,11 +50,16 @@ public class TestRunUI {
 		p1.setPreferredSize(new Dimension(200,200));
 		panel.add(p1,BorderLayout.WEST);
 		*/
+		JPanel p1=new JPanel();
+		
 		JLabel l1 = new JLabel();
 		l1.setText("Hi");
+		p1.add(l1);
+		p1.setOpaque(false);
+		
 		frame.setPreferredSize(new Dimension(1024,768));
 		panel.setLayout(new BorderLayout());
-		panel.add(l1, BorderLayout.NORTH);
+		panel.add(p1, BorderLayout.NORTH);
 		panel.add(lb1, BorderLayout.CENTER);
 		frame.getContentPane().add(panel);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

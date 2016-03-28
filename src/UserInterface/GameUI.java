@@ -2,14 +2,19 @@ package UserInterface;
 
 import javax.swing.JPanel;
 import java.awt.GridLayout;
+import java.awt.Image;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 
 import javax.swing.JButton;
+import javax.imageio.ImageIO;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 
@@ -20,6 +25,9 @@ import javax.swing.JFormattedTextField;
 import javax.swing.JTextPane;
 import javax.swing.border.LineBorder;
 import java.awt.SystemColor;
+import java.io.File;
+import java.io.IOException;
+
 import javax.swing.border.BevelBorder;
 import javax.swing.border.CompoundBorder;
 
@@ -32,27 +40,40 @@ public class GameUI{
 	}
 	
 	private void initialize() {
-		panel = new JPanel();
+		
+		ImageIcon bgIcon = createImageIcon("bg.png",1024, 768);
+		Image img = bgIcon.getImage();
+		
+		panel = new JPanel() {
+			public void paintComponent(Graphics g) {
+				super.paintComponent(g);
+				Graphics2D g2d = (Graphics2D) g.create();
+				g2d.drawImage(img, 0, 0, 1024, 768, this);
+				
+			}
+		};
 		panel.setLayout(new BorderLayout(0, 0));
 		panel.setPreferredSize(new Dimension(1024,768));
 		
+		//Top panel
 		JPanel top = new JPanel();
 		top.setPreferredSize(new Dimension(1024, 150));
-		panel.add(top, BorderLayout.NORTH);
 		top.setLayout(new BorderLayout(0, 0));
+		top.setOpaque(false);
+		panel.add(top, BorderLayout.NORTH);
 		
 		JPanel leftTop = new JPanel();
 		JPanel rightTop = new JPanel();
 		leftTop.setPreferredSize(new Dimension(150,100));
+		leftTop.setOpaque(false);
 		rightTop.setPreferredSize(new Dimension(150,100));
+		rightTop.setOpaque(false);
 		
-	
-		
+		//Top logo
 		JButton logo = new JButton("");
 		logo.setIcon ( new ImageIcon ( "logo.png" ) );
 		top.add(leftTop,BorderLayout.WEST);
 		top.add(logo, BorderLayout.CENTER);
-		//top.add(lblPlaceYourShip,BorderLayout.SOUTH);
 		top.add(rightTop,BorderLayout.EAST);
 		
 		/*LEFT BORDER*/
@@ -60,6 +81,7 @@ public class GameUI{
 		west.setPreferredSize(new Dimension(150,568));
 		panel.add(west, BorderLayout.WEST);
 		west.setLayout(new BorderLayout(0, 0));
+		west.setOpaque(false);
 		
 		
 		/*CENTER*/
@@ -67,29 +89,32 @@ public class GameUI{
 		center.setPreferredSize(new Dimension(724,568));
 		panel.add(center, BorderLayout.CENTER);
 		center.setLayout(new BorderLayout(0, 0));
+		center.setOpaque(false);
 		
 		/*PLAYER1 TABLE*/
 		JPanel leftCol = new JPanel();
 		leftCol.setPreferredSize(new Dimension(300,568));
+		leftCol.setOpaque(false);
 		center.add(leftCol, BorderLayout.WEST);
 		
-		
 		JPanel player1 = new JPanel();
-		player1.setBackground(Color.PINK);
+		player1.setBackground(Color.PINK); // bg of battle table1
 		player1.setPreferredSize(new Dimension(300,300));
 		
-		JPanel topP1 = new JPanel();
+		JPanel topP1 = new JPanel(); //Panel for label "Place your ships!"
 		topP1.setPreferredSize(new Dimension(300, 100));
-		
 		JLabel lblPlaceYourShip = new JLabel("PLACE YOUR SHIPS!");
+		lblPlaceYourShip.setForeground(Color.WHITE);
 		lblPlaceYourShip.setVerticalAlignment(SwingConstants.BOTTOM);
 		lblPlaceYourShip.setFont(new Font("Avenir", Font.BOLD, 20));
 		lblPlaceYourShip.setHorizontalAlignment(SwingConstants.LEFT);
 		topP1.add(lblPlaceYourShip);
+		topP1.setOpaque(false);
 		
 		
-		JPanel bottomP1 = new JPanel();
-		bottomP1.setPreferredSize(new Dimension(300,100));	
+		JPanel bottomP1 = new JPanel(); //gap bottom of battle table1
+		bottomP1.setPreferredSize(new Dimension(300,100));
+		bottomP1.setOpaque(false);
 		
 		leftCol.setLayout(new BorderLayout(0,0));
 		leftCol.add(topP1,BorderLayout.NORTH);
@@ -106,49 +131,53 @@ public class GameUI{
 		JPanel centerCol = new JPanel();
 		centerCol.setPreferredSize(new Dimension(124,300));
 		center.add(centerCol, BorderLayout.CENTER);
+		centerCol.setOpaque(false);
 		
 		
 		/*PLAYER2 TABLE*/
 		JPanel rightCol = new JPanel();
 		rightCol.setPreferredSize(new Dimension(300,568));
+		rightCol.setOpaque(false);
 		center.add(rightCol, BorderLayout.EAST);
+	
 		
 		JPanel statusPanel = new JPanel();
 		statusPanel.setPreferredSize(new Dimension(300,50));
 		statusPanel.setLayout( new BorderLayout(0,0));
+		statusPanel.setOpaque(false);
 		JPanel topP2 = new JPanel();
-	;
+		topP2.setOpaque(false);
+	
 		
 		JPanel bottomP2 = new JPanel();
 		bottomP2.setPreferredSize(new Dimension(300,100));	
+		bottomP2.setOpaque(false);
 		
 		JPanel player2 = new JPanel();
 		player2.setPreferredSize(new Dimension(300,300));
+		player2.setOpaque(false);
 		
 		rightCol.setLayout(new BorderLayout(0,0));
 		rightCol.add(topP2, BorderLayout.NORTH);
 		topP2.setLayout(new BorderLayout(0,0));
 		
-		JPanel leftTopP2 = new JPanel();
-		leftTopP2.setPreferredSize(new Dimension(70, 40));
-		leftTopP2.setLayout(new BoxLayout(leftTopP2, BoxLayout.X_AXIS));
+		
 		JLabel status = new JLabel("STATUS:");
 		status.setHorizontalAlignment(SwingConstants.RIGHT);
 		status.setFont(new Font("Avenir", Font.PLAIN, 12));
-		leftTopP2.add(status);
-		topP2.add(leftTopP2,BorderLayout.WEST);
 		
 		JPanel rightTopP2 = new JPanel();
 		rightTopP2.setBorder(new LineBorder(null, 1, true));
 		rightTopP2.setBackground(SystemColor.control);
-		rightTopP2.setPreferredSize(new Dimension(230, 40));
+		rightTopP2.setPreferredSize(new Dimension(300, 40));
 		topP2.add(rightTopP2,BorderLayout.EAST);
 		
 		JPanel gap2 = new JPanel();
 		gap2.setPreferredSize(new Dimension(220,10));
+		gap2.setOpaque(false);
 		topP2.add(gap2, BorderLayout.SOUTH);
 		
-		rightTopP2.setLayout(new GridLayout(1, 4, 0, 0));
+		rightTopP2.setLayout(new GridLayout(1, 5, 0, 0));
 		JLabel p1 = new JLabel ("YOU");
 		p1.setHorizontalAlignment(SwingConstants.CENTER);
 		p1.setFont(new Font("Avenir", Font.PLAIN, 10));
@@ -159,6 +188,7 @@ public class GameUI{
 		p2.setFont(new Font("Avenir", Font.PLAIN, 10));
 		JButton b2 = new JButton("READY");
 		b2.setFont(new Font("Lucida Grande", Font.PLAIN, 9));
+		rightTopP2.add(status);
 		rightTopP2.add(p1);
 		rightTopP2.add(b1);
 		rightTopP2.add(p2);
@@ -173,7 +203,7 @@ public class GameUI{
 		northPlayer2.setPreferredSize(new Dimension(300,130));
 		player2.add(northPlayer2, BorderLayout.NORTH);
 		northPlayer2.setLayout(new BorderLayout(0, 0));
-		
+		northPlayer2.setOpaque(false);
 		
 		/*PLAYER PANEL*/
 	
@@ -250,6 +280,7 @@ public class GameUI{
 //		logo.setIcon ( new ImageIcon ( "logo.png" ) );
 		
 		JPanel shipPanel = new JPanel();
+		shipPanel.setOpaque(false);
 		shipPanel.setPreferredSize(new Dimension(300,150));
 		player2.add(shipPanel, BorderLayout.SOUTH);
 		shipPanel.setLayout(new GridLayout(4, 0, 0, 0));
@@ -270,6 +301,7 @@ public class GameUI{
 		JPanel toolTip = new JPanel();
 		player2.add(toolTip, BorderLayout.CENTER);
 		toolTip.setLayout(new BorderLayout(0, 0));
+		toolTip.setOpaque(false);
 		
 		JLabel lblPressReady = new JLabel("Press Ready !!");
 		lblPressReady.setFont(new Font("Avenir", Font.BOLD, 15));
@@ -281,11 +313,22 @@ public class GameUI{
 		east.setPreferredSize(new Dimension(150,300));
 		panel.add(east, BorderLayout.EAST);
 		east.setLayout(new BorderLayout(0, 0));
+		east.setOpaque(false);
 		
 		
 		JPanel bottom = new JPanel();
 		bottom.setPreferredSize(new Dimension(1024,50));
+		bottom.setOpaque(false);
 		panel.add(bottom, BorderLayout.SOUTH);
+	}
+	public static ImageIcon createImageIcon(String path, int width, int height) {
+		Image img = null;
+		try {
+			img = ImageIO.read(new File(path));
+		} catch (IOException e) {
+		}
+		Image resizedImage = img.getScaledInstance(width, height, 0);
+		return new ImageIcon(resizedImage);
 	}
 
 }
