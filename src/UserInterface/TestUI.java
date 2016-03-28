@@ -27,6 +27,7 @@ import java.awt.FlowLayout;
 import java.awt.Color;
 import javax.swing.JTextField;
 import javax.swing.JFormattedTextField;
+import javax.swing.JFrame;
 import javax.swing.JTextPane;
 import javax.swing.border.LineBorder;
 import java.awt.SystemColor;
@@ -39,38 +40,67 @@ import java.awt.CardLayout;
 
 public class TestUI extends JPanel{
 	
-	public JPanel panel;
 	private JTextField textField;
-	Image image;
-	ImageIcon bg;
-	JLabel screen;
 	boolean start = true;
+	private JPanel top;
+	private JPanel leftGap;
+	private JPanel rightGap;
+	ImageIcon img;
+	JLabel screen;
+	JFrame frame;
 	
-	public TestUI() {
+	public TestUI(JFrame frame) {
+		this.frame = frame;
 		insertBGM("login.wav");
 		start = false;
-		setVisible(true);
+		setVisible(false);
 		initialize();
+	}
+	
+	public static void main(String [] args) {
+		JFrame frame = new JFrame();
+		TestUI game = new TestUI(frame);
+		frame.add(game);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.pack();
+		frame.setVisible(true);
+		frame.setPreferredSize(new Dimension(1024,768));
+		frame.setResizable(false);
 	}
 	
 	private void initialize() {
 		
-		panel = new JPanel();
-		panel.setPreferredSize(new Dimension(1024,768));
-		//panel.setBackground(Color.BLACK);
-		bg = createImageIcon("bg.png",
-				1024, 768);
-		panel.setLayout(new BorderLayout(0, 0));
-		screen = new JLabel (bg);
-		panel.add(screen);
+		setPreferredSize(new Dimension(1024,768));
+		setBounds(0,0, 1024,768);
+		setLayout(new BorderLayout());
 		
-		JPanel p1 = new JPanel();
-		p1.setPreferredSize(new Dimension(1024,200));
-		p1.setBackground(new Color(0, 0, 0));
-		p1.setOpaque(false);
-		panel.add(p1, BorderLayout.NORTH);
-	
+		
+		img = null;
+		img = createImageIcon("bg.png",1024, 768);
+		JPanel top = new JPanel();
+		screen = new JLabel(img);
+	//	screen.setBounds(0,0, 1024,768);
+	//	screen.setHorizontalAlignment(JLabel.CENTER);
+		frame.setLayout(new BorderLayout());
+		frame.getContentPane().add(screen, BorderLayout.CENTER);
+		
+		ImageIcon img1 = createImageIcon("avatar.png",200,200);
+		JLabel lb1 = new JLabel(img1);
+		lb1.setBounds(10,10, 1024,768);
+		top.add(lb1);
+		add(top, BorderLayout.PAGE_START);
+		
+		
+
 	}
+	/*
+	
+	public void paintComponent(Graphics g) {
+		super.paintComponents(g);
+		Graphics2D g2d = (Graphics2D) g.create();
+		g2d.drawImage(image.getImage(), 0, 0, getWidth(), getHeight(), this);
+	}
+	*/
 
 	public ImageIcon createImageIcon(String path, int width, int height) {
 		Image img = null;
