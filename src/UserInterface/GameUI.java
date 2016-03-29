@@ -280,7 +280,8 @@ public class GameUI{
 //		logo.setIcon ( new ImageIcon ( "logo.png" ) );
 		
 		JPanel shipPanel = new JPanel();
-		shipPanel.setOpaque(false);
+		shipPanel.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
+
 		shipPanel.setPreferredSize(new Dimension(300,150));
 		player2.add(shipPanel, BorderLayout.SOUTH);
 		shipPanel.setLayout(new GridLayout(4, 0, 0, 0));

@@ -7,10 +7,14 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 
 import javax.swing.JButton;
+import javax.imageio.ImageIO;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 
@@ -22,6 +26,8 @@ import javax.swing.JTextPane;
 import javax.swing.border.LineBorder;
 import java.awt.SystemColor;
 import java.awt.Toolkit;
+import java.io.File;
+import java.io.IOException;
 
 import javax.swing.border.BevelBorder;
 import javax.swing.border.CompoundBorder;
@@ -37,7 +43,19 @@ public class MainGame{
 	}
 	
 	private void initialize() {
-		panel = new JPanel();
+
+		ImageIcon bgIcon = createImageIcon("bg.png",1024, 768);
+		Image img = bgIcon.getImage();
+		
+		panel = new JPanel() {
+			public void paintComponent(Graphics g) {
+				super.paintComponent(g);
+				Graphics2D g2d = (Graphics2D) g.create();
+				g2d.drawImage(img, 0, 0, 1024, 768, this);
+				
+			}
+		};
+		
 		panel.setLayout(new BorderLayout(0, 0));
 		panel.setPreferredSize(new Dimension(1024,768)); // 768-568-100
 		
@@ -45,11 +63,14 @@ public class MainGame{
 		top.setPreferredSize(new Dimension(1024, 150));
 		panel.add(top, BorderLayout.NORTH);
 		top.setLayout(new BorderLayout(0, 0));
+		top.setOpaque(false);
 		
 		JPanel leftTop = new JPanel();
 		JPanel rightTop = new JPanel();
 		leftTop.setPreferredSize(new Dimension(150,100));
 		rightTop.setPreferredSize(new Dimension(150,100));
+		leftTop.setOpaque(false);
+		rightTop.setOpaque(false);
 		
 	
 		
@@ -65,6 +86,7 @@ public class MainGame{
 		west.setPreferredSize(new Dimension(150,568));
 		panel.add(west, BorderLayout.WEST);
 		west.setLayout(new BorderLayout(0, 0));
+		west.setOpaque(false);
 		
 		
 		/*CENTER*/
@@ -72,11 +94,13 @@ public class MainGame{
 		center.setPreferredSize(new Dimension(724,568));
 		panel.add(center, BorderLayout.CENTER);
 		center.setLayout(new BorderLayout(0, 0));
+		center.setOpaque(false);
 		
 		/*PLAYER1 TABLE*/
 		JPanel leftCol = new JPanel();
 		leftCol.setPreferredSize(new Dimension(300,568));
 		center.add(leftCol, BorderLayout.WEST);
+		leftCol.setOpaque(false);
 		
 		
 		JPanel player1 = new JPanel();
@@ -85,8 +109,10 @@ public class MainGame{
 		
 		JPanel topP1 = new JPanel();
 		topP1.setPreferredSize(new Dimension(300, 100));
+		topP1.setOpaque(false);
 		
 		JLabel lblPlaceYourShip = new JLabel("PLACE YOUR SHIPS!");
+		lblPlaceYourShip.setForeground(Color.WHITE);
 		lblPlaceYourShip.setVerticalAlignment(SwingConstants.BOTTOM);
 		lblPlaceYourShip.setFont(new Font("Avenir", Font.BOLD, 20));
 		lblPlaceYourShip.setHorizontalAlignment(SwingConstants.LEFT);
@@ -95,6 +121,7 @@ public class MainGame{
 		
 		JPanel bottomP1 = new JPanel();
 		bottomP1.setPreferredSize(new Dimension(300,100));	
+		bottomP1.setOpaque(false);
 		
 		leftCol.setLayout(new BorderLayout(0,0));
 		leftCol.add(topP1,BorderLayout.NORTH);
@@ -112,23 +139,29 @@ public class MainGame{
 		JPanel centerCol = new JPanel();
 		centerCol.setPreferredSize(new Dimension(124,300));
 		center.add(centerCol, BorderLayout.CENTER);
+		centerCol.setOpaque(false);
 		
 		
 		/*PLAYER2 TABLE*/
 		JPanel rightCol = new JPanel();
 		rightCol.setPreferredSize(new Dimension(300,618)); //568+50
 		center.add(rightCol, BorderLayout.EAST);
+		rightCol.setOpaque(false);
 		
 		JPanel statusPanel = new JPanel();
 		statusPanel.setPreferredSize(new Dimension(300,50));
 		statusPanel.setLayout( new BorderLayout(0,0));
 		JPanel topP2 = new JPanel();
+		topP2.setOpaque(false);
+		
 		
 		JPanel bottomP2 = new JPanel();
 		bottomP2.setPreferredSize(new Dimension(300,100));	
+		bottomP2.setOpaque(false);
 		
 		JPanel player2 = new JPanel();
 		player2.setPreferredSize(new Dimension(300,300));
+		player2.setOpaque(false);
 		
 		rightCol.setLayout(new BorderLayout(0,0));
 		rightCol.add(topP2, BorderLayout.NORTH);
@@ -136,29 +169,26 @@ public class MainGame{
 		topP2.setLayout(new BorderLayout(0,0));
 		
 		
-		JPanel leftTopP2 = new JPanel();
-		leftTopP2.setPreferredSize(new Dimension(100, 40));
-		leftTopP2.setLayout(new BoxLayout(leftTopP2, BoxLayout.X_AXIS));
-		JLabel status = new JLabel("TIMER:");
-		status.setHorizontalAlignment(SwingConstants.CENTER);
-		status.setFont(new Font("Avenir", Font.PLAIN, 12));
-		topP2.add(leftTopP2,BorderLayout.WEST);
-		topP2.add(status,BorderLayout.CENTER);
-		
 		JPanel rightTopP2 = new JPanel();
 		rightTopP2.setBorder(new LineBorder(null, 1, true));
 		rightTopP2.setBackground(SystemColor.control);
-		rightTopP2.setPreferredSize(new Dimension(130, 40));
+		rightTopP2.setPreferredSize(new Dimension(250, 40));
 		topP2.add(rightTopP2,BorderLayout.EAST);
 		
 		JPanel gap2 = new JPanel();
 		gap2.setPreferredSize(new Dimension(220,10));
+		gap2.setOpaque(false);
 		topP2.add(gap2, BorderLayout.SOUTH);
 		
 		rightTopP2.setLayout(new GridLayout(1, 4, 0, 0));
 		
+		JLabel status = new JLabel("TIMER:");
+		status.setHorizontalAlignment(SwingConstants.CENTER);
+		status.setFont(new Font("Avenir", Font.PLAIN, 12));
+		rightTopP2.add(status);
+		
 		JLabel lblMinsec = new JLabel("MIN:SEC");
-		lblMinsec.setHorizontalAlignment(SwingConstants.CENTER);
+		lblMinsec.setHorizontalAlignment(SwingConstants.LEFT);
 		rightTopP2.add(lblMinsec);
 		
 		rightCol.add(player2,BorderLayout.CENTER);
@@ -170,14 +200,19 @@ public class MainGame{
 		northPlayer2.setPreferredSize(new Dimension(300, 100));
 		player2.add(northPlayer2, BorderLayout.NORTH);
 		northPlayer2.setLayout(new BorderLayout(0, 0));
+		northPlayer2.setOpaque(false);
+		
 		JPanel clientPanel = new JPanel();
 		clientPanel.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
 		JPanel serverPanel = new JPanel();
 		serverPanel.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
 		JPanel gap4 = new JPanel(); //vertical gap
+		gap4.setOpaque(false);
 		JPanel gap5 = new JPanel(); //horizontal gap
+		gap5.setOpaque(false);
 		JPanel scorePanel = new JPanel();
 		scorePanel.setPreferredSize(new Dimension(250, 90));
+		scorePanel.setOpaque(false);
 		clientPanel.setPreferredSize(new Dimension(100, 90));
 		serverPanel.setPreferredSize(new Dimension(100, 90));
 		gap4.setPreferredSize(new Dimension(50,10));
@@ -263,6 +298,7 @@ public class MainGame{
 		
 		JPanel vsPanel = new JPanel();
 		vsPanel.setPreferredSize(new Dimension(70, 90));
+		vsPanel.setOpaque(false);
 		scorePanel.add(vsPanel, BorderLayout.CENTER);
 		
 		JLabel lblVs = new JLabel("VS");
@@ -276,6 +312,7 @@ public class MainGame{
 		
 		
 		JPanel gap3 = new JPanel();
+		gap3.setOpaque(false);
 		gap3.setPreferredSize(new Dimension(50, 250));
 		JPanel southPlayer2 = new JPanel();
 		southPlayer2.setBackground(new Color(204, 204, 255));
@@ -292,11 +329,22 @@ public class MainGame{
 		east.setPreferredSize(new Dimension(150,300));
 		panel.add(east, BorderLayout.EAST);
 		east.setLayout(new BorderLayout(0, 0));
+		east.setOpaque(false);
 		
 		JPanel bottom = new JPanel();
 		bottom.setPreferredSize(new Dimension(1024,50));
-		bottom.setBackground(Color.BLACK);
+		bottom.setOpaque(false);
 		panel.add(bottom, BorderLayout.SOUTH);
 	}
+	public static ImageIcon createImageIcon(String path, int width, int height) {
+		Image img = null;
+		try {
+			img = ImageIO.read(new File(path));
+		} catch (IOException e) {
+		}
+		Image resizedImage = img.getScaledInstance(width, height, 0);
+		return new ImageIcon(resizedImage);
+	}
+
 
 }
