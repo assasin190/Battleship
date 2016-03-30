@@ -53,22 +53,21 @@ public class Main {
 	
 	//P2P Server case
 	protected void startLocalServer() throws InterruptedException {
-		GameServer gameServer = new GameServer(true);
+		GameClient localClient = new GameClient();
+		GameServer gameServer = new GameServer(localClient);
 		Thread serverThread = new Thread(gameServer);
 		//Run server on new thread
 		serverThread.start();
-		//Run local client's game setup
-		GameClient localClient = new GameClient();
+		//Wait for the connection
 		/*change UI state
 		 ...
 		 */
-		localClient.run();
 		
 		//Wait for server to completes the connection with another client
 		synchronized(serverThread) {
 			serverThread.wait();
 		}
-		//Run the game
+		//Run game setup
 		localClient.run();
 		/*
 		 ...Change UI State
@@ -82,14 +81,4 @@ public class Main {
 		Socket socket = new Socket("Server Address", 65536);
 	}
 	
-	private class WaitForConnectionReadyThread extends Thread {
-		public void run(boolean isLocal) throws IOException {
-			ServerSocket serverSocket = new ServerSocket(65536);
-			Socket socket = serverSocket.accept();
-			/* Change main UI State
-			 ...
-			 */
-			
-		}
-	}
 }

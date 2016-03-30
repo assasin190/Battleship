@@ -12,21 +12,26 @@ public class GameServer implements Runnable {
 	private ServerSocket serverSocket;
 	private ArrayList<Socket> clientSocket;
 	private Socket socket;
-	private ObjectInputStream ois;
-	private ObjectOutputStream oos;
+	//private ObjectInputStream ois;
+	//private ObjectOutputStream oos;
 	private PrintWriter out;
 	private BufferedReader in;
 	//Game attributes
 	private GameClient localClient;
-	private GameClient otherClient;
+	//private GameClient otherClient;
 	private boolean withLocalClient;
 	
 	
 	public static void main(String [] args) {
 	}
 	
-	protected GameServer(boolean withLocalClient){
-		this.withLocalClient = withLocalClient;
+	protected GameServer() {
+		
+	}
+	
+	protected GameServer(GameClient localClient){
+		withLocalClient = true;
+		this.localClient = localClient;
 	}
 
 	@Override
@@ -39,13 +44,19 @@ public class GameServer implements Runnable {
 		//Determine if the server run with a local client (P2P)
 		if(withLocalClient) {
 			//Start a thread that wait for another client's connection
-			Thread setupClientThread = new SocketThread();
+			Thread setupClientThread = new Thread() {
+				@Override
+				public void run() {
+					try {
+						socket = serverSocket.accept();
+						out = new PrintWriter(socket.getOutputStream());
+						in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				}
+			};
 			setupClientThread.start();
-			
-			/*
-			 Wait for the setup of the local client
-			 ...
-			*/
 			
 			//Wait for the thread to finish
 			try {
@@ -54,8 +65,11 @@ public class GameServer implements Runnable {
 				e.printStackTrace();
 			}
 			
-			//Notify the other client (Network)
+			/* Notify the other client (Network)
+			 ...
+			 */
 			//Notify the main thread (Local client)
+			notify();
 			
 		}
 		//If is Server-Client case
