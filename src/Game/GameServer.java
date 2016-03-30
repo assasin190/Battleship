@@ -36,12 +36,19 @@ public class GameServer implements Runnable {
 
 	@Override
 	public void run() {
+		setupClient();
+		
+		
+	}
+	
+	private void setupClient() {
 		try {
 			serverSocket = new ServerSocket(65536);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		//Determine if the server run with a local client (P2P)
+		
+		//Determine if the server run with a local client (P2P Case)
 		if(withLocalClient) {
 			//Start a thread that wait for another client's connection
 			Thread setupClientThread = new Thread() {
@@ -68,20 +75,14 @@ public class GameServer implements Runnable {
 			/* Notify the other client (Network)
 			 ...
 			 */
-			//Notify the main thread (Local client)
+			
+			//Notify the main thread (Local client
 			notify();
 			
 		}
 		//If is Server-Client case
 		else {
 			// TODO Server-client implementation
-		}
-		
-	}
-	
-	protected void setClient(GameClient client, boolean isLocal) {
-		if(isLocal) {
-			localClient = client;
 		}
 	}
 	
