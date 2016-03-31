@@ -7,15 +7,15 @@ import java.util.ArrayList;
 import Game.GameClient;
 import UserInterface.GameUI;
 
-public class GameServer implements Runnable {
+public class GameServer implements Runnable, Serializable {
 	//Network attributes
 	private ServerSocket serverSocket;
-	private ArrayList<Socket> clientSocket;
 	private Socket socket;
+	private ArrayList<Socket> clientSocket;
 	private ObjectInputStream ois;
 	private ObjectOutputStream oos;
-	private PrintWriter out;
-	private BufferedReader in;
+	private OutputStream out;
+	private InputStream in;
 	//Game attributes
 	private GameClient localClient;
 	private GameClient otherClient;
@@ -46,8 +46,6 @@ public class GameServer implements Runnable {
 		//Determine if the server run with a local client (P2P Case)
 		if(withLocalClient) {
 			//Start a thread that wait for another client's connection
-			Thread setupClientThread = new SocketThread();
-			setupClientThread.start();
 			
 			/*
 			 Wait for the setup of the local client
@@ -55,17 +53,13 @@ public class GameServer implements Runnable {
 			*/
 			
 			//Wait for the thread to finish
-			try {
-				setupClientThread.join();
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
+			
 			
 			/* Notify the other client (Network)
 			 ...
 			 */
 			
-			//Notify the main thread (Local client
+			//Notify the main thread (Local client)
 			notify();
 			
 		}
@@ -73,17 +67,23 @@ public class GameServer implements Runnable {
 		else {
 			// TODO Server-client implementation
 		}
+		
 	}
 	
-	private class SocketThread extends Thread {
-		@Override
-		public void run() {
-			try {
-				socket = serverSocket.accept();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			
-		}
+	protected void setServerSocket(ServerSocket serverSocket) {
+		this.serverSocket = serverSocket;
 	}
+	 
+	protected ServerSocket getServerSocket() {
+		return serverSocket;
+	}
+	
+	protected boolean isWithLocalClient() {
+		return this.isWithLocalClient();
+	}
+	
+	protected void setLocalClient(GameClient localClient) {
+		this.localClient = localClient;
+	}
+	
 }

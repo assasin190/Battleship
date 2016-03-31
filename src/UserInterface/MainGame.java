@@ -24,15 +24,17 @@ import javax.swing.JTextField;
 import javax.swing.JFormattedTextField;
 import javax.swing.JTextPane;
 import javax.swing.border.LineBorder;
+
 import java.awt.SystemColor;
 import java.awt.Toolkit;
 import java.io.File;
 import java.io.IOException;
+import java.net.ServerSocket;
 
 import javax.swing.border.BevelBorder;
 import javax.swing.border.CompoundBorder;
 
-public class MainGame{
+public class MainGame extends JPanel{
 	public JPanel panel;
 
 	/**
@@ -345,6 +347,5 @@ public class MainGame{
 		Image resizedImage = img.getScaledInstance(width, height, 0);
 		return new ImageIcon(resizedImage);
 	}
-
 
 }
