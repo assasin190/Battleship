@@ -38,7 +38,7 @@ public class GameClient implements Runnable, Serializable{
 				
 			}
 			else {
-				//nothing
+				
 			}
 		}
 		

@@ -16,17 +16,24 @@ public class GameServer implements Runnable, Serializable {
 	private ObjectOutputStream oos;
 	private OutputStream out;
 	private InputStream in;
+	//private ObjectInputStream ois;
+	//private ObjectOutputStream oos;\
 	//Game attributes
 	private GameClient localClient;
-	private GameClient otherClient;
+	//private GameClient otherClient;
 	private boolean withLocalClient;
 	
 	
 	public static void main(String [] args) {
 	}
 	
-	protected GameServer(boolean withLocalClient){
-		this.withLocalClient = withLocalClient;
+	protected GameServer() {
+		
+	}
+	
+	protected GameServer(GameClient localClient){
+		withLocalClient = true;
+		this.localClient = localClient;
 	}
 
 	@Override
@@ -46,11 +53,19 @@ public class GameServer implements Runnable, Serializable {
 		//Determine if the server run with a local client (P2P Case)
 		if(withLocalClient) {
 			//Start a thread that wait for another client's connection
-			
-			/*
-			 Wait for the setup of the local client
-			 ...
-			*/
+			Thread setupClientThread = new Thread() {
+				@Override
+				public void run() {
+					try {
+						socket = serverSocket.accept();
+						out = socket.getOutputStream();
+						in = socket.getInputStream();
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				}
+			};
+			setupClientThread.start();
 			
 			//Wait for the thread to finish
 			

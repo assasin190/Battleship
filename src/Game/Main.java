@@ -65,7 +65,7 @@ public class Main {
 	
 	//P2P Server case
 	protected void startLocalServer() throws InterruptedException {
-		GameServer gameServer = new GameServer(true);
+		GameServer gameServer = new GameServer();
 		Thread setUpConnectionThread = new SetupConnectionThread(gameServer);
 		//Setup another client's connection
 		setUpConnectionThread.start();
@@ -80,12 +80,24 @@ public class Main {
 		localClient.run();
 		//Run the game on other client
 		
-		
+		Thread serverThread = new Thread(gameServer);
+		//Run server on new thread
+		serverThread.start();
+		//Wait for the connection
 		/*change UI state
 		 ...
 		 GameStateManager.changeState(GameStateManager.GAME_SETUP_STATE);
 		 */
 		
+		//Wait for server to completes the connection with another client
+		synchronized(serverThread) {
+			serverThread.wait();
+		}
+		//Run game setup
+		localClient.run();
+		/*
+		 ...Change UI State
+		 */
 		
 		
 	}
