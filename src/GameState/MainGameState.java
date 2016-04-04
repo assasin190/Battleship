@@ -1,12 +1,21 @@
 package GameState;
-import GameState.GameStateManager;
+import javax.swing.JFrame;
 
-public class MainGameState implements GameState {
+import Game.Main;
+import GameState.GameStateManager;
+import UserInterface.MainMenuUI;
+
+public class MainGameState extends GameState {
+	
+	public MainGameState(Main main) {
+		super(main);
+	}
 
 	@Override
 	public void entered() {
-		// TODO Auto-generated method stub
-		
+		main.setBounds(100, 100, 1024, 768);
+		main.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		main.setCurrentPanel(new MainMenuUI(main));
 	}
 
 	@Override

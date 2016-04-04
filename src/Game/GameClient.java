@@ -21,8 +21,8 @@ public class GameClient implements Runnable, Serializable{
 		protected boolean isWithLocalServer = false;
 		
 		public static void main(String [] args) {
-			
-		}
+		
+		}                        
 		
 		protected GameClient() {
 			player = new Player();

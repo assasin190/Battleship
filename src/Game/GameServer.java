@@ -15,7 +15,7 @@ public class GameServer implements Runnable, Serializable {
 	private OutputStream out;
 	private InputStream in;
 	//private ObjectInputStream ois;
-	//private ObjectOutputStream oos;\
+	//private ObjectOutputStream oos;
 	//Game attributes
 	private GameClient localClient;
 	//private GameClient otherClient;
