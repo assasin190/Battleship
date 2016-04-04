@@ -1,3 +1,4 @@
+package Game;
 import java.awt.AlphaComposite;
 import java.awt.BorderLayout;
 import java.awt.Color;
