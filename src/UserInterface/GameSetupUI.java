@@ -30,6 +30,8 @@ import java.awt.SystemColor;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -135,9 +137,18 @@ Timer timer;
 		leftCol.add(bottomP1 , BorderLayout.SOUTH);
 		GridLayout tableLayout = new GridLayout(8,8);
 		player1.setLayout(tableLayout);
+		JLabel L[]= new JLabel[64];
 		for(int i =0; i<64; i++) {
-			player1.add( new JButton(""));
+			 L[i] = new JLabel("0");
+			player1.add(L[i]);
+			L[i].setHorizontalAlignment(SwingConstants.CENTER);
+			L[i].setBorder(new LineBorder(null, 1, true));
+			
 		}
+
+
+			
+		
 		
 		
 		/*CENTER GAP*/
