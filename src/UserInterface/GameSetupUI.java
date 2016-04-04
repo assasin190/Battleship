@@ -145,7 +145,22 @@ Timer timer;
 			L[i].setBorder(new LineBorder(null, 1, true));
 			
 		}
+		
+		
+		L[0].addMouseListener(new MouseAdapter() {
+	            @Override
+	            public void mouseClicked(MouseEvent e) {
+	                L[0].setText("1");
+	            }
+	
+	        });
+		L[1].addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                L[1].setText("1");
+            }
 
+        });
 
 			
 		
