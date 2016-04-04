@@ -1,14 +1,14 @@
 import java.awt.Dimension;
 
 import javax.swing.JFrame;
-import UserInterface.MainGameUI;
+
+import UserInterface.GameSetupUI;
 
 public class TestRun {
 
 	public static void main(String[] args) {
 		//Create a class object
-		MainGameUI game = new MainGameUI();
-		
+		GameSetupUI game = new GameSetupUI();
 		JFrame frame = new JFrame();
 		
 		//Add class panel

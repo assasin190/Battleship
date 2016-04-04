@@ -2,14 +2,18 @@ package Game;
 
 import java.io.Serializable;
 import java.net.Socket;
+
 import UserInterface.GameSetupUI;
+import UserInterface.MainGameUI;
 
 public class GameClient implements Runnable, Serializable{
 		//P2P case field
 		protected transient GameServer gameServer;
 		//Local, Non-serializable field
 		protected Socket socket;
-		protected transient GameSetupUI gameUI;
+		protected transient GameSetupUI setupGameUI;
+		//Non-serializable field
+		protected transient MainGameUI gameUI;
 		//Global serializable field
 		protected Player player;
 		protected BoardGame board;
