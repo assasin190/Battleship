@@ -16,8 +16,18 @@ import javax.swing.JPanel;
 import UserInterface.MainGameUI;
 import UserInterface.GameSetupUI;
 import UserInterface.TestUI;
+import java.awt.Choice;
+import javax.swing.JComboBox;
 
 public class TestRunUI {
+	 private String[][] countryList = {{"USA", "us.png"},
+             {"India", "in.png"},
+             {"Vietnam", "vn.png"},
+             {"Germany", "de.png"},
+             {"Canada", "ca.png"},
+             {"Japan", "jp.png"},
+             {"Great Britain", "gb.png"},
+             {"France", "fr.png"}};
 
 	public static void main(String[] args) {
 		//Create a class object
@@ -50,7 +60,9 @@ public class TestRunUI {
 		p1.setPreferredSize(new Dimension(200,200));
 		panel.add(p1,BorderLayout.WEST);
 		*/
+		
 		JPanel p1=new JPanel();
+		p1.setPreferredSize(new Dimension(1024, 150));
 		
 		JLabel l1 = new JLabel();
 		l1.setText("Hi");
@@ -60,8 +72,34 @@ public class TestRunUI {
 		frame.setPreferredSize(new Dimension(1024,768));
 		panel.setLayout(new BorderLayout());
 		panel.add(p1, BorderLayout.NORTH);
-		panel.add(lb1, BorderLayout.CENTER);
+		//panel.add(lb1, BorderLayout.CENTER);
 		frame.getContentPane().add(panel);
+		
+		JPanel leftP = new JPanel();
+		leftP.setPreferredSize(new Dimension(300,768));
+		JPanel rightP = new JPanel();
+		rightP.setPreferredSize(new Dimension(300,768));
+		panel.add(leftP, BorderLayout.WEST);
+		panel.add(rightP, BorderLayout.EAST);
+		
+		
+		Choice choice = new Choice();
+		panel.add(choice, BorderLayout.CENTER);
+		choice.setPreferredSize(new Dimension(424,200));
+		/*
+		JComboBox comboBox = new JComboBox();
+		panel.add(comboBox, BorderLayout.SOUTH);
+		*/
+		
+		JPanel oPanel = new JPanel();
+		panel.add(oPanel,BorderLayout.SOUTH);
+		
+		
+        oPanel.setLayout(new FlowLayout());
+		
+		choice.add("apple");
+		choice.add("pine");
+		
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.pack();
 		frame.setVisible(true);
@@ -70,7 +108,6 @@ public class TestRunUI {
 		
 		
 	}
-	
 	public static ImageIcon createImageIcon(String path, int width, int height) {
 		Image img = null;
 		try {
