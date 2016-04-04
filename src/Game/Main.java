@@ -161,7 +161,7 @@ public class Main extends JFrame{
 		}
 	}
 	
-	public void setCurrentPanel(JPanel panel) {
+	public void replaceCurrentPanel(JPanel panel) {
 		//if currentStatePanel is not null, remove the currentStatePanel
 		if(currentStatePanel != null) {
 			getContentPane().remove(currentStatePanel);

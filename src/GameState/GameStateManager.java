@@ -20,8 +20,11 @@ public class GameStateManager {
 	}
 	
 	public void changeState(GameState nextState) {
-		//Leave current state
-		currentState.leaving();
+		//Check weather the currentState is not null
+		if(currentState != null) {
+			//Leave current state
+			currentState.leaving();
+		}
 		//Set new state
 		currentState = nextState;
 		//Enter new state

@@ -15,7 +15,7 @@ public class MainGameState extends GameState {
 	public void entered() {
 		main.setBounds(100, 100, 1024, 768);
 		main.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		main.setCurrentPanel(new MainMenuUI(main));
+		main.replaceCurrentPanel(new MainMenuUI(main));
 	}
 
 	@Override
