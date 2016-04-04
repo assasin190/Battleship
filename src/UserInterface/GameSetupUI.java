@@ -34,13 +34,13 @@ import java.net.ServerSocket;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.CompoundBorder;
 
-public class MainGame extends JPanel{
+public class GameSetupUI extends JPanel{
 	public JPanel panel;
 
 	/**
 	 * Create the panel.
 	 */
-	public MainGame() {
+	public GameSetupUI() {
 		initialize();
 	}
 	

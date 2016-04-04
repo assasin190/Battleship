@@ -13,8 +13,6 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import UserInterface.GameUI;
-import UserInterface.MainGame;
 import UserInterface.TestUI;
 
 public class TestRunUI {

@@ -5,7 +5,6 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import Game.GameClient;
-import UserInterface.GameUI;
 
 public class GameServer implements Runnable, Serializable {
 	//Network attributes
