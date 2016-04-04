@@ -121,7 +121,7 @@ public class TestRunUI extends JPanel{
 
         //Lay out the demo.
         add(petList, BorderLayout.CENTER);
-        setBorder(BorderFactory.createEmptyBorder(20,20,20,20));
+       // setBorder(BorderFactory.createEmptyBorder(20,20,20,20));
 		
 
 		/*
