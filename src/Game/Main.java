@@ -20,11 +20,10 @@ import javax.swing.JPanel;
 import GameState.GameStateManager;
 import UserInterface.MainMenuUI;
 
-public class Main {
-
+public class Main extends JFrame{
+	public static GameStateManager gsm;
 	public JFrame frame;
 	public JPanel currentStatePanel;
-	public GameStateManager gsm;
 	public boolean isClient;
 	boolean start = true;
 	/**
@@ -33,12 +32,22 @@ public class Main {
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
+				//Create Game State Manager
+				gsm = new GameStateManager();
+				//Create JFrame
+				Main window = new Main();
+				window.setVisible(true);
+				//Change UI state -> MAIN_GAME_STATE
+				gsm.changeState(GameStateManager.MAIN_GAME_STATE);
+				
+				/*
 				try {
 					Main window = new Main();
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
+				*/
 			}
 		});
 	}
@@ -47,6 +56,7 @@ public class Main {
 	 * Create the application.
 	 */
 	private Main() {
+		gsm = new GameStateManager();
 		insertBGM("login.wav");
 		start = false;
 		initialize();
@@ -76,28 +86,17 @@ public class Main {
 		GameClient localClient = new GameClient(gameServer);
 		gameServer.setLocalClient(localClient);
 		
-		//Run the game on local client
-		localClient.run();
-		//Run the game on other client
-		
-		Thread serverThread = new Thread(gameServer);
 		//Run server on new thread
+		Thread serverThread = new Thread(gameServer);
 		serverThread.start();
-		//Wait for the connection
-		/*change UI state
+		
+		/* change UI state
 		 ...
 		 GameStateManager.changeState(GameStateManager.GAME_SETUP_STATE);
 		 */
 		
-		//Wait for server to completes the connection with another client
-		synchronized(serverThread) {
-			serverThread.wait();
-		}
-		//Run game setup
+		//Run the game (local client)
 		localClient.run();
-		/*
-		 ...Change UI State
-		 */
 		
 		
 	}
@@ -116,6 +115,10 @@ public class Main {
 		//Socket is accepted
 		//Start the local game
 		GameClient networkClient = new GameClient();
+		/* change UI state
+		 *
+		 */
+		//Run the game (distant client)
 		networkClient.run();
 		
 		

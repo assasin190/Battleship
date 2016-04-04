@@ -2,18 +2,19 @@ package Game;
 
 import java.io.Serializable;
 import java.net.Socket;
-import UserInterface.MainGame;
+import UserInterface.GameSetupUI;
 
 public class GameClient implements Runnable, Serializable{
-		//Local game client field
+		//P2P case field
 		protected transient GameServer gameServer;
-		//Non-serializable field
-		protected transient MainGame gameUI;
+		//Local, Non-serializable field
+		protected Socket socket;
+		protected transient GameSetupUI gameUI;
 		//Global serializable field
 		protected Player player;
 		protected BoardGame board;
 		protected boolean isYourTurn;
-		protected boolean isWithLocalServer;
+		protected boolean isWithLocalServer = false;
 		
 		public static void main(String [] args) {
 			
@@ -22,6 +23,7 @@ public class GameClient implements Runnable, Serializable{
 		protected GameClient() {
 			player = new Player();
 			board = new BoardGame();
+			
 		}
 		
 		protected GameClient(GameServer gameServer) {
@@ -29,11 +31,13 @@ public class GameClient implements Runnable, Serializable{
 			player = new Player();
 			board = new BoardGame();
 			isWithLocalServer = true;
+			
 		}
 
 		@Override
 		public void run() {
-			//Case local client
+			//Setup the game
+			gameSetup();
 			if(isWithLocalServer) {
 				
 			}

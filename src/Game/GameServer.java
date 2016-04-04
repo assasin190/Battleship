@@ -5,7 +5,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import Game.GameClient;
-import UserInterface.GameUI;
+import UserInterface.MainGameUI;
 
 public class GameServer implements Runnable, Serializable {
 	//Network attributes
@@ -21,7 +21,7 @@ public class GameServer implements Runnable, Serializable {
 	//Game attributes
 	private GameClient localClient;
 	//private GameClient otherClient;
-	private boolean withLocalClient;
+	private boolean isWithLocalClient = false;
 	
 	
 	public static void main(String [] args) {
@@ -32,13 +32,23 @@ public class GameServer implements Runnable, Serializable {
 	}
 	
 	protected GameServer(GameClient localClient){
-		withLocalClient = true;
+		isWithLocalClient = true;
 		this.localClient = localClient;
 	}
 
 	@Override
 	public void run() {
-		setupClient();
+		//Open the server socket
+		try {
+			serverSocket = new ServerSocket(65536);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		//Connection accepted
+		//Wait for each client's setup;
+		
+		
+		//setupClient();
 		
 		
 	}
@@ -51,7 +61,7 @@ public class GameServer implements Runnable, Serializable {
 		}
 		
 		//Determine if the server run with a local client (P2P Case)
-		if(withLocalClient) {
+		if(isWithLocalClient) {
 			//Start a thread that wait for another client's connection
 			Thread setupClientThread = new Thread() {
 				@Override

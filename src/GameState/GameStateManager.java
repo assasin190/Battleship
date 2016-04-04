@@ -1,16 +1,23 @@
 package GameState;
+import Game.Main;
 
 public class GameStateManager {
-	
+	Main main;
 	GameState currentState;
 	
+	public static final String MAIN_MENU_STATE = "MAIN_MENU_STATE";
+	public static final String MAIN_GAME_STATE = "MAIN_GAME_STATE";
+	
+	
 	public GameState getcurrentGameState() {
-		//TODO return current game state
-		return null;
+		return currentState;
 	}
 	
-	public void changeState(GameState nextState) {
-		//TODO change the game state
+	public void changeState(String nextState) {
+		switch(nextState) {
+			case GameStateManager.MAIN_GAME_STATE:
+				
+		}
 		
 	}
 

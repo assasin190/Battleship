@@ -31,11 +31,11 @@ import java.io.IOException;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.CompoundBorder;
 
-public class GameUI{
+public class MainGameUI{
 	
 	public JPanel panel;
 
-	public GameUI() {
+	public MainGameUI() {
 		initialize();
 	}
 	
