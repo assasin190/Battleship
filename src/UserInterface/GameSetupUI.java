@@ -17,6 +17,7 @@ import java.awt.Graphics2D;
 
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
+import javax.swing.Timer;
 
 import java.awt.FlowLayout;
 import java.awt.Color;
@@ -27,6 +28,8 @@ import javax.swing.border.LineBorder;
 
 import java.awt.SystemColor;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -36,7 +39,7 @@ import javax.swing.border.CompoundBorder;
 
 public class GameSetupUI extends JPanel{
 	public JPanel panel;
-
+Timer timer;
 	/**
 	 * Create the panel.
 	 */
@@ -193,6 +196,26 @@ public class GameSetupUI extends JPanel{
 		lblMinsec.setHorizontalAlignment(SwingConstants.LEFT);
 		rightTopP2.add(lblMinsec);
 		
+		///////////////////////////////////
+		
+		ActionListener timerTask = new ActionListener() {
+	          
+            int countdown = 5;
+            @Override
+            public void actionPerformed(ActionEvent e) {
+               if(countdown==0){
+                lblMinsec.setText("END");      
+                timer.stop();
+                //System.out.println("end");
+               }else{
+                lblMinsec.setText(countdown+"");
+                countdown--;               
+               }
+            }   
+        };
+        timer = new Timer(1000, timerTask);
+        timer.start();
+		///////////////////////////////////
 		rightCol.add(player2,BorderLayout.CENTER);
 		rightCol.add(bottomP2, BorderLayout.SOUTH);
 		
