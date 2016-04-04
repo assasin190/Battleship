@@ -18,7 +18,7 @@ public class TestRun2 {
 		frame.setVisible(true);
 		frame.setPreferredSize(new Dimension(1024,768));
 		frame.setResizable(false);
-		 frame.setLocationRelativeTo(null); 
+		frame.setLocationRelativeTo(null); 
 	}
 
 }

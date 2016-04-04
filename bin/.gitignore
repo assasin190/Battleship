@@ -1,3 +1,10 @@
 /GameState/
 /Game/
 /UserInterface/
+<<<<<<< Upstream, based on origin/master
+=======
+/TestRunUI$1.class
+/FadeBo.class
+/FadeGame.class
+/TestRunUI$ComboBoxRenderer.class
+>>>>>>> 8102579 combobox
