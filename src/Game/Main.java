@@ -17,6 +17,7 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import GameState.GameSetupState;
 import GameState.GameState;
 import GameState.GameStateManager;
 import GameState.MainGameState;
@@ -58,7 +59,7 @@ public class Main extends JFrame{
 		//Create Game State Manager
 		gsm = new GameStateManager();
 		//Change UI state -> MAIN_GAME_STATE
-		gsm.setState(new MainGameState(this));
+		gsm.changeState(new MainGameState(this));
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		insertBGM("login.wav");
@@ -96,6 +97,7 @@ public class Main extends JFrame{
 		Thread serverThread = new Thread(gameServer);
 		serverThread.start();
 		
+		gsm.changeState(new GameSetupState(this));
 		/* change UI state
 		 ...
 		 GameStateManager.changeState(GameStateManager.GAME_SETUP_STATE);
