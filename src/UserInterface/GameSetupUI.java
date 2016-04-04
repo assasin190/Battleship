@@ -41,7 +41,7 @@ import javax.swing.border.CompoundBorder;
 
 public class GameSetupUI extends JPanel{
 	public JPanel panel;
-Timer timer;
+	Timer timer;
 	/**
 	 * Create the panel.
 	 */
@@ -137,16 +137,27 @@ Timer timer;
 		leftCol.add(bottomP1 , BorderLayout.SOUTH);
 		GridLayout tableLayout = new GridLayout(8,8);
 		player1.setLayout(tableLayout);
+		
 		JLabel L[]= new JLabel[64];
-		for(int i =0; i<64; i++) {
+		for(int i=0; i<64; i++) {
 			 L[i] = new JLabel("0");
+			 L[i].setName(i + "");
+			 L[i].addMouseListener(new MouseAdapter() {
+				 
+				 @Override
+				 public void mouseClicked(MouseEvent e) {
+					 String name = ((JLabel)e.getComponent()).getName();
+					 int index = Integer.parseInt(name);
+					 L[index].setText("1");
+				 }
+			 });
+			 
 			player1.add(L[i]);
 			L[i].setHorizontalAlignment(SwingConstants.CENTER);
 			L[i].setBorder(new LineBorder(null, 1, true));
-			
 		}
 		
-		
+		/*
 		L[0].addMouseListener(new MouseAdapter() {
 	            @Override
 	            public void mouseClicked(MouseEvent e) {
@@ -162,6 +173,7 @@ Timer timer;
             }
 
         });
+        */
 
 			
 		
