@@ -20,14 +20,7 @@ import java.awt.Choice;
 import javax.swing.JComboBox;
 
 public class TestRunUI {
-	 private String[][] countryList = {{"USA", "us.png"},
-             {"India", "in.png"},
-             {"Vietnam", "vn.png"},
-             {"Germany", "de.png"},
-             {"Canada", "ca.png"},
-             {"Japan", "jp.png"},
-             {"Great Britain", "gb.png"},
-             {"France", "fr.png"}};
+	
 
 	public static void main(String[] args) {
 		//Create a class object
@@ -82,24 +75,26 @@ public class TestRunUI {
 		panel.add(leftP, BorderLayout.WEST);
 		panel.add(rightP, BorderLayout.EAST);
 		
-		
+		/*
 		Choice choice = new Choice();
 		panel.add(choice, BorderLayout.CENTER);
-		choice.setPreferredSize(new Dimension(424,200));
-		/*
+		choice.setPreferredSize(new Dimension(424,200)); */
+		
+		
+		String[][] countryList = {{"USA", "avatarr.png"},
+	             {"India", "avatarr.png"}};
+		
 		JComboBox comboBox = new JComboBox();
-		panel.add(comboBox, BorderLayout.SOUTH);
-		*/
+		comboBox.setPreferredSize(new Dimension(120, 30));
+		comboBox.setEditable(true);
+		panel.add(comboBox, BorderLayout.CENTER);
+		comboBox.addItem(countryList);
 		
-		JPanel oPanel = new JPanel();
-		panel.add(oPanel,BorderLayout.SOUTH);
-		
-		
-        oPanel.setLayout(new FlowLayout());
-		
+
+		/*
 		choice.add("apple");
 		choice.add("pine");
-		
+		 */
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.pack();
 		frame.setVisible(true);
@@ -108,6 +103,9 @@ public class TestRunUI {
 		
 		
 	}
+	
+	
+	     
 	public static ImageIcon createImageIcon(String path, int width, int height) {
 		Image img = null;
 		try {
