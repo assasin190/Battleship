@@ -10,6 +10,7 @@ public class TestRun2 {
 		//Create a class object
 		MainGameUI game = new MainGameUI();
 		JFrame frame = new JFrame();
+		int hi_lo;
 		
 		//Add class panel
 		frame.add(game.panel);
