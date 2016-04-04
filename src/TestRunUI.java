@@ -1,47 +1,54 @@
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
+
 import javax.imageio.ImageIO;
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JPanel;
+import javax.swing.ListCellRenderer;
+
 import UserInterface.MainGameUI;
 import UserInterface.GameSetupUI;
 import UserInterface.TestUI;
 import java.awt.Choice;
+import java.awt.Component;
+
 import javax.swing.JComboBox;
 
-public class TestRunUI {
-	
+public class TestRunUI extends JPanel{
+	ImageIcon[] images;
+    String[] petStrings;
 
 	public static void main(String[] args) {
 		//Create a class object
-		
 		JFrame frame = new JFrame();
-		frame.setResizable(true);
+		frame.getContentPane().add(new TestRunUI());
+		frame.setPreferredSize(new Dimension(1024,768));
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.pack();
+		frame.setVisible(true);
+		frame.setPreferredSize(new Dimension(1024,768));
+		frame.setResizable(false);
+		
+	}
+	
+	public TestRunUI() {
 		
 		//Add class panels
-		ImageIcon bgIcon = createImageIcon("bg.png",1024, 768);
-		Image img = bgIcon.getImage();
 		ImageIcon img1 = createImageIcon("avatar.png",200,200);
 		JLabel lb1 = new JLabel(img1);
 		//lb1.setBounds(10,10, 200,200);
-		
-		
-		JPanel panel = new JPanel() {
-			public void paintComponent(Graphics g) {
-				super.paintComponent(g);
-				Graphics2D g2d = (Graphics2D) g.create();
-				g2d.drawImage(img, 0, 0, 1024, 768, this);
-				
-			}
-		};
 		
 		/*
 		JPanel p1=new JPanel();
@@ -60,48 +67,130 @@ public class TestRunUI {
 		p1.add(l1);
 		p1.setOpaque(false);
 		
-		frame.setPreferredSize(new Dimension(1024,768));
-		panel.setLayout(new BorderLayout());
-		panel.add(p1, BorderLayout.NORTH);
+		setLayout(new BorderLayout());
+		add(p1, BorderLayout.NORTH);
 		//panel.add(lb1, BorderLayout.CENTER);
-		frame.getContentPane().add(panel);
 		
 		JPanel leftP = new JPanel();
 		leftP.setPreferredSize(new Dimension(300,768));
 		JPanel rightP = new JPanel();
 		rightP.setPreferredSize(new Dimension(300,768));
-		panel.add(leftP, BorderLayout.WEST);
-		panel.add(rightP, BorderLayout.EAST);
+		add(leftP, BorderLayout.WEST);
+		add(rightP, BorderLayout.EAST);
+		
+		JPanel downP = new JPanel();
+		downP.setPreferredSize(new Dimension(1024,500));
+		add(downP, BorderLayout.SOUTH);
 		
 		/*
 		Choice choice = new Choice();
 		panel.add(choice, BorderLayout.CENTER);
 		choice.setPreferredSize(new Dimension(424,200)); */
 		
+		/*
+		HashMap<String, String> pictureMap = new HashMap<String, String>();
+		pictureMap.put("USA", "avatarr.png");
+		pictureMap.put("India", "avatarr.png");
+		String r = pictureMap.get("USA");
 		
-		String[][] countryList = {{"USA", "avatarr.png"},
-	             {"India", "avatarr.png"}};
 		
-		JComboBox comboBox = new JComboBox();
+		JComboBox<String> comboBox = new JComboBox<String>();
 		comboBox.setPreferredSize(new Dimension(120, 30));
 		comboBox.setEditable(true);
 		panel.add(comboBox, BorderLayout.CENTER);
 		comboBox.addItem(countryList);
+		*/
+		
+	    petStrings = new String[]{"avatar", "avatarr", "logo", "profile"};
+	    images = new ImageIcon[petStrings.length];
+        Integer[] intArray = new Integer[petStrings.length];
+        for (int i = 0; i < petStrings.length; i++) {
+            intArray[i] = new Integer(i);
+            images[i] = createImageIcon(petStrings[i] + ".png",200,200);
+            if (images[i] != null) {
+                images[i].setDescription(petStrings[i]);
+            }
+        }
+
+        //Create the combo box.
+        JComboBox petList = new JComboBox(intArray);
+        ComboBoxRenderer renderer= new ComboBoxRenderer();
+        renderer.setPreferredSize(new Dimension(200, 130));
+        petList.setRenderer(renderer);
+        petList.setMaximumRowCount(3);
+
+        //Lay out the demo.
+        add(petList, BorderLayout.CENTER);
+        setBorder(BorderFactory.createEmptyBorder(20,20,20,20));
 		
 
 		/*
 		choice.add("apple");
 		choice.add("pine");
 		 */
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.pack();
-		frame.setVisible(true);
-		frame.setPreferredSize(new Dimension(1024,768));
-		frame.setResizable(false);
-		
 		
 	}
 	
+	@Override
+	public void paintComponent(Graphics g) {
+		super.paintComponent(g);
+		ImageIcon bgIcon = createImageIcon("bg.png",1024, 768);
+		Image img = bgIcon.getImage();
+		Graphics2D g2d = (Graphics2D) g.create();
+		g2d.drawImage(img, 0, 0, 1024, 768, this);
+		
+	}
+	class ComboBoxRenderer extends JLabel implements ListCellRenderer {
+		private Font uhOhFont;
+		public ComboBoxRenderer() {
+			setOpaque(true);
+			setHorizontalAlignment(CENTER);
+			setVerticalAlignment(CENTER);
+		}
+		
+		/*
+		* This method finds the image and text corresponding
+		* to the selected value and returns the label, set up
+		* to display the text and image.
+		*/
+		public Component getListCellRendererComponent(JList list, Object value,int index,boolean isSelected, boolean cellHasFocus) {
+		//Get the selected index. (The index param isn't
+		//always valid, so just use the value.)
+		int selectedIndex = ((Integer)value).intValue();
+		
+		if (isSelected) {
+			setBackground(list.getSelectionBackground());
+			setForeground(list.getSelectionForeground());
+		} else {
+			setBackground(list.getBackground());
+			setForeground(list.getForeground());
+		}
+		
+		//Set the icon and text.  If icon was null, say so.
+		ImageIcon icon = images[selectedIndex];
+		String pet = petStrings[selectedIndex];
+		setIcon(icon);
+		if (icon != null) {
+		setText(pet);
+		setFont(list.getFont());
+		} else {
+		setUhOhText(pet + " (no image available)",
+		     list.getFont());
+		}
+		
+		return this;
+		}
+		
+		//Set the font and text when no image was found.
+		protected void setUhOhText(String uhOhText, Font normalFont) {
+		if (uhOhFont == null) { //lazily create this font
+		uhOhFont = normalFont.deriveFont(Font.ITALIC);
+		}
+		setFont(uhOhFont);
+		setText(uhOhText);
+		}
+		}
+
 	
 	     
 	public static ImageIcon createImageIcon(String path, int width, int height) {
@@ -110,6 +199,7 @@ public class TestRunUI {
 			img = ImageIO.read(new File(path));
 		} catch (IOException e) {
 		}
+		
 		Image resizedImage = img.getScaledInstance(width, height, 0);
 		return new ImageIcon(resizedImage);
 	}
