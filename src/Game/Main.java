@@ -22,7 +22,7 @@ import UserInterface.MainMenuUI;
 
 public class Main extends JFrame{
 	public static GameStateManager gsm;
-	public JFrame frame;
+	//public JFrame frame;
 	public JPanel currentStatePanel;
 	public boolean isClient;
 	boolean start = true;
@@ -32,11 +32,11 @@ public class Main extends JFrame{
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
+				//Create main JFrame
+				Main main = new Main();
+				main.setVisible(true);
 				//Create Game State Manager
-				gsm = new GameStateManager();
-				//Create JFrame
-				Main window = new Main();
-				window.setVisible(true);
+				gsm = new GameStateManager(main);
 				//Change UI state -> MAIN_GAME_STATE
 				gsm.changeState(GameStateManager.MAIN_GAME_STATE);
 				
@@ -56,21 +56,23 @@ public class Main extends JFrame{
 	 * Create the application.
 	 */
 	private Main() {
-		gsm = new GameStateManager();
+		super();
 		insertBGM("login.wav");
 		start = false;
-		initialize();
+		//initialize();
 	}
 	
 	/**
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
+		/*
 		frame = new JFrame();
 		frame.setBounds(100, 100, 1024, 768);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		currentStatePanel = new MainMenuUI(this);
 		frame.getContentPane().add(currentStatePanel);
+		*/
 	}
 	
 	//P2P Server case
@@ -153,6 +155,15 @@ public class Main extends JFrame{
 		} catch (LineUnavailableException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public void setCurrentPanel(JPanel panel) {
+		//if currentStatePanel is not null, remove the currentStatePanel
+		if(currentStatePanel != null) {
+			getContentPane().remove(currentStatePanel);
+		}
+		currentStatePanel = panel;
+		getContentPane().add(panel);
 	}
 	
 	class SetupConnectionThread extends Thread {
