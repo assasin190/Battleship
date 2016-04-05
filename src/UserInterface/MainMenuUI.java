@@ -89,6 +89,8 @@ public class MainMenuUI extends JPanel {
 		clientBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				// user click client button
+				//System.out.println("click");
 				JFrame theFrame = (JFrame) SwingUtilities.windowForComponent(MainMenuUI.this);
 				popUpDialog = new ModeSelectDialog((JFrame) SwingUtilities.windowForComponent(MainMenuUI.this), "Select Mode", MainMenuUI.this.main);
 				

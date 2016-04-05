@@ -203,8 +203,10 @@ public class Main extends JFrame{
 			//If is Server-Client case
 			else {
 				// TODO Server-client implementation
+				
+				
+				
 			}
-			
 		}
 	}
 	
