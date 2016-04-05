@@ -77,13 +77,21 @@ public class Main extends JFrame{
 	}
 	
 	//P2P Server case
-	protected void startLocalServer() throws InterruptedException {
+	public void startLocalServer() {
+		System.out.println("Start local server...");
 		GameServer gameServer = new GameServer();
 		Thread setUpConnectionThread = new SetupConnectionThread(gameServer);
 		//Setup another client's connection
+		//And wait for a connection
 		setUpConnectionThread.start();
+		//Change UI state -> WAIT_FOR_CONNECTION_STATE
 		//Wait for the thread to finish
-		setUpConnectionThread.join();
+		try {
+			setUpConnectionThread.join();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		//Create and set the local game client
 		GameClient localClient = new GameClient(gameServer);
@@ -103,13 +111,13 @@ public class Main extends JFrame{
 	}
 	
 	//P2P Client case
-	protected void Connect() {
+	public void Connect() {
 		MainMenuUI mainUI = (MainMenuUI) currentStatePanel;
 		String serverAddr = mainUI.popUpDialog.ipTextField.getText();
 		String serverPort = mainUI.popUpDialog.ipTextField.getText();
 		//Connect to the server
 		try {
-			Socket socket = new Socket(serverAddr , 65536);
+			Socket socket = new Socket(serverAddr , 8080);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -127,7 +135,7 @@ public class Main extends JFrame{
 	
 	private class WaitForConnectionReadyThread extends Thread {
 		public void run(boolean isLocal) throws IOException {
-			ServerSocket serverSocket = new ServerSocket(65536);
+			ServerSocket serverSocket = new ServerSocket(8080);
 			Socket socket = serverSocket.accept();
 			/* Change main UI State
 			 ...
@@ -176,7 +184,7 @@ public class Main extends JFrame{
 		@Override
 		public void run() {
 			try {
-				gameServer.setServerSocket(new ServerSocket(65536));
+				gameServer.setServerSocket(new ServerSocket(8080));
 			} catch (IOException e) {
 				e.printStackTrace();
 			}

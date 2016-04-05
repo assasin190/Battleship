@@ -36,16 +36,7 @@ public class GameServer implements Runnable, Serializable {
 
 	@Override
 	public void run() {
-		//Open the server socket
-		try {
-			serverSocket = new ServerSocket(65536);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		//Connection accepted
-		//Wait for each client's setup;
-		
-		
+		System.out.println("ServerThread: Server is running...");
 		//setupClient();
 		
 		
@@ -102,7 +93,7 @@ public class GameServer implements Runnable, Serializable {
 	}
 	
 	protected boolean isWithLocalClient() {
-		return this.isWithLocalClient();
+		return this.isWithLocalClient;
 	}
 	
 	protected void setLocalClient(GameClient localClient) {
