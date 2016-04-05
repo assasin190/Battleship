@@ -8,7 +8,6 @@ import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.UnknownHostException;
-
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
@@ -109,6 +108,7 @@ public class Main extends JFrame{
 		
 		int n = 1;
 	}
+	int n = 0;
 	
 	//P2P Client case
 	public void Connect() {
