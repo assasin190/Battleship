@@ -105,7 +105,7 @@ public class Main extends JFrame{
 		
 		//Run the game (local client)
 		localClient.run();
-		
+		int n = 0;
 		
 	}
 	
