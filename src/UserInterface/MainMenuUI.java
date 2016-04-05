@@ -42,12 +42,12 @@ public class MainMenuUI extends JPanel {
 		gapRight.setOpaque(false);
 		
 		JPanel gapNorth = new JPanel();
-		gapNorth.setPreferredSize(new Dimension(1024, 150));
+		gapNorth.setPreferredSize(new Dimension(1024, 318));
 		add(gapNorth,BorderLayout.NORTH);
 		gapNorth.setOpaque(false);
 
 		JPanel gapSouth = new JPanel();
-		gapSouth.setPreferredSize(new Dimension(1024, 318));
+		gapSouth.setPreferredSize(new Dimension(1024, 150));
 		add(gapSouth,BorderLayout.SOUTH);
 		gapSouth.setOpaque(false);
 		
@@ -62,7 +62,7 @@ public class MainMenuUI extends JPanel {
 		modePanel.setLayout(new BorderLayout(0, 0));
 		modePanel.setOpaque(false);
 		
-		JLabel label = new JLabel("Mode");
+		JLabel label = new JLabel("Log in as");
 		label.setFont(new Font("Avenir", Font.BOLD, 20));
 		label.setHorizontalAlignment(SwingConstants.CENTER);
 		modePanel.add(label);

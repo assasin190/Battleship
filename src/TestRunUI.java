@@ -115,7 +115,7 @@ public class TestRunUI extends JPanel{
         //Create the combo box.
         JComboBox petList = new JComboBox(intArray);
         ComboBoxRenderer renderer= new ComboBoxRenderer();
-        renderer.setPreferredSize(new Dimension(200, 130));
+        renderer.setPreferredSize(new Dimension(200, 200));
         petList.setRenderer(renderer);
         petList.setMaximumRowCount(3);
 
