@@ -106,7 +106,7 @@ public class Main extends JFrame{
 		//Run the game (local client)
 		localClient.run();
 		
-		
+		int n = 1;
 	}
 	
 	//P2P Client case
