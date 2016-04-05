@@ -60,25 +60,15 @@ public class ModeSelectDialog extends JDialog{
 		gapNorth.setPreferredSize(new Dimension(250,140));
 		north.add(gapNorth, BorderLayout.NORTH);
 		JPanel ipLabel = new JPanel();
-		ipLabel.setPreferredSize(new Dimension(250,30));
+		ipLabel.setPreferredSize(new Dimension(200, 30));
 		JPanel ipField = new JPanel();
-		ipField.setPreferredSize(new Dimension(250,30));
+		ipField.setPreferredSize(new Dimension(300, 30));
 		ipLabel.setLayout(new BorderLayout());
 		ipField.setLayout(new BorderLayout());
 		ipLabel.add(ipTextLabel,BorderLayout.EAST);
 		ipField.add(ipTextField,BorderLayout.CENTER);
 		north.add(ipLabel,BorderLayout.WEST);
 		north.add(ipField,BorderLayout.CENTER);
-		JButton okBtn = new JButton("OK");
-		okBtn.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				ModeSelectDialog.this.dispose();
-				//Connect to a server
-			}
-			
-		});
-		north.add(okBtn, BorderLayout.EAST);
 		
 		
 		
@@ -97,22 +87,32 @@ public class ModeSelectDialog extends JDialog{
 		portLabel.add(portTextLabel,BorderLayout.EAST);
 		portField.setLayout(new BorderLayout());
 		portField.add(portTextField,BorderLayout.WEST);
-		portLabel.setPreferredSize(new Dimension(250,30));
+		portLabel.setPreferredSize(new Dimension(200, 30));
 		portField.setPreferredSize(new Dimension(250,30));
 		south.add(portLabel,BorderLayout.WEST);
 		south.add(portField,BorderLayout.CENTER);
+		
+		JPanel gapSouth = new JPanel();
+		gapSouth.setPreferredSize(new Dimension(250,200));
+		south.add(gapSouth, BorderLayout.SOUTH);
+		JButton okBtn = new JButton("OK");
+		gapSouth.add(okBtn);
 		JButton cancelBtn = new JButton("Cancel");
+		gapSouth.add(cancelBtn);
 		cancelBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				ModeSelectDialog.this.dispose();
 			}
 		});
-		south.add(cancelBtn, BorderLayout.EAST);
-		
-		JPanel gapSouth = new JPanel();
-		gapSouth.setPreferredSize(new Dimension(250,200));
-		south.add(gapSouth, BorderLayout.SOUTH);
+		okBtn.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				ModeSelectDialog.this.dispose();
+				//Connect to a server
+			}
+			
+		});
 		
 		socketPanel.add(north,BorderLayout.NORTH);
 		socketPanel.add(south,BorderLayout.SOUTH);

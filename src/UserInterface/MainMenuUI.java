@@ -6,6 +6,8 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
 
@@ -21,6 +23,8 @@ import java.awt.Color;
 public class MainMenuUI extends JPanel {
 	Main main;
 	public ModeSelectDialog popUpDialog;
+	public JTextField name; //Player's name
+	public ImageIcon profilePic; //Player's profile photo
 
 	public MainMenuUI(Main main) {
 		initialize(main);
@@ -29,7 +33,6 @@ public class MainMenuUI extends JPanel {
 	private void initialize(Main main) {
 		this.main = main;
 		//panel = new JPanel();
-		setBackground(new Color(0, 0, 0));
 		setLayout(new BorderLayout(0, 0));
 		setPreferredSize(new Dimension(1024,768));
 
@@ -54,9 +57,19 @@ public class MainMenuUI extends JPanel {
 		gapNorth.add(northMenu,BorderLayout.NORTH);
 		northMenu.setOpaque(false);
 		northMenu.setLayout(new BorderLayout());
-		JPanel gap1 = new JPanel();
-		gap1.setPreferredSize(new Dimension(950,50));
-		northMenu.add(gap1,BorderLayout.WEST);
+		JPanel menu = new JPanel();
+		menu.setPreferredSize(new Dimension(1024,50));
+		northMenu.add(menu,BorderLayout.NORTH);
+		menu.setOpaque(false);
+		
+		JLabel select = new JLabel("SELECT YOUR PROFILE");
+		select.setForeground(Color.WHITE);
+		select.setFont(new Font("Arial", Font.BOLD, 20));
+		select.setHorizontalAlignment(SwingConstants.CENTER);
+		northMenu.add(select,BorderLayout.SOUTH);
+		
+		
+		
 		
 		ImageIcon P = createImageIcon("avatar.png",200,200);
 		
@@ -75,11 +88,25 @@ public class MainMenuUI extends JPanel {
 		 
 		JButton btnP []= new JButton[6];
 	    ImageIcon img [] = new ImageIcon[6];
+	    ImageIcon imgP[] = new ImageIcon[6];
+	  
 	    	    
 		for(int i =0;i<6;i++){
 		        	img[i]= createImageIcon("p"+(i+1)+".png",50,50);
+		        	imgP[i] =  createImageIcon("p"+(i+1)+".png",200,200);
 		        	btnP[i]=new JButton(img[i]);
+		        	btnP[i].setName(i + "");
 		        	selectPlayer.add(btnP[i]); 	
+		        	 btnP[i].addMouseListener(new MouseAdapter() {
+						 
+						 @Override
+						 public void mouseClicked(MouseEvent e) {
+							 String name = ((JButton)e.getComponent()).getName();
+							 int index = Integer.parseInt(name); 
+							profile.setIcon(imgP[index]);
+							profilePic=imgP[index];
+						 }
+					 });
 		        }
 		
 
@@ -97,14 +124,21 @@ public class MainMenuUI extends JPanel {
 		
 		JPanel modePanel = new JPanel();
 		modePanel.setPreferredSize(new Dimension(200, 80));
-		modePanel.setLayout(new BorderLayout(0, 0));
+		modePanel.setLayout(new FlowLayout(FlowLayout.CENTER, 1, 1));
 		modePanel.setOpaque(false);
 		
-		JLabel label = new JLabel("Log in as");
-		label.setFont(new Font("Avenir", Font.BOLD, 20));
-		label.setHorizontalAlignment(SwingConstants.CENTER);
-		modePanel.add(label);
+		JLabel lblLogInAs = new JLabel("LOG IN AS");
+		lblLogInAs.setForeground(Color.WHITE);
+		lblLogInAs.setFont(new Font("Arial", Font.BOLD, 20));
+		lblLogInAs.setHorizontalAlignment(SwingConstants.CENTER);
+		modePanel.add(lblLogInAs);
 		center.add(modePanel, BorderLayout.NORTH);
+		
+		name = new JTextField();
+		name.setFont(new Font("Avenir", Font.PLAIN, 14));
+		name.setColumns(10);
+		modePanel.add(name);
+		
 		//modePanel.setOpaque(false);
 		
 		JPanel buttonPanel = new JPanel();
