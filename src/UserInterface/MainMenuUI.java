@@ -42,12 +42,48 @@ public class MainMenuUI extends JPanel {
 		gapRight.setOpaque(false);
 		
 		JPanel gapNorth = new JPanel();
-		gapNorth.setPreferredSize(new Dimension(1024, 318));
+		gapNorth.setPreferredSize(new Dimension(1024, 368));
 		add(gapNorth,BorderLayout.NORTH);
 		gapNorth.setOpaque(false);
+		
+		JPanel northMenu = new JPanel();
+		northMenu.setPreferredSize(new Dimension(1024,100));
+		gapNorth.setLayout(new BorderLayout());
+		gapNorth.add(northMenu,BorderLayout.NORTH);
+		northMenu.setOpaque(false);
+		northMenu.setLayout(new BorderLayout());
+		JPanel gap1 = new JPanel();
+		gap1.setPreferredSize(new Dimension(950,50));
+		northMenu.add(gap1,BorderLayout.WEST);
+		
+		ImageIcon P = createImageIcon("avatar.png",200,200);
+		
+		JPanel player = new JPanel();
+		player.setOpaque(false);
+		player.setPreferredSize(new Dimension(1024,200));
+		gapNorth.add(player,BorderLayout.CENTER);
+		JLabel profile = new JLabel(P);
+		player.add(profile);
+		
+		JPanel selectPlayer = new JPanel();
+		selectPlayer.setPreferredSize(new Dimension(1024,68));
+		gapNorth.add(selectPlayer,BorderLayout.SOUTH);
+		selectPlayer.setLayout(new FlowLayout(FlowLayout.CENTER, 1, 1));
+		selectPlayer.setOpaque(false);
+		 
+		JButton btnP []= new JButton[6];
+	    ImageIcon img [] = new ImageIcon[6];
+	    	    
+		for(int i =0;i<6;i++){
+		        	img[i]= createImageIcon("p"+(i+1)+".png",50,50);
+		        	btnP[i]=new JButton(img[i]);
+		        	selectPlayer.add(btnP[i]); 	
+		        }
+		
+
 
 		JPanel gapSouth = new JPanel();
-		gapSouth.setPreferredSize(new Dimension(1024, 150));
+		gapSouth.setPreferredSize(new Dimension(1024, 100));
 		add(gapSouth,BorderLayout.SOUTH);
 		gapSouth.setOpaque(false);
 		
