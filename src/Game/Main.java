@@ -102,7 +102,7 @@ public class Main extends JFrame{
 		
 		//change UI state
 		 gsm.changeState(new GameSetupState(this));
-		
+		int z = 1;
 		//Run the game (local client)
 		localClient.run();
 		int n = 0;
