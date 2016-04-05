@@ -10,6 +10,8 @@ import java.io.File;
 import java.io.IOException;
 
 import Game.Main;
+import GameState.ConnectToServerP2PState;
+
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -76,6 +78,7 @@ public class MainMenuUI extends JPanel {
 		
 		buttonPanel.setLayout(new BorderLayout(0, 0));
 		JButton clientBtn = new JButton("Client");
+		
 		clientBtn.setFont(new Font("Avenir", Font.PLAIN, 16));
 		buttonPanel.add(clientBtn, BorderLayout.NORTH);
 		clientBtn.setPreferredSize(new Dimension(200, 80));
@@ -90,7 +93,9 @@ public class MainMenuUI extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				JFrame theFrame = (JFrame) SwingUtilities.windowForComponent(MainMenuUI.this);
-				popUpDialog = new ModeSelectDialog((JFrame) SwingUtilities.windowForComponent(MainMenuUI.this), "Select Mode", MainMenuUI.this.main);
+				//Change UI state -> CONNECT_TO_SERVER_P2P_STATE
+				Main.gsm.changeState(new ConnectToServerP2PState(MainMenuUI.this.main, theFrame));
+				//popUpDialog = new ModeSelectDialog((JFrame) SwingUtilities.windowForComponent(MainMenuUI.this), "Select Mode", MainMenuUI.this.main);
 				
 			}
 		});
@@ -98,7 +103,7 @@ public class MainMenuUI extends JPanel {
 	public static ImageIcon createImageIcon(String path, int width, int height) {
 		Image img = null;
 		try {
-			img = ImageIO.read(new File(path));
+			img = ImageIO.read(new File(path));   
 		} catch (IOException e) {
 		}
 		Image resizedImage = img.getScaledInstance(width, height, 0);

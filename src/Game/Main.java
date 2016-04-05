@@ -19,7 +19,7 @@ import GameState.*;
 import UserInterface.MainMenuUI;
 
 public class Main extends JFrame{
-	public GameStateManager gsm;
+	public static GameStateManager gsm = new GameStateManager();
 	//public JFrame frame;
 	public JPanel currentStatePanel;
 	public boolean isClient;
@@ -51,11 +51,8 @@ public class Main extends JFrame{
 	 */
 	public Main() {
 		super();
-		//Create Game State Manager
-		gsm = new GameStateManager();
-		//Change UI state -> MAIN_GAME_STATE
-		gsm.setState(new MainMenuState(this));
-		
+		//Change UI state -> MAIN_MENU_STATE
+		Main.gsm.setState(new MainMenuState(this));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		insertBGM("login.wav");
 		start = false;
@@ -101,7 +98,7 @@ public class Main extends JFrame{
 		serverThread.start();
 		
 		//change UI state
-		 gsm.changeState(new GameSetupState(this));
+		 Main.gsm.changeState(new GameSetupState(this));
 		int z = 1;
 		//Run the game (local client)
 		localClient.run();

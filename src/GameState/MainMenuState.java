@@ -13,6 +13,7 @@ public class MainMenuState extends GameState{
 
 	@Override
 	public void entered() {
+		System.out.println("Main_thread: MAIN_MENU_STATE");
 		main.setBounds(100, 100, 1024, 768);
 		main.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		main.replaceCurrentPanel(new MainMenuUI(main));
