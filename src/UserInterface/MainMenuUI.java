@@ -16,7 +16,7 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Color;
 
-public class MainMenuUI extends JPanel{
+public class MainMenuUI extends JPanel {
 	Main main;
 	public ModeSelectDialog popUpDialog;
 

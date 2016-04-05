@@ -2,8 +2,11 @@ package UserInterface;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.InputVerifier;
+import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
@@ -51,12 +54,9 @@ public class ModeSelectDialog extends JDialog{
 		ipTextField = new JTextField();
 		ipTextField.setColumns(10);
 		JLabel ipTextLabel = new JLabel("IP Address:");
-		
 		JPanel gapNorth = new JPanel();
 		gapNorth.setPreferredSize(new Dimension(250,140));
 		north.add(gapNorth, BorderLayout.NORTH);
-		
-		
 		JPanel ipLabel = new JPanel();
 		ipLabel.setPreferredSize(new Dimension(250,30));
 		JPanel ipField = new JPanel();
@@ -64,9 +64,18 @@ public class ModeSelectDialog extends JDialog{
 		ipLabel.setLayout(new BorderLayout());
 		ipField.setLayout(new BorderLayout());
 		ipLabel.add(ipTextLabel,BorderLayout.EAST);
-		ipField.add(ipTextField,BorderLayout.WEST);
+		ipField.add(ipTextField,BorderLayout.CENTER);
 		north.add(ipLabel,BorderLayout.WEST);
 		north.add(ipField,BorderLayout.EAST);
+		JButton okBtn = new JButton("OK");
+		okBtn.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				ModeSelectDialog.this.setVisible(false);
+			}
+			
+		});
+		
 		
 		//ipTextLabel.setHorizontalAlignment(SwingConstants.RIGHT);
 		//ipTextField.setHorizontalAlignment(SwingConstants.LEFT);
@@ -76,11 +85,9 @@ public class ModeSelectDialog extends JDialog{
 		south.setLayout(new BorderLayout());
 		JPanel portLabel = new JPanel();
 		JPanel portField = new JPanel();
-		
 		portTextField = new JTextField();
 		portTextField.setColumns(10);
 		JLabel portTextLabel = new JLabel("Port:");
-
 		portLabel.setLayout(new BorderLayout());
 		portLabel.add(portTextLabel,BorderLayout.EAST);
 		portField.setLayout(new BorderLayout());
