@@ -71,18 +71,18 @@ public class MainMenuUI extends JPanel {
 		
 		JPanel buttonPanel = new JPanel();
 		buttonPanel.setPreferredSize(new Dimension(200,200));
-		modePanel.add(buttonPanel, BorderLayout.CENTER);
+		center.add(buttonPanel, BorderLayout.CENTER);
 		buttonPanel.setOpaque(false);
 		
 		buttonPanel.setLayout(new BorderLayout(0, 0));
 		JButton clientBtn = new JButton("Client");
 		clientBtn.setFont(new Font("Avenir", Font.PLAIN, 16));
-		modePanel.add(clientBtn, BorderLayout.NORTH);
+		buttonPanel.add(clientBtn, BorderLayout.NORTH);
 		clientBtn.setPreferredSize(new Dimension(200, 80));
 	
 		JButton serverBtn = new JButton("Server");
 		serverBtn.setFont(new Font("Avenir", Font.PLAIN, 16));
-		modePanel.add(serverBtn,BorderLayout.SOUTH);
+		buttonPanel.add(serverBtn,BorderLayout.SOUTH);
 		serverBtn.setPreferredSize(new Dimension(200, 80));
 
 	
