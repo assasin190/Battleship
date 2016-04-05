@@ -66,23 +66,23 @@ public class MainMenuUI extends JPanel {
 		label.setFont(new Font("Avenir", Font.BOLD, 20));
 		label.setHorizontalAlignment(SwingConstants.CENTER);
 		modePanel.add(label);
-		add(modePanel, BorderLayout.NORTH);
+		center.add(modePanel, BorderLayout.NORTH);
 		//modePanel.setOpaque(false);
 		
 		JPanel buttonPanel = new JPanel();
 		buttonPanel.setPreferredSize(new Dimension(200,200));
-		add(buttonPanel, BorderLayout.CENTER);
+		modePanel.add(buttonPanel, BorderLayout.CENTER);
 		buttonPanel.setOpaque(false);
 		
 		buttonPanel.setLayout(new BorderLayout(0, 0));
 		JButton clientBtn = new JButton("Client");
 		clientBtn.setFont(new Font("Avenir", Font.PLAIN, 16));
-		add(clientBtn, BorderLayout.NORTH);
+		modePanel.add(clientBtn, BorderLayout.NORTH);
 		clientBtn.setPreferredSize(new Dimension(200, 80));
 	
 		JButton serverBtn = new JButton("Server");
 		serverBtn.setFont(new Font("Avenir", Font.PLAIN, 16));
-		add(serverBtn,BorderLayout.SOUTH);
+		modePanel.add(serverBtn,BorderLayout.SOUTH);
 		serverBtn.setPreferredSize(new Dimension(200, 80));
 
 	
