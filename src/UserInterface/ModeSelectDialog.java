@@ -14,12 +14,16 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import Game.Main;
+
 public class ModeSelectDialog extends JDialog{
+	public Main main;
 	public JTextField ipTextField;
 	public JTextField portTextField;
 	
-	protected ModeSelectDialog(JFrame parent, String title) {
+	protected ModeSelectDialog(JFrame parent, String title, Main main) {
 		super(parent, title);
+		this.main = main;
 		setLocation(350,200); //262
 		initialize();
 	}
@@ -66,15 +70,19 @@ public class ModeSelectDialog extends JDialog{
 		ipLabel.add(ipTextLabel,BorderLayout.EAST);
 		ipField.add(ipTextField,BorderLayout.CENTER);
 		north.add(ipLabel,BorderLayout.WEST);
-		north.add(ipField,BorderLayout.EAST);
+		north.add(ipField,BorderLayout.CENTER);
 		JButton okBtn = new JButton("OK");
 		okBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				ModeSelectDialog.this.setVisible(false);
+				ModeSelectDialog.this.dispose();
+				//Connect to a server
+				ModeSelectDialog.this.main.Connect();
 			}
 			
 		});
+		north.add(okBtn, BorderLayout.EAST);
+		
 		
 		
 		//ipTextLabel.setHorizontalAlignment(SwingConstants.RIGHT);
@@ -95,7 +103,15 @@ public class ModeSelectDialog extends JDialog{
 		portLabel.setPreferredSize(new Dimension(250,30));
 		portField.setPreferredSize(new Dimension(250,30));
 		south.add(portLabel,BorderLayout.WEST);
-		south.add(portField,BorderLayout.EAST);
+		south.add(portField,BorderLayout.CENTER);
+		JButton cancelBtn = new JButton("Cancel");
+		cancelBtn.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				ModeSelectDialog.this.dispose();
+			}
+		});
+		south.add(cancelBtn, BorderLayout.EAST);
 		
 		JPanel gapSouth = new JPanel();
 		gapSouth.setPreferredSize(new Dimension(250,200));

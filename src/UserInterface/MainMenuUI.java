@@ -90,7 +90,7 @@ public class MainMenuUI extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				JFrame theFrame = (JFrame) SwingUtilities.windowForComponent(MainMenuUI.this);
-				popUpDialog = new ModeSelectDialog((JFrame) SwingUtilities.windowForComponent(MainMenuUI.this), "Select Mode");
+				popUpDialog = new ModeSelectDialog((JFrame) SwingUtilities.windowForComponent(MainMenuUI.this), "Select Mode", MainMenuUI.this.main);
 				
 			}
 		});
