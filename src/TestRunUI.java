@@ -60,7 +60,7 @@ public class TestRunUI extends JPanel{
 		*/
 		
 		JPanel p1=new JPanel();
-		p1.setPreferredSize(new Dimension(1024, 150));
+		p1.setPreferredSize(new Dimension(1024, 300));
 		
 		JLabel l1 = new JLabel();
 		l1.setText("Hi");
@@ -79,27 +79,10 @@ public class TestRunUI extends JPanel{
 		add(rightP, BorderLayout.EAST);
 		
 		JPanel downP = new JPanel();
-		downP.setPreferredSize(new Dimension(1024,500));
+		downP.setPreferredSize(new Dimension(1024,200));
 		add(downP, BorderLayout.SOUTH);
 		
-		/*
-		Choice choice = new Choice();
-		panel.add(choice, BorderLayout.CENTER);
-		choice.setPreferredSize(new Dimension(424,200)); */
 		
-		/*
-		HashMap<String, String> pictureMap = new HashMap<String, String>();
-		pictureMap.put("USA", "avatarr.png");
-		pictureMap.put("India", "avatarr.png");
-		String r = pictureMap.get("USA");
-		
-		
-		JComboBox<String> comboBox = new JComboBox<String>();
-		comboBox.setPreferredSize(new Dimension(120, 30));
-		comboBox.setEditable(true);
-		panel.add(comboBox, BorderLayout.CENTER);
-		comboBox.addItem(countryList);
-		*/
 		
 	    petStrings = new String[]{"avatar", "avatarr", "logo", "profile"};
 	    images = new ImageIcon[petStrings.length];
@@ -121,7 +104,8 @@ public class TestRunUI extends JPanel{
 
         //Lay out the demo.
         add(petList, BorderLayout.CENTER);
-        setBorder(BorderFactory.createEmptyBorder(20,20,20,20));
+      
+        //  setBorder(BorderFactory.createEmptyBorder(20,20,20,20));
 		
 
 		/*
