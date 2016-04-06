@@ -87,6 +87,7 @@ public class MainMenuUI extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				ChangeBgDialog frame = new ChangeBgDialog();
+				System.out.println("change bg");
 			//open new jframe for bg setting
 				
 			}
