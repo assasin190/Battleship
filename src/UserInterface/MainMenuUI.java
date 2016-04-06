@@ -86,6 +86,7 @@ public class MainMenuUI extends JPanel {
 		btnSetting.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				ChangeBgDialog frame = new ChangeBgDialog();
 			//open new jframe for bg setting
 				
 			}
@@ -149,7 +150,7 @@ public class MainMenuUI extends JPanel {
 
 
 		JPanel gapSouth = new JPanel();
-		gapSouth.setPreferredSize(new Dimension(1024, 100));
+		gapSouth.setPreferredSize(new Dimension(1024, 50));
 		add(gapSouth,BorderLayout.SOUTH);
 		gapSouth.setOpaque(false);
 		
@@ -179,21 +180,26 @@ public class MainMenuUI extends JPanel {
 		//modePanel.setOpaque(false);
 		
 		JPanel buttonPanel = new JPanel();
-		buttonPanel.setPreferredSize(new Dimension(200,200));
+		
+		buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 2));
+		buttonPanel.setPreferredSize(new Dimension(200,250));
 		center.add(buttonPanel, BorderLayout.CENTER);
 		buttonPanel.setOpaque(false);
+		JPanel gapButton = new JPanel();
+		gapButton.setPreferredSize(new Dimension(200,20));
+		//buttonPanel.add(gapButton,BorderLayout.CENTER);
 		
-		buttonPanel.setLayout(new BorderLayout(0, 0));
-		JButton clientBtn = new JButton("Client");
+
+		JButton clientBtn = new JButton(createImageIcon("btn-client.png",200,70));
+		clientBtn.setBorderPainted(false); 
 		
-		clientBtn.setFont(new Font("Avenir", Font.PLAIN, 16));
-		buttonPanel.add(clientBtn, BorderLayout.NORTH);
-		clientBtn.setPreferredSize(new Dimension(200, 80));
+		
 	
-		JButton serverBtn = new JButton("Server");
-		serverBtn.setFont(new Font("Avenir", Font.PLAIN, 16));
-		buttonPanel.add(serverBtn,BorderLayout.SOUTH);
-		serverBtn.setPreferredSize(new Dimension(200, 80));
+		JButton serverBtn = new JButton(createImageIcon("btn-server.png",200,70));
+		serverBtn.setBorderPainted(false);
+		
+		buttonPanel.add(clientBtn);
+		buttonPanel.add(serverBtn);
 
 	
 		clientBtn.addActionListener(new ActionListener() {
