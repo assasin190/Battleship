@@ -74,6 +74,7 @@ public class ModeSelectDialog extends JDialog{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				ModeSelectDialog.this.dispose();
+				
 				//Connect to a server
 			}
 			
