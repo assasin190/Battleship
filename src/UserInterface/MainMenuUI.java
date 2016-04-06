@@ -100,6 +100,13 @@ public class MainMenuUI extends JPanel {
 		btnExit.setContentAreaFilled(false); 
 		btnExit.setFocusPainted(false); 
 		
+		btnExit.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				System.exit(0);
+			}
+			
+		});
+		
 		JLabel select = new JLabel("SELECT YOUR PROFILE");
 		select.setForeground(Color.WHITE);
 		select.setFont(new Font("Arial", Font.BOLD, 20));
