@@ -5,11 +5,7 @@ import Game.Main;
 import GameState.GameStateManager;
 import UserInterface.MainMenuUI;
 
-public class MainGameState extends GameState {
-	
-	public MainGameState(Main main) {
-		super(main);
-	}
+public class MainGameState implements GameState {
 
 	@Override
 	public void entered() {

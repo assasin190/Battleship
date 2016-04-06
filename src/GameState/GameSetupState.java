@@ -1,17 +1,17 @@
 package GameState;
 
+import javax.swing.JPanel;
+
 import Game.Main;
 import UserInterface.GameSetupUI;
 
-public class GameSetupState extends GameState{
-
-	public GameSetupState(Main main) {
-		super(main);
-	}
-
+public class GameSetupState implements GameState{
+	GameSetupUI gameSetupUI;
+	
 	@Override
 	public void entered() {
-		main.replaceCurrentPanel(new GameSetupUI());
+		gameSetupUI = new GameSetupUI();
+		GameStateManager.getMain().replaceCurrentPanel(new GameSetupUI());
 		
 	}
 

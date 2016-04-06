@@ -13,6 +13,7 @@ import java.io.IOException;
 
 import Game.Main;
 import GameState.ConnectToServerP2PState;
+import GameState.GameStateManager;
 
 import java.awt.Font;
 import java.awt.Graphics;
@@ -209,7 +210,7 @@ public class MainMenuUI extends JPanel {
 				//System.out.println("click");
 				JFrame theFrame = (JFrame) SwingUtilities.windowForComponent(MainMenuUI.this);
 				//Change UI state -> CONNECT_TO_SERVER_P2P_STATE
-				Main.gsm.changeState(new ConnectToServerP2PState(MainMenuUI.this.main, theFrame));
+				GameStateManager.changeState(new ConnectToServerP2PState(MainMenuUI.this.main, theFrame));
 				//popUpDialog = new ModeSelectDialog((JFrame) SwingUtilities.windowForComponent(MainMenuUI.this), "Select Mode", MainMenuUI.this.main);
 				
 			}

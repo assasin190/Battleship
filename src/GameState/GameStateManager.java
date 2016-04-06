@@ -5,7 +5,9 @@ import Game.Main;
 import UserInterface.MainMenuUI;
 
 public class GameStateManager {
-	GameState currentState;
+	
+	public static GameState currentState;
+	private static Main main;
 	
 	public static final String MAIN_MENU_STATE = "MAIN_MENU_STATE";
 	public static final String GAME_SETUP_STATE = "GAME_SETUP_STATE";
@@ -15,17 +17,17 @@ public class GameStateManager {
 		
 	}
 	
-	public GameState getcurrentGameState() {
+	public static GameState getcurrentGameState() {
 		return currentState;
 	}
 	
-	public void changeState(GameState nextState) {
+	public static void changeState(GameState nextState) {
 		//Leave current state
-		currentState.leaving();
+		GameStateManager.currentState.leaving();
 		//Set new state
-		currentState = nextState;
+		GameStateManager.currentState = nextState;
 		//Enter new state
-		currentState.entered();
+		GameStateManager.currentState.entered();
 		
 		
 		/* Switch string model
@@ -41,11 +43,19 @@ public class GameStateManager {
 	}
 	
 	//Used only the first time (When currentState is null)
-	public void setState(GameState state) {
+	public static void setState(GameState state) {
 		//Set new state
-		currentState = state;
+		GameStateManager.currentState = state;
 		//Enter new state
-		currentState.entered();
+		GameStateManager.currentState.entered();
+	}
+	
+	public static void setMain(Main main) {
+		GameStateManager.main = main;
+	}
+	
+	public static Main getMain() {
+		return GameStateManager.getMain();
 	}
 
 }

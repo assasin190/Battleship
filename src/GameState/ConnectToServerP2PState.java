@@ -4,12 +4,11 @@ import javax.swing.JFrame;
 import Game.Main;
 import UserInterface.ModeSelectDialog;
 
-public class ConnectToServerP2PState extends GameState {
+public class ConnectToServerP2PState implements GameState {
 	JFrame frame;
 	ModeSelectDialog popUpDialog;
 	
 	public ConnectToServerP2PState(Main main, JFrame frame) {
-		super(main);
 		this.frame = frame;
 	}
 
