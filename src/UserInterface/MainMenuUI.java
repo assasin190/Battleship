@@ -21,6 +21,7 @@ import java.awt.Image;
 import java.awt.Color;
 
 public class MainMenuUI extends JPanel {
+	public static String bg = "Bg-play.png";
 	Main main;
 	public ModeSelectDialog popUpDialog;
 	public JTextField name; //Player's name
@@ -59,8 +60,45 @@ public class MainMenuUI extends JPanel {
 		northMenu.setLayout(new BorderLayout());
 		JPanel menu = new JPanel();
 		menu.setPreferredSize(new Dimension(1024,50));
+		menu.setLayout(new BorderLayout());
 		northMenu.add(menu,BorderLayout.NORTH);
 		menu.setOpaque(false);
+		
+		JPanel gapMenu = new JPanel();
+		gapMenu.setPreferredSize(new Dimension(724,50));
+		gapMenu.setOpaque(false);
+		JPanel menuItem = new JPanel();
+		menuItem.setOpaque(false);
+		menuItem.setPreferredSize(new Dimension(300,50));
+		menu.add(gapMenu,BorderLayout.WEST);
+		menu.add(menuItem,BorderLayout.EAST);
+		
+		
+	
+		JButton btnSetting = new JButton(new ImageIcon("btn-setting.png"));
+		btnSetting.setVerticalAlignment(SwingConstants.TOP);
+		menuItem.add(btnSetting);
+		
+		btnSetting.setBorderPainted(false); 
+		btnSetting.setContentAreaFilled(false); 
+		btnSetting.setFocusPainted(false); 
+		
+		btnSetting.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				ChangeBgDialog frame = new ChangeBgDialog();
+			//open new jframe for bg setting
+				
+			}
+		});
+		
+		
+		JButton btnExit = new JButton(new ImageIcon("btn-EXIT.png"));
+		btnExit.setVerticalAlignment(SwingConstants.TOP);
+		menuItem.add(btnExit);
+		btnExit.setBorderPainted(false); 
+		btnExit.setContentAreaFilled(false); 
+		btnExit.setFocusPainted(false); 
 		
 		JLabel select = new JLabel("SELECT YOUR PROFILE");
 		select.setForeground(Color.WHITE);
@@ -112,7 +150,7 @@ public class MainMenuUI extends JPanel {
 
 
 		JPanel gapSouth = new JPanel();
-		gapSouth.setPreferredSize(new Dimension(1024, 100));
+		gapSouth.setPreferredSize(new Dimension(1024, 50));
 		add(gapSouth,BorderLayout.SOUTH);
 		gapSouth.setOpaque(false);
 		
@@ -142,21 +180,26 @@ public class MainMenuUI extends JPanel {
 		//modePanel.setOpaque(false);
 		
 		JPanel buttonPanel = new JPanel();
-		buttonPanel.setPreferredSize(new Dimension(200,200));
+		
+		buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 2));
+		buttonPanel.setPreferredSize(new Dimension(200,250));
 		center.add(buttonPanel, BorderLayout.CENTER);
 		buttonPanel.setOpaque(false);
+		JPanel gapButton = new JPanel();
+		gapButton.setPreferredSize(new Dimension(200,20));
+		//buttonPanel.add(gapButton,BorderLayout.CENTER);
 		
-		buttonPanel.setLayout(new BorderLayout(0, 0));
-		JButton clientBtn = new JButton("Client");
+
+		JButton clientBtn = new JButton(createImageIcon("btn-client.png",200,70));
+		clientBtn.setBorderPainted(false); 
 		
-		clientBtn.setFont(new Font("Avenir", Font.PLAIN, 16));
-		buttonPanel.add(clientBtn, BorderLayout.NORTH);
-		clientBtn.setPreferredSize(new Dimension(200, 80));
+		
 	
-		JButton serverBtn = new JButton("Server");
-		serverBtn.setFont(new Font("Avenir", Font.PLAIN, 16));
-		buttonPanel.add(serverBtn,BorderLayout.SOUTH);
-		serverBtn.setPreferredSize(new Dimension(200, 80));
+		JButton serverBtn = new JButton(createImageIcon("btn-server.png",200,70));
+		serverBtn.setBorderPainted(false);
+		
+		buttonPanel.add(clientBtn);
+		buttonPanel.add(serverBtn);
 
 	
 		clientBtn.addActionListener(new ActionListener() {
@@ -185,7 +228,7 @@ public class MainMenuUI extends JPanel {
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		ImageIcon bgIcon = createImageIcon("bg.png",1024, 768);
+		ImageIcon bgIcon = createImageIcon(bg,1024, 768);
 		Image img = bgIcon.getImage();
 		Graphics2D g2d = (Graphics2D) g.create();
 		g2d.drawImage(img, 0, 0, 1024, 768, this);

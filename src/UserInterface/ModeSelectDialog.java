@@ -69,6 +69,17 @@ public class ModeSelectDialog extends JDialog{
 		ipField.add(ipTextField,BorderLayout.CENTER);
 		north.add(ipLabel,BorderLayout.WEST);
 		north.add(ipField,BorderLayout.CENTER);
+		JButton okBtn = new JButton("OK");
+		okBtn.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				ModeSelectDialog.this.dispose();
+				
+				//Connect to a server
+			}
+			
+		});
+		north.add(okBtn, BorderLayout.EAST);
 		
 		
 		
@@ -95,7 +106,6 @@ public class ModeSelectDialog extends JDialog{
 		JPanel gapSouth = new JPanel();
 		gapSouth.setPreferredSize(new Dimension(250,200));
 		south.add(gapSouth, BorderLayout.SOUTH);
-		JButton okBtn = new JButton("OK");
 		gapSouth.add(okBtn);
 		JButton cancelBtn = new JButton("Cancel");
 		gapSouth.add(cancelBtn);
