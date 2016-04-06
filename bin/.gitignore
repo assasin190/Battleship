@@ -1,5 +1,7 @@
-/UserInterface/
 /Game/
 /GameState/
-/test.class
-/ComBoBoxIcon.class
+/TestRun.class
+/TestRun2.class
+/TestRunUI$ComboBoxRenderer.class
+/TestRunUI.class
+/UserInterface/

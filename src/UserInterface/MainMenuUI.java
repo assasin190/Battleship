@@ -21,6 +21,7 @@ import java.awt.Image;
 import java.awt.Color;
 
 public class MainMenuUI extends JPanel {
+	public static String bg = "Bg-play.png";
 	Main main;
 	public ModeSelectDialog popUpDialog;
 	public JTextField name; //Player's name
@@ -59,8 +60,44 @@ public class MainMenuUI extends JPanel {
 		northMenu.setLayout(new BorderLayout());
 		JPanel menu = new JPanel();
 		menu.setPreferredSize(new Dimension(1024,50));
+		menu.setLayout(new BorderLayout());
 		northMenu.add(menu,BorderLayout.NORTH);
 		menu.setOpaque(false);
+		
+		JPanel gapMenu = new JPanel();
+		gapMenu.setPreferredSize(new Dimension(724,50));
+		gapMenu.setOpaque(false);
+		JPanel menuItem = new JPanel();
+		menuItem.setOpaque(false);
+		menuItem.setPreferredSize(new Dimension(300,50));
+		menu.add(gapMenu,BorderLayout.WEST);
+		menu.add(menuItem,BorderLayout.EAST);
+		
+		
+	
+		JButton btnSetting = new JButton(new ImageIcon("btn-setting.png"));
+		btnSetting.setVerticalAlignment(SwingConstants.TOP);
+		menuItem.add(btnSetting);
+		
+		btnSetting.setBorderPainted(false); 
+		btnSetting.setContentAreaFilled(false); 
+		btnSetting.setFocusPainted(false); 
+		
+		btnSetting.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+			//open new jframe for bg setting
+				
+			}
+		});
+		
+		
+		JButton btnExit = new JButton(new ImageIcon("btn-EXIT.png"));
+		btnExit.setVerticalAlignment(SwingConstants.TOP);
+		menuItem.add(btnExit);
+		btnExit.setBorderPainted(false); 
+		btnExit.setContentAreaFilled(false); 
+		btnExit.setFocusPainted(false); 
 		
 		JLabel select = new JLabel("SELECT YOUR PROFILE");
 		select.setForeground(Color.WHITE);
@@ -185,7 +222,7 @@ public class MainMenuUI extends JPanel {
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		ImageIcon bgIcon = createImageIcon("bg.png",1024, 768);
+		ImageIcon bgIcon = createImageIcon(bg,1024, 768);
 		Image img = bgIcon.getImage();
 		Graphics2D g2d = (Graphics2D) g.create();
 		g2d.drawImage(img, 0, 0, 1024, 768, this);
