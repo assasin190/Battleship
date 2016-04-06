@@ -54,7 +54,7 @@ public class ModeSelectDialog extends JDialog{
 		JPanel north = new JPanel();
 		north.setLayout(new BorderLayout());
 		ipTextField = new JTextField();
-		ipTextField.setColumns(10);
+		ipTextField.setColumns(1);
 		JLabel ipTextLabel = new JLabel("IP Address:");
 		JPanel gapNorth = new JPanel();
 		gapNorth.setPreferredSize(new Dimension(250,140));
@@ -88,7 +88,7 @@ public class ModeSelectDialog extends JDialog{
 		portField.setLayout(new BorderLayout());
 		portField.add(portTextField,BorderLayout.WEST);
 		portLabel.setPreferredSize(new Dimension(200, 30));
-		portField.setPreferredSize(new Dimension(250,30));
+		portField.setPreferredSize(new Dimension(300,30));
 		south.add(portLabel,BorderLayout.WEST);
 		south.add(portField,BorderLayout.CENTER);
 		
