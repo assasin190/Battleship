@@ -114,10 +114,24 @@ public class MainMenuUI extends JPanel {
 		JButton btnExit = new JButton(new ImageIcon("btn-EXIT.png"));
 		btnExit.setVerticalAlignment(SwingConstants.TOP);
 		menuItem.add(btnExit);
+<<<<<<< HEAD
 		btnExit.setBorderPainted(false);
 		btnExit.setContentAreaFilled(false);
 		btnExit.setFocusPainted(false);
 
+=======
+		btnExit.setBorderPainted(false); 
+		btnExit.setContentAreaFilled(false); 
+		btnExit.setFocusPainted(false); 
+		
+		btnExit.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				System.exit(0);
+			}
+			
+		});
+		
+>>>>>>> origin/master
 		JLabel select = new JLabel("SELECT YOUR PROFILE");
 		select.setForeground(Color.WHITE);
 		select.setFont(new Font("Arial", Font.BOLD, 20));
