@@ -31,7 +31,7 @@ import java.io.IOException;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.CompoundBorder;
 
-public class MainGameUI{
+public class MainGameUI {
 	
 	public JPanel panel;
 

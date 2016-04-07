@@ -23,7 +23,7 @@ import javax.swing.JPanel;
 import javax.swing.ListCellRenderer;
 
 import UserInterface.MainGameUI;
-import UserInterface.GameSetupUI;
+import UserInterface.GameSetupUIState;
 import UserInterface.TestUI;
 import java.awt.Choice;
 import java.awt.Component;
@@ -91,7 +91,7 @@ public class ChangeBgDialog extends JPanel {
 					//MainMenuUI.bg = IMAGES[index];
 					
 					System.out.println("print in ChangeBgDialog");
-					MainMenuUI.changeBg(IMAGES[index]);
+					MainMenuUIState.changeBg(IMAGES[index]);
 					
 					//MainMenuUI.bg = IMAGES[index];
 

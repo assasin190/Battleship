@@ -3,7 +3,7 @@ import javax.swing.JFrame;
 
 import Game.Main;
 import GameState.GameStateManager;
-import UserInterface.MainMenuUI;
+import UserInterface.MainMenuUIState;
 
 public class MainGameState implements GameState {
 
@@ -19,9 +19,4 @@ public class MainGameState implements GameState {
 		
 	}
 	
-	public String toString() {
-		return GameStateManager.MAIN_GAME_STATE;
-				
-	}
-
 }

@@ -1,17 +1,16 @@
 package Game;
 
-import java.io.Serializable;
 import java.net.Socket;
 
-import UserInterface.GameSetupUI;
+import UserInterface.GameSetupUIState;
 import UserInterface.MainGameUI;
 
-public class GameClient implements Runnable, Serializable{
+public class GameClient implements Runnable {
 		//P2P case field
 		protected transient GameServer gameServer;
 		//Local, Non-serializable field
 		protected Socket socket;
-		protected transient GameSetupUI setupGameUI;
+		protected transient GameSetupUIState setupGameUI;
 		//Non-serializable field
 		protected transient MainGameUI gameUI;
 		//Global serializable field
@@ -48,6 +47,11 @@ public class GameClient implements Runnable, Serializable{
 			else {
 				
 			}
+		}
+		
+		public void setLocalServer(GameServer gameServer) {
+			this.gameServer = gameServer;
+			isWithLocalServer = true;
 		}
 		
 		public void gameSetup() {

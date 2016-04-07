@@ -1,33 +1,36 @@
 package GameState;
+import java.util.HashMap;
+
 import javax.swing.JFrame;
 
 import Game.Main;
-import UserInterface.MainMenuUI;
+import UserInterface.MainMenuUIState;
 
 public class GameStateManager {
 	
-	public static GameState currentState;
-	private static Main main;
+	public GameState currentState;
+	public HashMap<String, GameState> bufferedStateMap;
 	
-	public static final String MAIN_MENU_STATE = "MAIN_MENU_STATE";
-	public static final String GAME_SETUP_STATE = "GAME_SETUP_STATE";
-	public static final String MAIN_GAME_STATE = "MAIN_GAME_STATE";
+	public static String MAIN_MENU_STATE = "MAIN_MENU_STATE";
+	public static String CONNECT_TO_SERVER_P2P_STATE = "CONNECT_TO_SERVER_P2P_STATE";
+	public static String GAME_SETUP_STATE = "GAME_SETUP_STATE";
 	
 	public GameStateManager() {
-		
+		currentState = null;
+		bufferedStateMap = new HashMap<String, GameState>();
 	}
 	
-	public static GameState getcurrentGameState() {
+	public GameState getcurrentGameState() {
 		return currentState;
 	}
 	
-	public static void changeState(GameState nextState) {
+	public void changeState(GameState nextState) {
 		//Leave current state
-		GameStateManager.currentState.leaving();
+		currentState.leaving();
 		//Set new state
-		GameStateManager.currentState = nextState;
+		currentState = nextState;
 		//Enter new state
-		GameStateManager.currentState.entered();
+		currentState.entered();
 		
 		
 		/* Switch string model
@@ -43,19 +46,18 @@ public class GameStateManager {
 	}
 	
 	//Used only the first time (When currentState is null)
-	public static void setState(GameState state) {
+	public void setState(GameState state) {
 		//Set new state
-		GameStateManager.currentState = state;
+		currentState = state;
 		//Enter new state
-		GameStateManager.currentState.entered();
+		currentState.entered();
 	}
 	
-	public static void setMain(Main main) {
-		GameStateManager.main = main;
+	public void storeBufferedState(String stateString, GameState stateObject) {
+		bufferedStateMap.put(stateString, stateObject);
 	}
 	
-	public static Main getMain() {
-		return GameStateManager.getMain();
+	public GameState getBufferedState(String stateString) {
+		return bufferedStateMap.get(stateString);
 	}
-
 }

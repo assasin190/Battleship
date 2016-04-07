@@ -2,11 +2,11 @@ package GameState;
 
 import javax.swing.JFrame;
 import Game.Main;
-import UserInterface.ModeSelectDialog;
+import UserInterface.ConnectToServerP2PUIState;
 
 public class ConnectToServerP2PState implements GameState {
 	JFrame frame;
-	ModeSelectDialog popUpDialog;
+	ConnectToServerP2PUIState popUpDialog;
 	
 	public ConnectToServerP2PState(Main main, JFrame frame) {
 		this.frame = frame;
@@ -15,13 +15,11 @@ public class ConnectToServerP2PState implements GameState {
 	@Override
 	public void entered() {
 		System.out.println("Main_thread: CONNECT_TO_SERVER_P2P_STATE");
-		popUpDialog = new ModeSelectDialog(frame, "Select Mode");
 		
 	}
 
 	@Override
 	public void leaving() {
-		popUpDialog.dispose();
 		
 	}
 

@@ -14,6 +14,7 @@ import java.io.IOException;
 
 import Game.Main;
 import GameState.ConnectToServerP2PState;
+import GameState.GameState;
 import GameState.GameStateManager;
 
 import java.awt.Font;
@@ -22,41 +23,48 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Color;
 
-public class MainMenuUI extends JPanel {
+public class MainMenuUIState extends UI implements GameState {
 	//public static String bg = "Bg-play.png";
 	public static String bg = "Bg-play3.png";
 	static ChangeBgDialog panelSetting;
 	
-	Main main;
-	public ModeSelectDialog popUpDialog;
+	public ConnectToServerP2PUIState popUpDialog;
 	public JTextField name; // Player's name
 	public ImageIcon profilePic; // Player's profile photo
 
-	public MainMenuUI(Main main) {
-		initialize(main);
-	}
-	
-	
-
-	private void initialize(Main main) {
-		this.main = main;
-		// panel = new JPanel();
-		setLayout(new BorderLayout(0, 0));
-		setPreferredSize(new Dimension(1024, 768));
+	public MainMenuUIState(Main main) {
+		super(main);
+		ImageIcon bgIcon = createImageIcon(bg, 1024, 768);
+		Image bgImg = bgIcon.getImage();
+		panel = UI.createJPanelWithBackground(bgImg);
+		/*
+		panel = new JPanel() {
+			@Override
+			public void paintComponent(Graphics g) {
+				super.paintComponent(g);
+				ImageIcon bgIcon = createImageIcon(bg, 1024, 768);
+				Image img = bgIcon.getImage();
+				Graphics2D g2d = (Graphics2D) g.create();
+				g2d.drawImage(img, 0, 0, 1024, 768, this);
+			}
+		};
+		*/
+		panel.setLayout(new BorderLayout(0, 0));
+		panel.setPreferredSize(new Dimension(1024, 768));
 
 		JPanel gapLeft = new JPanel();
 		gapLeft.setPreferredSize(new Dimension(412, 300));
-		add(gapLeft, BorderLayout.WEST);
+		panel.add(gapLeft, BorderLayout.WEST);
 		gapLeft.setOpaque(false);
 
 		JPanel gapRight = new JPanel();
 		gapRight.setPreferredSize(new Dimension(412, 300));
-		add(gapRight, BorderLayout.EAST);
+		panel.add(gapRight, BorderLayout.EAST);
 		gapRight.setOpaque(false);
 
 		JPanel gapNorth = new JPanel();
 		gapNorth.setPreferredSize(new Dimension(1024, 368));
-		add(gapNorth, BorderLayout.NORTH);
+		panel.add(gapNorth, BorderLayout.NORTH);
 		gapNorth.setOpaque(false);
 
 		JPanel northMenu = new JPanel();
@@ -171,11 +179,11 @@ public class MainMenuUI extends JPanel {
 
 		JPanel gapSouth = new JPanel();
 		gapSouth.setPreferredSize(new Dimension(1024, 50));
-		add(gapSouth, BorderLayout.SOUTH);
+		panel.add(gapSouth, BorderLayout.SOUTH);
 		gapSouth.setOpaque(false);
 
 		JPanel center = new JPanel();
-		add(center, BorderLayout.CENTER);
+		panel.add(center, BorderLayout.CENTER);
 		center.setPreferredSize(new Dimension(200, 300));
 		center.setLayout(new BorderLayout(0, 0));
 		center.setOpaque(false);
@@ -211,46 +219,44 @@ public class MainMenuUI extends JPanel {
 
 		JButton clientBtn = new JButton(createImageIcon("btn-client.png", 200, 70));
 		clientBtn.setBorderPainted(false);
-
-		JButton serverBtn = new JButton(createImageIcon("btn-server.png", 200, 70));
-		serverBtn.setBorderPainted(false);
-
-		buttonPanel.add(clientBtn);
-		buttonPanel.add(serverBtn);
-
 		clientBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// user click client button
-				// System.out.println("click");
-				JFrame theFrame = (JFrame) SwingUtilities.windowForComponent(MainMenuUI.this);
+				// User clicked client button
 				//Change UI state -> CONNECT_TO_SERVER_P2P_STATE
-				GameStateManager.changeState(new ConnectToServerP2PState(MainMenuUI.this.main, theFrame));
+				main.GSM.changeState(new ConnectToServerP2PUIState(MainMenuUIState.this.main));
+				
+				//GameStateManager.changeState(new ConnectToServerP2PState(MainMenuUI.this.main, theFrame));
 				//popUpDialog = new ModeSelectDialog((JFrame) SwingUtilities.windowForComponent(MainMenuUI.this), "Select Mode", MainMenuUI.this.main);		
 				// Change UI state -> CONNECT_TO_SERVER_P2P_STATE
-				GameStateManager.changeState(new ConnectToServerP2PState(MainMenuUI.this.main, theFrame));
+				//GameStateManager.changeState(new ConnectToServerP2PState(MainMenuUI.this.main, theFrame));
 				// popUpDialog = new ModeSelectDialog((JFrame)
 				// SwingUtilities.windowForComponent(MainMenuUI.this), "Select
 				// Mode", MainMenuUI.this.main);
 
 			}
 		});
+
+		JButton serverBtn = new JButton(createImageIcon("btn-server.png", 200, 70));
+		serverBtn.setBorderPainted(false);
+		serverBtn.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				//User clicked server button
+				//Run server mode
+				main.startLocalServer();
+			}
+		});
+		
+		buttonPanel.add(clientBtn);
+		buttonPanel.add(serverBtn);
 	}
-	
+
 	public static void changeBg(String imgIndex){
 		bg = imgIndex;
-		
 		panelSetting.repaint();
-		
-		
-		
-		
 		System.out.println("repaint invoke");
-		
 		//MainMenuUI.this.repaint();
-		
-		
-		
 	}
 	
 	
@@ -266,11 +272,16 @@ public class MainMenuUI extends JPanel {
 	}
 
 	@Override
-	public void paintComponent(Graphics g) {
-		super.paintComponent(g);
-		ImageIcon bgIcon = createImageIcon(bg, 1024, 768);
-		Image img = bgIcon.getImage();
-		Graphics2D g2d = (Graphics2D) g.create();
-		g2d.drawImage(img, 0, 0, 1024, 768, this);
+	public void entered() {
+		System.out.println("Main_thread: entered MAIN_MENU_STATE");
+		main.replaceCurrentPanel(MainMenuUIState.this.panel);
+	}
+
+	@Override
+	public void leaving() {
+		//Buffer the MAIN_MENU_STATE
+		System.out.println("Main_thread: leaving MAIN_MENU_STATE");
+		main.GSM.storeBufferedState(GameStateManager.MAIN_MENU_STATE, this);
+		
 	}
 }

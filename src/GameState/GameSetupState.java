@@ -3,15 +3,15 @@ package GameState;
 import javax.swing.JPanel;
 
 import Game.Main;
-import UserInterface.GameSetupUI;
+import UserInterface.GameSetupUIState;
 
 public class GameSetupState implements GameState{
-	GameSetupUI gameSetupUI;
+	
+	public GameSetupState() {
+	}
 	
 	@Override
 	public void entered() {
-		gameSetupUI = new GameSetupUI();
-		GameStateManager.getMain().replaceCurrentPanel(new GameSetupUI());
 		
 	}
 

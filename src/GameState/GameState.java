@@ -3,7 +3,7 @@ import Game.Main;
 
 public interface GameState {
 	
-	public abstract void entered(); //TODO implements function called after entered the state
-	public abstract void leaving(); //TODO implements function called right before leaving the state
+	public void entered(); //TODO implements function called after entered the state
+	public void leaving(); //TODO implements function called right before leaving the state
 	
 }

@@ -15,14 +15,18 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import Game.Main;
+import GameState.GameState;
+import GameState.GameStateManager;
 
-public class ModeSelectDialog extends JDialog{
+public class ConnectToServerP2PUIState extends UI implements GameState {
+	public JDialog dialog;
 	public JTextField ipTextField;
 	public JTextField portTextField;
 	
-	public ModeSelectDialog(JFrame parent, String title) {
-		super(parent, title);
-		setLocation(350,200); //262
+	public ConnectToServerP2PUIState(Main main) {
+		super(main);
+		dialog = new JDialog(main, "Enter IP Address");
+		dialog.setLocation(350,200); //262
 		initialize();
 	}
 	private void initialize() {
@@ -42,12 +46,12 @@ public class ModeSelectDialog extends JDialog{
 				return false;
 			}
 		});
-		getContentPane().setLayout(new BorderLayout());
+		dialog.getContentPane().setLayout(new BorderLayout());
 		
 		//Inside Panel
 		JPanel socketPanel = new JPanel();
 		socketPanel.setPreferredSize(new Dimension(500,400));
-		getContentPane().add(socketPanel);
+		dialog.getContentPane().add(socketPanel);
 		socketPanel.setLayout(new BorderLayout());
 		
 		//North
@@ -73,9 +77,9 @@ public class ModeSelectDialog extends JDialog{
 		okBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				ModeSelectDialog.this.dispose();
-				
-				//Connect to a server
+				//OK -> Connect to the server
+				main.Connect(ipTextField.getText(), portTextField.getText());
+				//Change UI state -> WAIT_FOR_CONNECTION_STATE
 			}
 			
 		});
@@ -112,24 +116,32 @@ public class ModeSelectDialog extends JDialog{
 		cancelBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				ModeSelectDialog.this.dispose();
+				//Cancel -> Return to buffered state -> MAIN_MENU_STATE
+				GameState bufferedMainState = main.GSM.getBufferedState(GameStateManager.MAIN_MENU_STATE);
+				main.GSM.changeState(bufferedMainState);
+				
 			}
-		});
-		okBtn.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				ModeSelectDialog.this.dispose();
-				//Connect to a server
-			}
-			
 		});
 		
 		socketPanel.add(north,BorderLayout.NORTH);
 		socketPanel.add(south,BorderLayout.SOUTH);
 		
 		
-		pack();
-		setVisible(true);
+		dialog.pack();
+		dialog.setVisible(true);
 		
+	}
+	@Override
+	public void entered() {
+		System.out.println("Main_thread: entered CONNECT_TO_SERVER_P2P_STATE");
+		main.setEnabled(false);
+		ConnectToServerP2PUIState.this.dialog.setVisible(true);
+		
+	}
+	@Override
+	public void leaving() {
+		System.out.println("Main_thread: leaving CONNECT_TO_SERVER_P2P_STATE");
+		ConnectToServerP2PUIState.this.dialog.dispose();
+		main.setEnabled(true);
 	}
 }

@@ -26,6 +26,9 @@ import javax.swing.JFormattedTextField;
 import javax.swing.JTextPane;
 import javax.swing.border.LineBorder;
 
+import Game.Main;
+import GameState.GameState;
+
 import java.awt.SystemColor;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -39,29 +42,16 @@ import java.net.ServerSocket;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.CompoundBorder;
 
-public class GameSetupUI extends JPanel{
-	public JPanel panel;
-	Timer timer;
-	/**
-	 * Create the panel.
-	 */
-	public GameSetupUI() {
-		initialize();
-	}
+public class GameSetupUIState extends UI implements GameState {
 	
-	private void initialize() {
+	private Timer timer;
+	
+	public GameSetupUIState(Main main) {
+		super(main);
 
 		ImageIcon bgIcon = createImageIcon("bg.png",1024, 768);
 		Image img = bgIcon.getImage();
-		
-		panel = new JPanel() {
-			public void paintComponent(Graphics g) {
-				super.paintComponent(g);
-				Graphics2D g2d = (Graphics2D) g.create();
-				g2d.drawImage(img, 0, 0, 1024, 768, this);
-				
-			}
-		};
+		panel = UI.createJPanelWithBackground(img);
 		
 		panel.setLayout(new BorderLayout(0, 0));
 		panel.setPreferredSize(new Dimension(1024,768)); // 768-568-100
@@ -400,6 +390,11 @@ public class GameSetupUI extends JPanel{
 		bottom.setOpaque(false);
 		panel.add(bottom, BorderLayout.SOUTH);
 	}
+
+	
+	private void initialize() {
+
+	}
 	public static ImageIcon createImageIcon(String path, int width, int height) {
 		Image img = null;
 		try {
@@ -408,6 +403,18 @@ public class GameSetupUI extends JPanel{
 		}
 		Image resizedImage = img.getScaledInstance(width, height, 0);
 		return new ImageIcon(resizedImage);
+	}
+
+	@Override
+	public void entered() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void leaving() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

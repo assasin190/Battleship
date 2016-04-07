@@ -17,7 +17,7 @@ public class GameServer implements Runnable, Serializable {
 	//private ObjectInputStream ois;
 	//private ObjectOutputStream oos;
 	//Game attributes
-	private GameClient localClient;
+	private Main.GameClient localClient;
 	//private GameClient otherClient;
 	private boolean isWithLocalClient = false;
 	
@@ -29,7 +29,7 @@ public class GameServer implements Runnable, Serializable {
 		
 	}
 	
-	protected GameServer(GameClient localClient){
+	protected GameServer(Main.GameClient localClient){
 		isWithLocalClient = true;
 		this.localClient = localClient;
 	}
@@ -96,7 +96,7 @@ public class GameServer implements Runnable, Serializable {
 		return this.isWithLocalClient;
 	}
 	
-	protected void setLocalClient(GameClient localClient) {
+	protected void setLocalClient(Main.GameClient localClient) {
 		this.localClient = localClient;
 	}
 	
