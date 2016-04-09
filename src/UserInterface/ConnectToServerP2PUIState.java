@@ -18,13 +18,13 @@ import Game.Main;
 import GameState.GameState;
 import GameState.GameStateManager;
 
-public class ConnectToServerP2PUIState extends UI implements GameState {
-	public JDialog dialog;
+public class ConnectToServerP2PUIState extends UI {
 	public JTextField ipTextField;
 	public JTextField portTextField;
 	
 	public ConnectToServerP2PUIState(Main main) {
 		super(main);
+		stateString = "CONNECT_TO_SERVER_P2P_STATE";
 		dialog = new JDialog(main, "Enter IP Address");
 		dialog.setLocation(350,200); //262
 		initialize();
@@ -79,7 +79,9 @@ public class ConnectToServerP2PUIState extends UI implements GameState {
 			public void actionPerformed(ActionEvent e) {
 				//OK -> Connect to the server
 				main.Connect(ipTextField.getText(), portTextField.getText());
-				//Change UI state -> WAIT_FOR_CONNECTION_STATE
+				/*	Push UI state -> WAIT_FOR_CONNECTION_STATE
+				   	Connect() will push WAIT_FOR_CONNECTION_STATE
+				 */
 			}
 			
 		});
@@ -116,9 +118,12 @@ public class ConnectToServerP2PUIState extends UI implements GameState {
 		cancelBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				//Cancel -> Return to buffered state -> MAIN_MENU_STATE
+				//Cancel -> Return to previous state
+				main.GSM.popState();
+				/*
 				GameState bufferedMainState = main.GSM.getBufferedState(GameStateManager.MAIN_MENU_STATE);
 				main.GSM.changeState(bufferedMainState);
+				*/
 				
 			}
 		});
@@ -126,22 +131,31 @@ public class ConnectToServerP2PUIState extends UI implements GameState {
 		socketPanel.add(north,BorderLayout.NORTH);
 		socketPanel.add(south,BorderLayout.SOUTH);
 		
-		
 		dialog.pack();
 		dialog.setVisible(true);
 		
 	}
 	@Override
 	public void entered() {
-		System.out.println("Main_thread: entered CONNECT_TO_SERVER_P2P_STATE");
-		main.setEnabled(false);
-		ConnectToServerP2PUIState.this.dialog.setVisible(true);
+		System.out.println("Main_thread: entered " + stateString);
+		dialog.setVisible(true);
 		
 	}
 	@Override
 	public void leaving() {
-		System.out.println("Main_thread: leaving CONNECT_TO_SERVER_P2P_STATE");
-		ConnectToServerP2PUIState.this.dialog.dispose();
+		System.out.println("Main_thread: leaving " + stateString);
+		dialog.dispose();
 		main.setEnabled(true);
+	}
+	@Override
+	public void obscuring() {
+		System.out.println("Main_thread: " + stateString + " stacked");
+		//Set the dialog's visibility to false
+		dialog.setVisible(false);
+	}
+	@Override
+	public void revealed() {
+		System.out.println("Main_thread: " + stateString + " revealed");
+		dialog.setVisible(true);
 	}
 }

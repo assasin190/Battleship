@@ -42,12 +42,13 @@ import java.net.ServerSocket;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.CompoundBorder;
 
-public class GameSetupUIState extends UI implements GameState {
+public class GameSetupUIState extends UI {
 	
 	private Timer timer;
 	
 	public GameSetupUIState(Main main) {
 		super(main);
+		stateString = "GAME_SETUP_UI_STATE";
 
 		ImageIcon bgIcon = createImageIcon("bg.png",1024, 768);
 		Image img = bgIcon.getImage();
@@ -229,7 +230,7 @@ public class GameSetupUIState extends UI implements GameState {
 		
 		ActionListener timerTask = new ActionListener() {
 	          
-            int countdown = 5;
+            int countdown = 60;
             @Override
             public void actionPerformed(ActionEvent e) {
                if(countdown==0){
@@ -407,12 +408,26 @@ public class GameSetupUIState extends UI implements GameState {
 
 	@Override
 	public void entered() {
-		// TODO Auto-generated method stub
-		
+		System.out.println("Main_thread: entered " + stateString);
+		main.replaceCurrentPanel(panel);
 	}
 
 	@Override
 	public void leaving() {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void obscuring() {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void revealed() {
 		// TODO Auto-generated method stub
 		
 	}

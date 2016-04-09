@@ -3,24 +3,31 @@ package UserInterface;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
+
+import javax.swing.JDialog;
 import javax.swing.JPanel;
 import Game.Main;
+import GameState.GameState;
 
-public abstract class UI {
+public abstract class UI implements GameState{
 	/* Abstract base class for all UI classes
-	 * The option is left whether to implement GameState or not
+	 * Every UI has a GameState
 	 * Every UI has a main reference and an instance of JPanel
 	 * JPanel can be left as null for some implementations
+	 * JDialog can be left as null for some implementations
+	 * Usually, a UI either contains a JPanel or a JDialog
 	 */
 	
 	public Main main;
 	public JPanel panel;
+	public JDialog dialog;
+	public String stateString;
 	
 	public UI(Main main) {
 		this.main = main;
 	}
 	
-	//Create custom anonymous inner class of JPanel
+	//Use this method to create a JPanel with custom background paint
 	public static JPanel createJPanelWithBackground(Image backgroundImg) {
 		return new JPanel() {
 			@Override

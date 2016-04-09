@@ -1,14 +1,15 @@
 package GameState;
 import java.util.HashMap;
+import java.util.Stack;
 
 import javax.swing.JFrame;
-
 import Game.Main;
 import UserInterface.MainMenuUIState;
 
 public class GameStateManager {
 	
-	public GameState currentState;
+	//GameStateManager is accessible from all UI via instance main.GSM
+	private Stack<GameState> stackedGameState;
 	public HashMap<String, GameState> bufferedStateMap;
 	
 	public static String MAIN_MENU_STATE = "MAIN_MENU_STATE";
@@ -16,21 +17,29 @@ public class GameStateManager {
 	public static String GAME_SETUP_STATE = "GAME_SETUP_STATE";
 	
 	public GameStateManager() {
-		currentState = null;
-		bufferedStateMap = new HashMap<String, GameState>();
+		stackedGameState = new Stack<GameState>();
+		//bufferedStateMap = new HashMap<String, GameState>();
 	}
 	
-	public GameState getcurrentGameState() {
-		return currentState;
+	public GameState getCurrentState() {
+		return stackedGameState.peek();
+	}
+	
+	public void popState() {
+		//Leave current state
+		stackedGameState.pop().leaving();
+		//Reveal the state on the top of the stack
+		stackedGameState.peek().revealed();
+		//Note: the method does not return an instance of a GameState
 	}
 	
 	public void changeState(GameState nextState) {
 		//Leave current state
-		currentState.leaving();
+		stackedGameState.pop().leaving();
 		//Set new state
-		currentState = nextState;
+		stackedGameState.push(nextState);
 		//Enter new state
-		currentState.entered();
+		nextState.entered();
 		
 		
 		/* Switch string model
@@ -45,12 +54,21 @@ public class GameStateManager {
 				
 	}
 	
-	//Used only the first time (When currentState is null)
-	public void setState(GameState state) {
-		//Set new state
-		currentState = state;
+	public void pushState(GameState stackingState) {
+		//Call obscuring current state before leaveing
+		stackedGameState.peek().obscuring();
+		//Push new stacking state into the stack
+		stackedGameState.push(stackingState);
 		//Enter new state
-		currentState.entered();
+		stackingState.entered();
+	}
+	
+	//Used only the first time (When stackedCurrentState is empty)
+	public void setState(GameState initialState) {
+		//Set new state
+		stackedGameState.push(initialState);
+		//Enter new state
+		initialState.entered();
 	}
 	
 	public void storeBufferedState(String stateString, GameState stateObject) {

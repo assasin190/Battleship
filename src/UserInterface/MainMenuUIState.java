@@ -23,17 +23,17 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Color;
 
-public class MainMenuUIState extends UI implements GameState {
+public class MainMenuUIState extends UI {
 	//public static String bg = "Bg-play.png";
 	public static String bg = "Bg-play3.png";
 	static ChangeBgDialog panelSetting;
-	
 	public ConnectToServerP2PUIState popUpDialog;
 	public JTextField name; // Player's name
 	public ImageIcon profilePic; // Player's profile photo
 
 	public MainMenuUIState(Main main) {
 		super(main);
+		stateString = "MAIN_MENU_STATE";
 		ImageIcon bgIcon = createImageIcon(bg, 1024, 768);
 		Image bgImg = bgIcon.getImage();
 		panel = UI.createJPanelWithBackground(bgImg);
@@ -223,9 +223,9 @@ public class MainMenuUIState extends UI implements GameState {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// User clicked client button
-				//Change UI state -> CONNECT_TO_SERVER_P2P_STATE
-				main.GSM.changeState(new ConnectToServerP2PUIState(MainMenuUIState.this.main));
-				
+				//Push UI state -> CONNECT_TO_SERVER_P2P_STATE
+				main.GSM.pushState(new ConnectToServerP2PUIState(MainMenuUIState.this.main));
+				//main.GSM.changeState(new ConnectToServerP2PUIState(MainMenuUIState.this.main));
 				//GameStateManager.changeState(new ConnectToServerP2PState(MainMenuUI.this.main, theFrame));
 				//popUpDialog = new ModeSelectDialog((JFrame) SwingUtilities.windowForComponent(MainMenuUI.this), "Select Mode", MainMenuUI.this.main);		
 				// Change UI state -> CONNECT_TO_SERVER_P2P_STATE
@@ -245,6 +245,9 @@ public class MainMenuUIState extends UI implements GameState {
 				//User clicked server button
 				//Run server mode
 				main.startLocalServer();
+				/* Push UI state -> WAIT_FOR_CONNECTION_STATE
+				   startLocalServer will update UI
+				*/
 			}
 		});
 		
@@ -273,15 +276,30 @@ public class MainMenuUIState extends UI implements GameState {
 
 	@Override
 	public void entered() {
-		System.out.println("Main_thread: entered MAIN_MENU_STATE");
-		main.replaceCurrentPanel(MainMenuUIState.this.panel);
+		System.out.println("Main_thread: entered " + stateString);
+		main.replaceCurrentPanel(panel);
 	}
 
 	@Override
 	public void leaving() {
 		//Buffer the MAIN_MENU_STATE
-		System.out.println("Main_thread: leaving MAIN_MENU_STATE");
-		main.GSM.storeBufferedState(GameStateManager.MAIN_MENU_STATE, this);
+		System.out.println("Main_thread: leaving " + stateString);
+		main.getContentPane().remove(main.currentStatePanel);
+		//main.GSM.storeBufferedState(GameStateManager.MAIN_MENU_STATE, this);
+		
+	}
+
+	@Override
+	public void obscuring() {
+		System.out.println("Main_thread: " + stateString + " stacked");
+		main.setEnabled(false);
+		
+	}
+
+	@Override
+	public void revealed() {
+		System.out.println("Main_thread: " + stateString + " resumed");
+		main.setEnabled(true);
 		
 	}
 }
