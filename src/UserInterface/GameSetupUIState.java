@@ -28,6 +28,7 @@ import javax.swing.border.LineBorder;
 
 import Game.Main;
 import GameState.GameState;
+import GameState.GameStateManager;
 
 import java.awt.SystemColor;
 import java.awt.Toolkit;
@@ -48,7 +49,7 @@ public class GameSetupUIState extends UI {
 	
 	public GameSetupUIState(Main main) {
 		super(main);
-		stateString = "GAME_SETUP_UI_STATE";
+		stateString = GameState.GAME_SETUP_STATE;
 
 		ImageIcon bgIcon = createImageIcon("bg.png",1024, 768);
 		Image img = bgIcon.getImage();

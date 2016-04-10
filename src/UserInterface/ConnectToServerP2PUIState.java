@@ -24,9 +24,9 @@ public class ConnectToServerP2PUIState extends UI {
 	
 	public ConnectToServerP2PUIState(Main main) {
 		super(main);
-		stateString = "CONNECT_TO_SERVER_P2P_STATE";
+		stateString = GameState.CONNECT_TO_SERVER_P2P_STATE;
 		dialog = new JDialog(main, "Enter IP Address");
-		dialog.setLocation(350,200); //262
+		dialog.setLocation(main.getLocation()); 
 		initialize();
 	}
 	private void initialize() {
@@ -50,21 +50,21 @@ public class ConnectToServerP2PUIState extends UI {
 		
 		//Inside Panel
 		JPanel socketPanel = new JPanel();
-		socketPanel.setPreferredSize(new Dimension(500,400));
+		socketPanel.setPreferredSize(new Dimension(300, 60));
 		dialog.getContentPane().add(socketPanel);
 		socketPanel.setLayout(new BorderLayout());
 		
 		//North
 		JPanel north = new JPanel();
 		north.setLayout(new BorderLayout());
-		ipTextField = new JTextField();
+		ipTextField = new JTextField("localhost");
 		ipTextField.setColumns(1);
 		JLabel ipTextLabel = new JLabel("IP Address:");
 		JPanel gapNorth = new JPanel();
-		gapNorth.setPreferredSize(new Dimension(250,140));
+		gapNorth.setPreferredSize(new Dimension(0, 0));
 		north.add(gapNorth, BorderLayout.NORTH);
 		JPanel ipLabel = new JPanel();
-		ipLabel.setPreferredSize(new Dimension(200, 30));
+		ipLabel.setPreferredSize(new Dimension(100, 30));
 		JPanel ipField = new JPanel();
 		ipField.setPreferredSize(new Dimension(300, 30));
 		ipLabel.setLayout(new BorderLayout());
@@ -97,24 +97,19 @@ public class ConnectToServerP2PUIState extends UI {
 		south.setLayout(new BorderLayout());
 		JPanel portLabel = new JPanel();
 		JPanel portField = new JPanel();
-		portTextField = new JTextField();
+		portTextField = new JTextField("8080");
 		portTextField.setColumns(10);
 		JLabel portTextLabel = new JLabel("Port:");
 		portLabel.setLayout(new BorderLayout());
 		portLabel.add(portTextLabel,BorderLayout.EAST);
 		portField.setLayout(new BorderLayout());
-		portField.add(portTextField,BorderLayout.WEST);
-		portLabel.setPreferredSize(new Dimension(200, 30));
+		portField.add(portTextField,BorderLayout.CENTER);
+		portLabel.setPreferredSize(new Dimension(100, 30));
 		portField.setPreferredSize(new Dimension(300,30));
 		south.add(portLabel,BorderLayout.WEST);
 		south.add(portField,BorderLayout.CENTER);
-		
-		JPanel gapSouth = new JPanel();
-		gapSouth.setPreferredSize(new Dimension(250,200));
-		south.add(gapSouth, BorderLayout.SOUTH);
-		gapSouth.add(okBtn);
 		JButton cancelBtn = new JButton("Cancel");
-		gapSouth.add(cancelBtn);
+		portField.add(cancelBtn, BorderLayout.EAST);
 		cancelBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -128,6 +123,9 @@ public class ConnectToServerP2PUIState extends UI {
 			}
 		});
 		
+		JPanel gapSouth = new JPanel();
+		gapSouth.setPreferredSize(new Dimension(0, 0));
+		south.add(gapSouth, BorderLayout.SOUTH);
 		socketPanel.add(north,BorderLayout.NORTH);
 		socketPanel.add(south,BorderLayout.SOUTH);
 		

@@ -6,8 +6,9 @@ public class CommandString {
 	public static final String CLIENT_GAME_SETUP_FINISHED = "CLIENT_GAME_SETUP_READY";
 	public static final String CLIENT_GAME_START_READY = "CLIENT_GAME_START_READY";
 	
-	public static final String SERVER_ANOTHER_CLIENT_NOT_AVAILABLE = "SERVER_ANOTHER_CLIENT_NOT_AVAILABLE";
-	public static final String SERVER_ANOTHER_CLIENT_AVAILABLE = "SERVER_ANOTHER_CLIENT_AVAILABLE";
+	public static final String SERVER_OTHER_CLIENT_NOT_AVAILABLE = "SERVER_OTHER_CLIENT_NOT_AVAILABLE";
+	public static final String SERVER_OTHER_CLIENT_AVAILABLE = "SERVER_OTHER_CLIENT_AVAILABLE";
+	public static final String SERVER_START_GAME_SETUP = "SERVER_START_GAME_SETUP";
 	
 	/*	Validate a command string
 		If the command string is valid, return true

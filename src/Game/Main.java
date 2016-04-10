@@ -13,6 +13,8 @@ import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.List;
+
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
@@ -20,13 +22,18 @@ import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
+import javax.swing.SwingWorker;
+
 import GameState.*;
+import UserInterface.GameSetupReadyUIState;
 import UserInterface.GameSetupUIState;
 import UserInterface.MainGameUI;
 import UserInterface.MainMenuUIState;
+import UserInterface.UI;
 import UserInterface.WaitForConnectionUIState;
 
-public class Main extends JFrame{
+public class Main extends JFrame {
 	//public JFrame frame;
 	public final GameStateManager GSM = new GameStateManager();
 	public JPanel currentStatePanel;
@@ -37,22 +44,14 @@ public class Main extends JFrame{
 	
 	/**
 	 * Launch the application.
+	 * @throws InterruptedException 
 	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
+	public static void main(String[] args) throws InterruptedException {
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
 			public void run() {
-				//Create main JFrame
 				Main main = new Main();
 				main.setVisible(true);
-				Thread.currentThread().setName("Main_thread");
-				/*
-				try {
-					Main window = new Main();
-					window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-				*/
 			}
 		});
 	}
@@ -68,7 +67,6 @@ public class Main extends JFrame{
 		start = false;
 		//Change UI state -> MAIN_MENU_STATE
 		GSM.setState(new MainMenuUIState(this));
-		//initialize();
 	}
 	
 	/**
@@ -86,7 +84,7 @@ public class Main extends JFrame{
 	
 	//P2P Server case
 	public void startLocalServer() {
-		/* OLD START LOCAL SERVER
+		/* OLD IMPLEMENTATION
 		System.out.println("Main_thread: P2P server running");
 		//Create and set the local game client
 		GameClient localClient = client = new GameClient();
@@ -122,12 +120,7 @@ public class Main extends JFrame{
 		//Create the local server
 		GameServer gameServer = new GameServer(8080);
 		//Run the game server
-		Thread serverThread = new Thread(gameServer);
-		serverThread.setName("Server_thread");
-		serverThread.start();
-		
-		//System.out.println(Thread.currentThread().getName() + ": is waked");
-		
+		new Thread(gameServer).start();
 		//Connect to the game server
 		try {
 			socket = new Socket("localhost", 8080);
@@ -145,13 +138,14 @@ public class Main extends JFrame{
 		
 	}
 	
-	//P2P Client case
+	//P2P/Server-Client client case
 	public void Connect(String serverAddr, String serverPort) {
-		System.out.println("Main_thread: P2P client running");
+		/*	OLD IMPLEMENTATION
+		System.out.println(Thread.currentThread().getName() + ": P2P/Server-Client client mode running");
 		//Connect to the server
 		System.out.println("Main_thread: connecting to the server...");
 		//Push UI state -> WAIT_FOR_CONNECTION_STATE
-		GSM.pushState(new WaitForConnectionUIState(this));
+		//GSM.pushState(new WaitForConnectionUIState(this));
 		try {
 			socket = new Socket(serverAddr , 8080);
 		} catch (IOException e) {
@@ -169,7 +163,21 @@ public class Main extends JFrame{
 		client.run();
 		// change UI state -> GAME_SETUP_STATE
 		GSM.changeState(new GameSetupUIState(this));
-				
+		*/
+		
+		//NEW IMPLEMENTATION
+		System.out.println(Thread.currentThread().getName() + ": P2P/Server-Client client mode running");
+		//Connect to the server
+		System.out.println(Thread.currentThread().getName() + ": connecting to the server...");
+		try {
+			socket = new Socket(serverAddr , 8080);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		System.out.println(Thread.currentThread().getName() + ": connection accepted");
+		//Run the game client
+		client = new GameClient(socket);
+		client.run();
 	}
 
 	public void insertBGM(String sound) {
@@ -204,9 +212,8 @@ public class Main extends JFrame{
 		revalidate();
 	}
 	
-	class SetupConnectionThread extends Thread {
+	private class SetupConnectionThread extends Thread {
 		GameServer gameServer;
-		GameClient otherClient;
 		
 		public SetupConnectionThread(GameServer gameServer) {
 			this.gameServer = gameServer;
@@ -249,6 +256,9 @@ public class Main extends JFrame{
 		protected Socket socket;
 		private PrintWriter out;
 		private BufferedReader in;
+		private CustomLock currentLock;
+		//UI field related to GameClient
+		
 		//Non-serializable field
 		protected transient MainGameUI gameUI;
 		//Global serializable field
@@ -264,33 +274,51 @@ public class Main extends JFrame{
 		
 		@Override
 		public void run() {
-			//Game logic
+			//Run background worker thread
+			new BackgroundInputReader().execute();
+			
+			//initialize();
+			/*
 			while(true) {
 				try {
 					in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-					switch(in.readLine()) {
-						case CommandString.SERVER_ANOTHER_CLIENT_NOT_AVAILABLE: //If another client has not connected to the server -> wait until another client's connection is accepted
+					System.out.println(Thread.currentThread().getName() + ": game client is running");
+					String defInput;
+					switch(defInput = in.readLine()) {
+						case CommandString.SERVER_OTHER_CLIENT_NOT_AVAILABLE: //If another client has not connected to the server -> wait until another client's connection is accepted
+							System.out.println(Thread.currentThread().getName() + ": " + defInput + " received");
+							System.out.println(Thread.currentThread().getName() + ": The other client is not available. waiting...");
 							//Push UI state -> WAIT_FOR_CONNECTION_STATE
 							GSM.pushState(new WaitForConnectionUIState(Main.this));
 							//Wait
 							//When another client connects, the server returns a string SERVER_ANOTHER_CLIENT_AVAILABLE to all clients
-							String input;
-							input = in.readLine();
-							if(input != null) {
-								while(!input.equals(CommandString.SERVER_ANOTHER_CLIENT_AVAILABLE)) {
+							String nextInput;
+							nextInput = in.readLine();
+							if(nextInput != null) {
+								while(!nextInput.equals(CommandString.SERVER_OTHER_CLIENT_AVAILABLE)) {
+									//TODO ERROR synchronization error
 									System.out.println(Thread.currentThread().getName() + ": Synchronization error!");
-									/*Invoke unsync state
-									 ...
-									 */
+									//Invoke unsync state
+									//...
 								}
 							}
+							else {
+								//TODO ERROR null message
+								System.out.println(Thread.currentThread().getName() + ": ERROR null message!");
+								break;
+							}
 							//Server is ready to start the game
-							//Change UI state -> GAME_SETUP_READY_STATE
-							//GSM.changeState();
-							//TODO To be continued
-							//
+							//Pop UI state UNTIL MAIN_GAME_STATE
+							GSM.popStateUntil(GameState.MAIN_MENU_STATE);
+							//Push GAME_SETUP_READY_STATE
+							GSM.pushState(new GameSetupReadyUIState(Main.this));
 							break;
-						case CommandString.SERVER_ANOTHER_CLIENT_AVAILABLE:
+						case CommandString.SERVER_OTHER_CLIENT_AVAILABLE:
+							//Server is ready to start the game
+							//Pop UI state UNTIL MAIN_GAME_STATE
+							GSM.popStateUntil(GameState.MAIN_MENU_STATE);
+							//Push GAME_SETUP_READY_STATE
+							GSM.pushState(new GameSetupReadyUIState(Main.this));
 							break;
 							
 							
@@ -300,6 +328,64 @@ public class Main extends JFrame{
 					e.printStackTrace();
 				}
 				
+			}
+			*/
+			
+			
+		}
+		
+		public void initialize() {
+			//Read a message from the server
+			System.out.println(Thread.currentThread().getName() + ": game client is running");
+			try {
+				out = new PrintWriter(socket.getOutputStream());
+				in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+				//Initialization phase
+				String defInput = in.readLine();
+				while(defInput != null) {
+					if (defInput.equals(CommandString.SERVER_OTHER_CLIENT_NOT_AVAILABLE)) { //If the other client has not connected to the server -> wait until another client's connection is accepted
+						System.out.println(Thread.currentThread().getName() + ": The other client is not available. waiting...");
+						SwingUtilities.invokeLater(new Runnable() {
+							@Override
+							public void run() {
+								//Push WAIT_FOR_CONNECTION_STATE
+								Main.this.GSM.pushState(new WaitForConnectionUIState(Main.this));
+							}
+						});
+						//Wait... create a separate thread to wait for an input (Not blocking EDT)
+						CustomLock inputLock = new CustomLock("inputLock");
+						//inputReaderThread = new InputReaderThread();
+						//inputReaderThread.setLock(inputLock);
+						//inputReaderThread.start();
+						synchronized(inputLock) {
+							while(!inputLock.wasSignaled()) {
+								System.out.println(SwingUtilities.isEventDispatchThread());
+								inputLock.wait();
+							}
+						}
+						//Received something -> get input from the thread
+						//defInput = inputReaderThread.getInput();
+						continue;
+					} else if (defInput.equals(CommandString.SERVER_OTHER_CLIENT_AVAILABLE)) { //If other client is already available
+						//Server is ready to start the game
+						//Pop UI state UNTIL MAIN_GAME_STATE
+						EventQueue.invokeLater(new Runnable() {
+							@Override
+							public void run() {
+								
+							}
+						});
+						GSM.popStateUntil(GameState.MAIN_MENU_STATE);
+						//Push GAME_SETUP_READY_STATE
+						GSM.pushState(new GameSetupReadyUIState(Main.this));
+						//Proceed to game setup
+					} else; //TODO Raise SynchronizationError
+				}
+				//TODO Raise NullMessageError
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
 			}
 		}
 
@@ -324,6 +410,54 @@ public class Main extends JFrame{
 			
 		}
 		
-}
+		class BackgroundInputReader extends SwingWorker<Void, String> {
+			
+			/*	The purpose of BackgroundInputReader is to delegate the input reading task to worker thread
+			 *	So that it does not block EDT
+			 *	Also responsible to update UI
+			 */
+			@Override
+			protected Void doInBackground() throws Exception {
+				//Repeatedly listen for input message
+				out = new PrintWriter(socket.getOutputStream());
+				in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+				while(true) {
+					String input = in.readLine();
+					System.out.println(Thread.currentThread().getName() + ": " + input + " received");
+					if(input != null) publish(input);
+					else; //TODO Raise NullMessageException
+				}
+					
+			}
+			
+			@Override
+			protected void process(final List<String> inputList) {
+				//Client game logic
+				System.out.println(Thread.currentThread().getName() + ": process invoked");
+				System.out.println(Thread.currentThread().getName() + ": the size of inputList is " + inputList.size());
+				switch(inputList.get(0)) {
+					case CommandString.SERVER_OTHER_CLIENT_NOT_AVAILABLE: //If another client has not connected to the server -> wait until another client's connection is accepted
+						System.out.println(Thread.currentThread().getName() + ": The other client is not available. waiting...");
+						//Push UI state -> WAIT_FOR_CONNECTION_STATE
+						GSM.pushState(new WaitForConnectionUIState(Main.this));
+						//Wait
+						//When another client connects, the server returns a string SERVER_ANOTHER_CLIENT_AVAILABLE to all clients
+						break;
+					case CommandString.SERVER_OTHER_CLIENT_AVAILABLE:
+						//Server is ready to start the game
+						//Pop UI state UNTIL MAIN_GAME_STATE
+						GSM.popStateUntil(GameState.MAIN_MENU_STATE);
+						//Push GAME_SETUP_READY_STATE
+						GSM.pushState(new GameSetupReadyUIState(Main.this));
+						break;
+						
+				}
+				
+			}
+			
+			
+		}
+		
+	}
 	
 }

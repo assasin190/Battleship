@@ -23,8 +23,15 @@ public abstract class UI implements GameState{
 	public JDialog dialog;
 	public String stateString;
 	
+	//For test purpose
+	public UI() {}
+	
 	public UI(Main main) {
 		this.main = main;
+	}
+	
+	public String getStateString() {
+		return stateString;
 	}
 	
 	//Use this method to create a JPanel with custom background paint

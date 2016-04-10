@@ -45,21 +45,34 @@ public class GameServer implements Runnable, Serializable {
 	@Override
 	public void run() {
 		System.out.println("ServerThread: Server is running...");
+		Thread.currentThread().setName("Server_thread");
 		//Create a connection thread between two clients and the server
 		try {
 			/*	Accept and start the SocketThreads
 			*	If there is a local client, firstClientSocket is accepted before the game server runs (which is always before secondClientSocket connects)
 			*	Skip the firstClientSocket acceptance if firstClientSocket is not null
-			
-			if(firstClientSocket == null) {
-				firstClientSocket = serverSocket.accept();
-			}
 			*/
+			
 			firstClientSocket = serverSocket.accept();
 			System.out.println(Thread.currentThread().getName() + ": first client connection accepted");
-			secondClientSocket = serverSocket.accept();
-			System.out.println(Thread.currentThread().getName() + ": second client connection accepted");
-			new SocketThread(secondClientSocket, this).start();
+			SocketThread socketThread1 = new SocketThread(firstClientSocket, this);
+			socketThread1.setName("Socket_thread_1");
+			//Create a lock for thread 1
+			CustomLock gameSetupReadyLock = new CustomLock("GAME_SETUP_READY_LOCK");
+			socketThread1.setLock(gameSetupReadyLock);
+			//Start the first socket thread
+			socketThread1.start();
+			synchronized(gameSetupReadyLock) {
+				//Notify waiting thread after the second client is accepted
+				secondClientSocket = serverSocket.accept();
+				System.out.println(Thread.currentThread().getName() + ": second client connection accepted");
+				gameSetupReadyLock.signal(true);
+				gameSetupReadyLock.notify();
+			}
+			Thread socketThread2 = new SocketThread(secondClientSocket, this);
+			socketThread2.setName("Socket_thread_2");
+			//Start the second socket thread
+			socketThread2.start();
 			
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
@@ -69,7 +82,7 @@ public class GameServer implements Runnable, Serializable {
 		while(true) {
 			CustomLock gameSetupLock = new CustomLock("SETUP_LOCK");
 			synchronized(gameSetupLock) {
-				while(gameSetupLock.lockCounter != 2) {
+				while(gameSetupLock.getCounter() != 2) {
 					try {
 						gameSetupLock.wait();
 					} catch (InterruptedException e) {
@@ -134,14 +147,11 @@ public class GameServer implements Runnable, Serializable {
 	}
 	
 	protected class SocketThread extends Thread {
-		/*	Thread responsible for accepting input from client
-		 *	
-		 */
 		Socket socket;
 		PrintWriter out;
 		BufferedReader in;
 		GameServer gameServer;
-		CustomLock currentLock;
+		private CustomLock currentLock;
 		
 		public SocketThread(Socket socket, GameServer gameServer) {
 			this.socket = socket;
@@ -151,14 +161,38 @@ public class GameServer implements Runnable, Serializable {
 			currentLock = newLock;
 		}
 		
+		public CustomLock getCurrentLock() {
+			return currentLock;
+		}
+		 
 		@Override
 		public void run() {
-			//Wait for input
 			while(true) {
 				String input;
 				try {
-					out = new PrintWriter(socket.getOutputStream());
+					out = new PrintWriter(socket.getOutputStream(), true);
 					in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+					System.out.println(Thread.currentThread().getName() + ": running");
+					/*	initial state
+					 * 	check for availability of the other client
+					 *  if available, write SERVER_OTHER_CLIENT_AVAILABLE;
+					 *  if not available, write SERVER_OTHER_CLIENT_NOT_AVAILABLE -> wait until available
+					 */
+					if(secondClientSocket == null) { //If the other client is not available
+						System.out.println(Thread.currentThread().getName() +": The second client is not available");
+						out.println(CommandString.SERVER_OTHER_CLIENT_NOT_AVAILABLE);
+						System.out.println(Thread.currentThread().getName() +": SERVER_OTHER_CLIENT_NOT_AVAILABLE sent");
+						synchronized(currentLock) {
+							//Wait for the other client to connect
+							//While loop prevent spurious wakeup's disturbance
+							while(!currentLock.wasSignaled()) {
+								currentLock.wait();
+							}
+							System.out.println(Thread.currentThread().getName() + ": waked");
+						}
+					}
+					out.println(CommandString.SERVER_OTHER_CLIENT_AVAILABLE);
+					
 					while((input = in.readLine()) != null) {
 						switch(input) {
 							case CommandString.CLIENT_GAME_SETUP_FINISHED: //Case client finished game setup -> increment lock counter
@@ -183,6 +217,9 @@ public class GameServer implements Runnable, Serializable {
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
 			}
 			
@@ -202,7 +239,7 @@ public class GameServer implements Runnable, Serializable {
 		//Wasteful while loop to check for two synchronizations
 		public void run() {
 			synchronized(lock) {
-				while(lock.lockCounter != 2) {
+				while(lock.getCounter() != 2) {
 					try {
 						sleep(500);
 					} catch (InterruptedException e) {
@@ -219,22 +256,4 @@ public class GameServer implements Runnable, Serializable {
 		lockCounter initial value is 0
 		lockCounter will increment after a SocketThread received "CLIENT_GAME_SETUP_FINISHED" message
 	*/
-	protected class CustomLock {
-		private int lockCounter;
-		private String lockName;
-		
-		protected CustomLock(String lockName) {
-			lockCounter = 0;
-			this.lockName = lockName;
-		}
-		
-		protected String getLockName() {
-			return lockName;
-		}
-		
-		public synchronized void incrementCounter() { 
-			lockCounter++;
-		}
-	
-	}
 }

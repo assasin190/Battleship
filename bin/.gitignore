@@ -1,3 +1,5 @@
+/Game/
 /UserInterface/
 /GameState/
-/Game/
+/TestSocketServer.class
+/TestSocketClient.class

@@ -31,9 +31,14 @@ public class MainMenuUIState extends UI {
 	public JTextField name; // Player's name
 	public ImageIcon profilePic; // Player's profile photo
 
+	//Test purpose
+	public MainMenuUIState() {
+		stateString = GameState.MAIN_MENU_STATE;
+	}
+	
 	public MainMenuUIState(Main main) {
 		super(main);
-		stateString = "MAIN_MENU_STATE";
+		stateString = GameState.MAIN_MENU_STATE;
 		ImageIcon bgIcon = createImageIcon(bg, 1024, 768);
 		Image bgImg = bgIcon.getImage();
 		panel = UI.createJPanelWithBackground(bgImg);
@@ -225,14 +230,6 @@ public class MainMenuUIState extends UI {
 				// User clicked client button
 				//Push UI state -> CONNECT_TO_SERVER_P2P_STATE
 				main.GSM.pushState(new ConnectToServerP2PUIState(MainMenuUIState.this.main));
-				//main.GSM.changeState(new ConnectToServerP2PUIState(MainMenuUIState.this.main));
-				//GameStateManager.changeState(new ConnectToServerP2PState(MainMenuUI.this.main, theFrame));
-				//popUpDialog = new ModeSelectDialog((JFrame) SwingUtilities.windowForComponent(MainMenuUI.this), "Select Mode", MainMenuUI.this.main);		
-				// Change UI state -> CONNECT_TO_SERVER_P2P_STATE
-				//GameStateManager.changeState(new ConnectToServerP2PState(MainMenuUI.this.main, theFrame));
-				// popUpDialog = new ModeSelectDialog((JFrame)
-				// SwingUtilities.windowForComponent(MainMenuUI.this), "Select
-				// Mode", MainMenuUI.this.main);
 
 			}
 		});
@@ -259,7 +256,6 @@ public class MainMenuUIState extends UI {
 		bg = imgIndex;
 		panelSetting.repaint();
 		System.out.println("repaint invoke");
-		//MainMenuUI.this.repaint();
 	}
 	
 	
