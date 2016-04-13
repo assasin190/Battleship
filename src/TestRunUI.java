@@ -18,9 +18,10 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.ListCellRenderer;
 
-import UserInterface.GameSetupUIState;
-import UserInterface.GameUIState;
-import UserInterface.TestUI;
+import userInterface.GameSetupUIState;
+import userInterface.GameUIState;
+import userInterface.TestUI;
+
 import java.awt.Choice;
 import java.awt.Component;
 

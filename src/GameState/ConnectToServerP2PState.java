@@ -1,8 +1,9 @@
 package GameState;
 
 import javax.swing.JFrame;
-import Game.Main;
-import UserInterface.ConnectToServerP2PUIState;
+
+import game.Main;
+import userInterface.ConnectToServerP2PUIState;
 
 public class ConnectToServerP2PState implements GameState {
 	JFrame frame;

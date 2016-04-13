@@ -1,4 +1,4 @@
-package UserInterface;
+package userInterface;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -22,17 +22,17 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.ListCellRenderer;
 
-import UserInterface.GameSetupUIState;
-import UserInterface.GameUIState;
-import UserInterface.TestUI;
+import game.Main;
+import userInterface.GameSetupUIState;
+import userInterface.GameUIState;
+import userInterface.TestUI;
+
 import java.awt.Choice;
 import java.awt.Component;
 
 import javax.swing.JComboBox;
 import javax.swing.JButton;
 import javax.swing.SwingConstants;
-
-import Game.Main;
 
 public class ChangeBgDialog extends JPanel {
 	public static final String[] IMAGES = new String[] { "Bg-play.png", "Bg-play2.png", "Bg-play3.png",

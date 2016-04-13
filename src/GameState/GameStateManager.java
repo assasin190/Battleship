@@ -4,8 +4,9 @@ import java.util.HashMap;
 import java.util.Stack;
 
 import javax.swing.JFrame;
-import Game.Main;
-import UserInterface.UI;
+
+import game.Main;
+import userInterface.UI;
 
 public class GameStateManager {
 	
@@ -30,7 +31,6 @@ public class GameStateManager {
 	}
 	
 	//Pop the stackedGameState until the destination state is met
-	//Note: only leaving() is called for each state pop
 	public void popStateUntil(String destStateString) {
 		//If already at destination state, do nothing
 		if(((UI)stackedGameState.peek()).getStateString().equals(destStateString)) return;
@@ -39,8 +39,8 @@ public class GameStateManager {
 		while(!((UI)stackedGameState.peek()).getStateString().equals(destStateString)) {
 			stackedGameState.pop().leaving();
 		}
-		//Enter the destination state
-		stackedGameState.peek().entered();
+		//Reveal the destination state
+		stackedGameState.peek().revealed();
 	}
 	
 	//Used only the first time (When stackedCurrentState is empty)

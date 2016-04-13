@@ -1,4 +1,4 @@
-package UserInterface;
+package userInterface;
 
 import javax.swing.JPanel;
 import java.awt.GridLayout;
@@ -8,6 +8,7 @@ import java.awt.Dimension;
 
 import javax.swing.JButton;
 import javax.imageio.ImageIO;
+import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -25,9 +26,16 @@ import javax.swing.JFormattedTextField;
 import javax.swing.JTextPane;
 import javax.swing.border.LineBorder;
 
-import Game.Main;
-
+import game.Main;
+import game.Ship;
+import game.Square;
+import GameState.GameState;
 import java.awt.SystemColor;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionListener;
 import java.io.File;
 import java.io.IOException;
 
@@ -37,10 +45,19 @@ import javax.swing.border.CompoundBorder;
 public class GameSetupUIState extends UI {
 	
 	public JPanel panel;
-	public JLabel [][] board;
+	public SquareLabel [][] boardLabel;
+	//Ship setting
+	public SquareLabel [] highlighting;
+	public boolean shipPlacingEnabled;
+	public String shipPlacingDirection;
+	public int shipNumber;
 
 	public GameSetupUIState(Main main) {
 		super(main);
+		stateString = GameState.GAME_SETUP_STATE;
+		shipPlacingEnabled = false;
+		shipPlacingDirection = "down";
+		shipNumber = 0;
 		initialize();
 	}
 	
@@ -128,8 +145,90 @@ public class GameSetupUIState extends UI {
 		leftCol.add(bottomP1 , BorderLayout.SOUTH);
 		GridLayout tableLayout = new GridLayout(8,8);
 		player1.setLayout(tableLayout);
-		for(int i =0; i<64; i++) {
-			player1.add( new JButton(""));
+		//Create JLabel for each square
+		
+		boardLabel = new SquareLabel [8][8];
+		for(int y=0; y<8; y++) {
+			for(int x=0; x<8; x++) {
+				SquareLabel squareLabel = new SquareLabel("0");
+				squareLabel.setName(y + "," + x);
+				squareLabel.setIndex();
+				squareLabel.setSquare();
+				squareLabel.setHorizontalAlignment(SwingConstants.CENTER);
+				squareLabel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+				
+				squareLabel.addMouseListener(new MouseAdapter() {
+					//Mouse clicked
+					@Override
+					public void mouseClicked(MouseEvent e) {
+						if(isShipPlacingEnabled()) {
+							if(e.getButton() == MouseEvent.BUTTON3) { //If it is a right button click
+								if(shipPlacingDirection.equals("down")) {
+									shipPlacingDirection = "right";
+									//Re-invoke mouse exited and entered on e
+									mouseExited(e);
+									mouseEntered(e);
+								} else {
+									shipPlacingDirection = "down";
+									mouseExited(e);
+									mouseEntered(e);
+								}
+							} else { //If it is a left click
+								//Check if any of the label in highlighting is occupied
+								if(main.client.boardGame.checkOccupation(highlighting)) { //If one of them already occupied, do nothing
+									return;
+								}
+								//Create a ship on those squares
+								Ship ship = new Ship(shipNumber);
+								//Set ship on board game
+								boolean success = main.client.boardGame.setShip(ship, shipNumber, highlighting);
+								if(success) { //Success -> set ship graphically
+									for(SquareLabel label: highlighting) {
+										//TODO set ship icon on the board game
+										label.setText("1");
+									}
+									//Re-invoke mouse exited on e
+									mouseExited(e);
+									setShipPlacingEnabled(false);
+								}
+							}
+						}
+						//Else do nothing
+					}
+					
+					//Mouse entered a JLabel
+					@Override
+					public void mouseEntered(MouseEvent e) {
+						SquareLabel squareLabel = (SquareLabel) e.getSource();
+						if(isShipPlacingEnabled()) { //If placing mode is enabled
+							//Search for eligible label to hightlight
+							//Check if any of the label in highlighting is occupied
+							highlighting = searchForEligibleHighlightLabel(squareLabel);
+							if(main.client.boardGame.checkOccupation(highlighting)) { //If one of them already occupied, do nothing
+								return;
+							}
+							//Else do highlighting
+							for(SquareLabel label : highlighting) {
+								label.setBorder(BorderFactory.createLineBorder(Color.RED, 3));
+							}
+						}
+					}
+					
+					//Mouse left a JLabel
+					@Override
+					public void mouseExited(MouseEvent e) {
+						SquareLabel squareLabel = (SquareLabel) e.getSource();
+						if(isShipPlacingEnabled()) { //If placing mode is enabled
+							//Remove highlight from highlighted labels
+							for(SquareLabel label : highlighting) {
+								label.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+							}
+						}
+					}
+				});
+				boardLabel[y][x] = squareLabel;
+				player1.add(squareLabel);
+			}
 		}
 		
 		/*CENTER GAP*/
@@ -276,10 +375,6 @@ public class GameSetupUIState extends UI {
 		randomButton.setPreferredSize(new Dimension(190, 30));
 		buttonPanel.add(randomButton, BorderLayout.SOUTH);
 		
-		
-	
-		
-		
 		/*SHIP PANEL*/
 		
 //		logo.setIcon ( new ImageIcon ( "logo.png" ) );
@@ -290,14 +385,78 @@ public class GameSetupUIState extends UI {
 		shipPanel.setPreferredSize(new Dimension(300,150));
 		player2.add(shipPanel, BorderLayout.SOUTH);
 		shipPanel.setLayout(new GridLayout(4, 0, 0, 0));
-		JButton ship1 = new JButton("");
+		JButton ship1 = new JButton("ship1");
+		ship1.setName("ship1");
 		ship1.setIcon(new ImageIcon("ship1.gif"));
-		JButton ship2 = new JButton("");
+		ship1.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JButton shipLabel = (JButton) e.getSource();
+				//Set ship number
+				shipNumber = Integer.parseInt(shipLabel.getName().substring(shipLabel.getName().length()-1)) - 1;
+				//Clear ship occupation
+				Ship ship = main.client.boardGame.getShip(shipNumber);
+				if(ship != null) { //If there are already ship1 set, clear the occupation
+					main.client.boardGame.clearOccupation(ship);
+				}
+				//Enable ship placing mode
+				setShipPlacingEnabled(true);
+			}
+		});
+		JButton ship2 = new JButton("ship2");
+		ship2.setName("ship2");
 		ship2.setIcon(new ImageIcon("ship2.gif"));
+		ship2.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JButton shipLabel = (JButton) e.getSource();
+				//Set ship number
+				shipNumber = Integer.parseInt(shipLabel.getName().substring(shipLabel.getName().length()-1)) - 1;
+				//Clear ship occupation
+				Ship ship = main.client.boardGame.getShip(shipNumber);
+				if(ship != null) { //If there are already ship1 set, clear the occupation
+					main.client.boardGame.clearOccupation(ship);
+				}
+				//Enable ship placing mode
+				setShipPlacingEnabled(true);
+			}
+		});
 		JButton ship3 = new JButton("");
+		ship3.setName("ship3");
 		ship3.setIcon(new ImageIcon("ship3.gif"));
+		ship3.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JButton shipLabel = (JButton) e.getSource();
+				//Set ship number
+				shipNumber = Integer.parseInt(shipLabel.getName().substring(shipLabel.getName().length()-1)) - 1;
+				//Clear ship occupation
+				Ship ship = main.client.boardGame.getShip(shipNumber);
+				if(ship != null) { //If there are already ship1 set, clear the occupation
+					main.client.boardGame.clearOccupation(ship);
+				}
+				//Enable ship placing mode
+				setShipPlacingEnabled(true);
+			}
+		});
 		JButton ship4 = new JButton("");
+		ship4.setName("ship4");
 		ship4.setIcon(new ImageIcon("ship4.gif"));
+		ship4.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JButton shipLabel = (JButton) e.getSource();
+				//Set ship number
+				shipNumber = Integer.parseInt(shipLabel.getName().substring(shipLabel.getName().length()-1)) - 1;
+				//Clear ship occupation
+				Ship ship = main.client.boardGame.getShip(shipNumber);
+				if(ship != null) { //If there are already ship1 set, clear the occupation
+					main.client.boardGame.clearOccupation(ship);
+				}
+				//Enable ship placing mode
+				setShipPlacingEnabled(true);
+			}
+		});
 
 		shipPanel.add(ship1);
 		shipPanel.add(ship2);
@@ -328,6 +487,32 @@ public class GameSetupUIState extends UI {
 		panel.add(bottom, BorderLayout.SOUTH);
 	}
 	
+	public SquareLabel[] searchForEligibleHighlightLabel(SquareLabel startingLabel) {
+		int y = startingLabel.getYIndex();
+		int x = startingLabel.getXIndex();
+		//Find down/right label that don't cause IndexOutOfBoundError
+		if(shipPlacingDirection.equals("down")) {
+			if(y + 3 <= 7) { //If y index doesn't go over 7
+				return new SquareLabel []{boardLabel[y][x], boardLabel[y+1][x], boardLabel[y+2][x], boardLabel[y+3][x]};
+			} else { //Return label of [4][x], [5][x], [6][x], [7][x];
+				return new SquareLabel []{boardLabel[4][x], boardLabel[5][x], boardLabel[6][x], boardLabel[7][x]};
+			}
+		} else { //shipPlacing is in right direction
+			if(x +3 <= 7) { //If y index doesn't go over 7
+				return new SquareLabel []{boardLabel[y][x], boardLabel[y][x+1], boardLabel[y][x+2], boardLabel[y][x+3]};
+			} else { //Return label of [y][4], [y][5], [y][6], [y][7]
+				return new SquareLabel []{boardLabel[y][4], boardLabel[y][5], boardLabel[y][6], boardLabel[y][7]};
+			}
+		}
+	}
+	
+	public void setShipPlacingEnabled(boolean setting) {
+		shipPlacingEnabled = setting;
+	}
+	
+	public boolean isShipPlacingEnabled() {
+		return shipPlacingEnabled;
+	}
 	
 	public static ImageIcon createImageIcon(String path, int width, int height) {
 		Image img = null;
@@ -365,5 +550,48 @@ public class GameSetupUIState extends UI {
 		System.out.println(Thread.currentThread().getName() + ": " + stateString + " resumed");
 		
 	}
-
+	
+	public class SquareLabel extends JLabel {
+		int x;
+		int y;
+		boolean shipPlacingEnabled;
+		boolean MarkingEnabled;
+		Square square;
+		
+		public SquareLabel(String text) {
+			super(text);
+		}
+		
+		public void setIndex() {
+			String[] splitted = getName().split(",");
+			y = Integer.parseInt(splitted[0]);
+			x = Integer.parseInt(splitted[1]);
+		}
+		
+		public void setSquare() {
+			square = main.client.boardGame.getBoard()[y][x];
+			square.setSquareLabel(this);
+		}
+		
+		public void setShipPlacingEnabled(boolean shipPlacingEnabled) {
+			this.shipPlacingEnabled = shipPlacingEnabled;
+		}
+		
+		public boolean isShipPlacingEnabled() {
+			return shipPlacingEnabled;
+		}
+		
+		public int getXIndex() {
+			return x;
+		}
+		
+		public int getYIndex() {
+			return y;
+		}
+		
+		public Square getSquare() {
+			return this.square;
+		}
+	}
+	
 }

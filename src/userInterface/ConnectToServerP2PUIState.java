@@ -1,4 +1,4 @@
-package UserInterface;
+package userInterface;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -14,9 +14,9 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import Game.Main;
 import GameState.GameState;
 import GameState.GameStateManager;
+import game.Main;
 
 public class ConnectToServerP2PUIState extends UI {
 	public JTextField ipTextField;

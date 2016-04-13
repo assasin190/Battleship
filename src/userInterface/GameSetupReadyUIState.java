@@ -1,4 +1,4 @@
-package UserInterface;
+package userInterface;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -11,8 +11,8 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
-import Game.Main;
 import GameState.GameState;
+import game.Main;
 
 public class GameSetupReadyUIState extends UI {
 	public JDialog dialog;

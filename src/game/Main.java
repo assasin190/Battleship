@@ -1,4 +1,4 @@
-package Game;
+package game;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.io.BufferedReader;
@@ -26,12 +26,12 @@ import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 
 import GameState.*;
-import UserInterface.GameSetupReadyUIState;
-import UserInterface.GameUIState;
-import UserInterface.GameSetupUIState;
-import UserInterface.MainMenuUIState;
-import UserInterface.UI;
-import UserInterface.WaitForConnectionUIState;
+import userInterface.GameSetupReadyUIState;
+import userInterface.GameSetupUIState;
+import userInterface.GameUIState;
+import userInterface.MainMenuUIState;
+import userInterface.UI;
+import userInterface.WaitForConnectionUIState;
 
 public class Main extends JFrame {
 	//public JFrame frame;
@@ -263,8 +263,8 @@ public class Main extends JFrame {
 		//Non-serializable field
 		protected transient GameSetupUIState gameUI;
 		//Global serializable field
-		private Player player;
-		private BoardGame boardGame;
+		public Player player;
+		public BoardGame boardGame;
 		public boolean isYourTurn;
 		protected boolean isWithLocalServer = false;
 		private String playerState;
@@ -482,7 +482,7 @@ public class Main extends JFrame {
 						GSM.popStateUntil(GameState.MAIN_MENU_STATE);
 						//Change UI state -> GAME_SETUP_UI_STATE
 						gameSetupUI = new GameSetupUIState(Main.this);
-						GSM.pushState(gameSetupUI);
+						GSM.changeState(gameSetupUI);
 						playerState = PlayerState.START_GAME_SETUP;
 						out.println(CommandString.CLIENT_START_GAME_SETUP);
 				}

@@ -1,4 +1,4 @@
-package UserInterface;
+package userInterface;
 
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -6,8 +6,9 @@ import java.awt.Image;
 
 import javax.swing.JDialog;
 import javax.swing.JPanel;
-import Game.Main;
+
 import GameState.GameState;
+import game.Main;
 
 public abstract class UI implements GameState{
 	/* Abstract base class for all UI classes

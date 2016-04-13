@@ -1,9 +1,9 @@
-package Game;
+package game;
 
 import java.net.Socket;
 
-import UserInterface.GameUIState;
-import UserInterface.GameSetupUIState;
+import userInterface.GameSetupUIState;
+import userInterface.GameUIState;
 
 public class GameClient implements Runnable {
 		//P2P case field

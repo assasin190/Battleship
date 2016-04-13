@@ -1,16 +1,21 @@
-package Game;
+package game;
 
-import Game.Square;
+import game.Square;
+import userInterface.GameSetupUIState.SquareLabel;
 
 public class Ship {
-	Square [] occupation;
+	public Square [] occupation;
+	public boolean isSunk;
+	public int shipNumber;
 	
-	public Ship() {
-		
+	public Ship(int shipNumber) {
+		occupation = new Square[4];
+		this.shipNumber = shipNumber;
 	}
 	
-	public void setOccupation() {
-		
+	public void setOccupation(Square[] occupation) {
+		this.occupation = occupation;
 	}
+	
 	
 }

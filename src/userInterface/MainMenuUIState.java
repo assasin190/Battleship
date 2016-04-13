@@ -1,4 +1,4 @@
-package UserInterface;
+package userInterface;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -12,10 +12,10 @@ import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
 
-import Game.Main;
 import GameState.ConnectToServerP2PState;
 import GameState.GameState;
 import GameState.GameStateManager;
+import game.Main;
 
 import java.awt.Font;
 import java.awt.Graphics;
@@ -272,14 +272,14 @@ public class MainMenuUIState extends UI {
 
 	@Override
 	public void entered() {
-		System.out.println(Thread.currentThread().getName() + ": " + stateString);
+		System.out.println(Thread.currentThread().getName() + ": entered " + stateString);
 		main.replaceCurrentPanel(panel);
 	}
 
 	@Override
 	public void leaving() {
 		//Buffer the MAIN_MENU_STATE
-		System.out.println(Thread.currentThread().getName() + ": " + stateString);
+		System.out.println(Thread.currentThread().getName() + ": leaving " + stateString);
 		main.getContentPane().remove(main.currentStatePanel);
 		//main.GSM.storeBufferedState(GameStateManager.MAIN_MENU_STATE, this);
 		

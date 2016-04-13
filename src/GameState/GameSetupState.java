@@ -2,8 +2,8 @@ package GameState;
 
 import javax.swing.JPanel;
 
-import Game.Main;
-import UserInterface.GameUIState;
+import game.Main;
+import userInterface.GameUIState;
 
 public class GameSetupState implements GameState{
 	

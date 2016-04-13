@@ -1,4 +1,4 @@
-package UserInterface;
+package userInterface;
 
 import javax.swing.JPanel;
 import java.awt.GridLayout;
@@ -26,9 +26,9 @@ import javax.swing.JFormattedTextField;
 import javax.swing.JTextPane;
 import javax.swing.border.LineBorder;
 
-import Game.Main;
 import GameState.GameState;
 import GameState.GameStateManager;
+import game.Main;
 
 import java.awt.SystemColor;
 import java.awt.Toolkit;
@@ -140,6 +140,7 @@ public class GameUIState extends UI {
 				 public void mouseClicked(MouseEvent e) {
 					 String name = ((JLabel)e.getComponent()).getName();
 					 int index = Integer.parseInt(name);
+					 System.out.println("Clicked!");
 					 L[index].setText("1");
 				 }
 			 });

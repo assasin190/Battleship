@@ -1,12 +1,13 @@
-package UserInterface;
+package userInterface;
 
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.SwingUtilities;
-import Game.Main;
+
 import GameState.GameState;
+import game.Main;
 
 public class WaitForConnectionUIState extends UI {
 	

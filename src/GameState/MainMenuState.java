@@ -2,8 +2,8 @@ package GameState;
 
 import javax.swing.JFrame;
 
-import Game.Main;
-import UserInterface.MainMenuUIState;
+import game.Main;
+import userInterface.MainMenuUIState;
 
 public class MainMenuState implements GameState{
 	
