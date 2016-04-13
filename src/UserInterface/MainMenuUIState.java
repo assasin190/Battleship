@@ -272,14 +272,14 @@ public class MainMenuUIState extends UI {
 
 	@Override
 	public void entered() {
-		System.out.println("Main_thread: entered " + stateString);
+		System.out.println(Thread.currentThread().getName() + ": " + stateString);
 		main.replaceCurrentPanel(panel);
 	}
 
 	@Override
 	public void leaving() {
 		//Buffer the MAIN_MENU_STATE
-		System.out.println("Main_thread: leaving " + stateString);
+		System.out.println(Thread.currentThread().getName() + ": " + stateString);
 		main.getContentPane().remove(main.currentStatePanel);
 		//main.GSM.storeBufferedState(GameStateManager.MAIN_MENU_STATE, this);
 		
@@ -287,14 +287,14 @@ public class MainMenuUIState extends UI {
 
 	@Override
 	public void obscuring() {
-		System.out.println("Main_thread: " + stateString + " stacked");
+		System.out.println(Thread.currentThread().getName() + ": " + stateString + " being stacked");
 		main.setEnabled(false);
 		
 	}
 
 	@Override
 	public void revealed() {
-		System.out.println("Main_thread: " + stateString + " resumed");
+		System.out.println(Thread.currentThread().getName() + ": " + stateString + " resumed");
 		main.setEnabled(true);
 		
 	}

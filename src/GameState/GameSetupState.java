@@ -3,7 +3,7 @@ package GameState;
 import javax.swing.JPanel;
 
 import Game.Main;
-import UserInterface.GameSetupUIState;
+import UserInterface.GameUIState;
 
 public class GameSetupState implements GameState{
 	
@@ -17,6 +17,18 @@ public class GameSetupState implements GameState{
 
 	@Override
 	public void leaving() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void obscuring() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void revealed() {
 		// TODO Auto-generated method stub
 		
 	}

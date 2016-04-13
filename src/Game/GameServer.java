@@ -14,7 +14,6 @@ public class GameServer implements Runnable, Serializable {
 	private ObjectOutputStream oos;
 	private OutputStream out;
 	private InputStream in;
-	protected CustomLock gameSetupLock;
 	//private ObjectInputStream ois;
 	//private ObjectOutputStream oos;
 	//Game attributes
@@ -57,41 +56,45 @@ public class GameServer implements Runnable, Serializable {
 			System.out.println(Thread.currentThread().getName() + ": first client connection accepted");
 			SocketThread socketThread1 = new SocketThread(firstClientSocket, this);
 			socketThread1.setName("Socket_thread_1");
-			//Create a lock for thread 1
-			CustomLock gameSetupReadyLock = new CustomLock("GAME_SETUP_READY_LOCK");
-			socketThread1.setLock(gameSetupReadyLock);
+			//Create an initial phase lock for thread 1
+			CustomLock waitForOtherConnectionLock = new CustomLock(CustomLock.WAIT_FOR_OTHER_CONNECTION_LOCK);
+			socketThread1.setLock(waitForOtherConnectionLock);
 			//Start the first socket thread
 			socketThread1.start();
-			synchronized(gameSetupReadyLock) {
+			synchronized(waitForOtherConnectionLock) {
 				//Notify waiting thread after the second client is accepted
 				secondClientSocket = serverSocket.accept();
 				System.out.println(Thread.currentThread().getName() + ": second client connection accepted");
-				gameSetupReadyLock.signal(true);
-				gameSetupReadyLock.notify();
+				waitForOtherConnectionLock.signal(true);
+				waitForOtherConnectionLock.notify();
 			}
-			Thread socketThread2 = new SocketThread(secondClientSocket, this);
+			SocketThread socketThread2 = new SocketThread(secondClientSocket, this);
 			socketThread2.setName("Socket_thread_2");
 			//Start the second socket thread
 			socketThread2.start();
+			//Set GAME_SETUP_LOCK
+			CustomLock gameSetupReadyLock = new CustomLock("GAME_SETUP_READY_LOCK");
+			socketThread1.setLock(gameSetupReadyLock);
+			socketThread2.setLock(gameSetupReadyLock);
+			synchronized(gameSetupReadyLock) {
+				while(gameSetupReadyLock.getCounter() != 2) {
+					gameSetupReadyLock.wait();
+					System.out.println(Thread.currentThread().getName() + ": setup lock waked " + gameSetupReadyLock.getCounter() + " time");
+				}
+			}
+			//Write via sockets
+			socketThread1.writeViaSocket(CommandString.SERVER_START_GAME_SETUP);
+			socketThread2.writeViaSocket(CommandString.SERVER_START_GAME_SETUP);
+			//Set next lock
 			
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
+		} catch (InterruptedException e) {
+			
 		}
-		//Wait for setup
-		while(true) {
-			CustomLock gameSetupLock = new CustomLock("SETUP_LOCK");
-			synchronized(gameSetupLock) {
-				while(gameSetupLock.getCounter() != 2) {
-					try {
-						gameSetupLock.wait();
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					}
-				}
-			}
-		}
-		
+		//Wait for game setup
+		System.out.println(Thread.currentThread().getName() + ": game setup lock BROKEN");
 		
 	}
 
@@ -164,6 +167,10 @@ public class GameServer implements Runnable, Serializable {
 		public CustomLock getCurrentLock() {
 			return currentLock;
 		}
+		
+		public void writeViaSocket(String string) {
+			out.println(string);
+		}
 		 
 		@Override
 		public void run() {
@@ -175,8 +182,8 @@ public class GameServer implements Runnable, Serializable {
 					System.out.println(Thread.currentThread().getName() + ": running");
 					/*	initial state
 					 * 	check for availability of the other client
-					 *  if available, write SERVER_OTHER_CLIENT_AVAILABLE;
-					 *  if not available, write SERVER_OTHER_CLIENT_NOT_AVAILABLE -> wait until available
+					 *  if available, print SERVER_OTHER_CLIENT_AVAILABLE;
+					 *  if not available, print SERVER_OTHER_CLIENT_NOT_AVAILABLE -> wait until available
 					 */
 					if(secondClientSocket == null) { //If the other client is not available
 						System.out.println(Thread.currentThread().getName() +": The second client is not available");
@@ -193,27 +200,34 @@ public class GameServer implements Runnable, Serializable {
 					}
 					out.println(CommandString.SERVER_OTHER_CLIENT_AVAILABLE);
 					
+					//Server logic
 					while((input = in.readLine()) != null) {
+						System.out.println(Thread.currentThread().getName() + ": " + input + " received");
 						switch(input) {
-							case CommandString.CLIENT_GAME_SETUP_FINISHED: //Case client finished game setup -> increment lock counter
+							case CommandString.CLIENT_GAME_SETUP_READY: //Client ready to start game setup -> increment lock counter
 								//Verify current lock
-								if(currentLock.getLockName().equals("SETUP_LOCK")) {
-									currentLock.incrementCounter();
+								if(currentLock.getLockName().equals(CustomLock.GAME_SETUP_READY_LOCK)) {
+									synchronized(currentLock) {
+										currentLock.incrementCounter();
+										currentLock.notify();
+									}
+									break;
+								} else { //Invalid lock
+									System.out.println("Invalid lock, not a " + CustomLock.GAME_SETUP_READY_LOCK + "...");
 									break;
 								}
-								else { //Invalid lock
-									System.out.println("Invalid lock, not a SETUP_LOCK...");
-									break;
+							case CommandString.CLIENT_GAME_START_READY: //Client finished game setup, ready to start the game -> increment lock counter
+								//Verify current lock
+								if(currentLock.getLockName().equals(CustomLock.GAME_START_READY_LOCK)) {
+									//...
+								} else { //Invalid lock
+									
 								}
-							case CommandString.CLIENT_GAME_START_READY:
-								//Start the game
 								
 						}
 						//Send input to GameServer
 						//gameServer.validateInput(input);
 					}
-					in.close();
-					out.close();
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

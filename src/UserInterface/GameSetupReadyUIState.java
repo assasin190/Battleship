@@ -2,6 +2,9 @@ package UserInterface;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
@@ -13,6 +16,7 @@ import GameState.GameState;
 
 public class GameSetupReadyUIState extends UI {
 	public JDialog dialog;
+	public JButton readyBtn;
 	
 	public GameSetupReadyUIState() {
 		stateString = GameState.GAME_SETUP_READY_UI_STATE;
@@ -32,9 +36,18 @@ public class GameSetupReadyUIState extends UI {
 	private void initialize() {
 		dialog.getContentPane().setLayout(new BorderLayout());
 		JLabel label = new JLabel("Press ready to start the game", SwingConstants.CENTER);
-		JButton ready = new JButton("Ready");
+		readyBtn = new JButton("Ready");
+		readyBtn.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				main.client.startGameSetup();
+				readyBtn.setText("Waiting for your opponent...");
+				readyBtn.setEnabled(false);
+				
+			}
+		});
 		dialog.getContentPane().add(label, BorderLayout.NORTH);
-		dialog.getContentPane().add(ready, BorderLayout.SOUTH);
+		dialog.getContentPane().add(readyBtn, BorderLayout.SOUTH);
 		dialog.pack();
 	}
 	

@@ -5,6 +5,10 @@ public class CustomLock {
 	private String lockName;
 	private boolean wasSignaled;
 	
+	public static final String WAIT_FOR_OTHER_CONNECTION_LOCK = "WAIT_FOR_OTHER_CONNECTION_LOCK";
+	public static final String GAME_SETUP_READY_LOCK = "GAME_SETUP_READY_LOCK";
+	public static final String GAME_START_READY_LOCK = "GAME_START_READY_LOCK";
+	
 	protected CustomLock() {
 		lockCounter = 0;
 		wasSignaled = false;
