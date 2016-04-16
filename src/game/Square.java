@@ -13,7 +13,7 @@ public class Square implements Serializable {
 	private static final long serialVersionUID = 7539706428845824277L;
 	protected int x;
 	protected int y;
-	protected boolean Marked;
+	protected boolean marked;
 	protected boolean occupied;
 	protected Ship occupyingShip;
 	//Non-serializable
@@ -22,7 +22,7 @@ public class Square implements Serializable {
 	public Square(int y, int x) {
 		this.y = y;
 		this.x = x;
-		Marked = false;
+		marked = false;
 		occupied = false;
 	}
 	public void setOccupyingShip(Ship ship) {
@@ -36,6 +36,10 @@ public class Square implements Serializable {
 	
 	public boolean isOccupied() {
 		return occupied;
+	}
+	
+	public SquareLabel getSquareLabel() {
+		return label;
 	}
 	
 	public int getY() {

@@ -22,7 +22,9 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
@@ -266,6 +268,7 @@ public class Main extends JFrame {
 		protected GameSetupUIState gameSetupUI;
 		protected GameUIState gameUI;
 		protected boolean myTurn;
+		protected int score;
 		//UI field related to GameClient
 		
 		//Global serializable field
@@ -278,6 +281,7 @@ public class Main extends JFrame {
 			this.socket = socket;
 			playerState = PlayerState.NULL_STATE;
 			myTurn = false;
+			score = 0;
 			//Create a board game
 			boardGame = new BoardGame();
 			
@@ -364,7 +368,10 @@ public class Main extends JFrame {
 		}
 		
 		public void mark(int y, int x) {
-			
+			//Mark the square y,x
+			out.println("MARK_" + y + "," + x);
+			playerState = PlayerState.IDLE;
+			myTurn = false;
 		}
 		
 		public boolean isMyTurn() {
@@ -534,6 +541,56 @@ public class Main extends JFrame {
 								playerState = PlayerState.PLAYING;
 								myTurn = true;
 								break;
+							}
+						case CommandString.SERVER_INDICATE_YOU_WIN: //You won the game
+							//TEST
+							JOptionPane.showMessageDialog(Main.this, "Congratulations! You win the game.");
+						default:
+							if(input.indexOf("RETURN_MARK") != -1) {
+								String index = input.substring(input.indexOf("_", input.indexOf("_") + 1) + 1, input.indexOf(",") + 2);
+								int y = Integer.parseInt(index.substring(0, 1));
+								int x = Integer.parseInt(index.substring(2));
+								boolean sunk = Boolean.parseBoolean(input.substring(input.lastIndexOf(",") + 1));
+								String sub = input.substring(0, input.lastIndexOf(","));
+								System.out.println("sub: " + sub);
+								boolean hit = Boolean.parseBoolean(sub.substring(sub.lastIndexOf("_") + 1));
+								System.out.println("hit: " + hit);
+								System.out.println("sunk: " + sunk);
+								if(hit) { //If hit
+									client.boardGame.board[y][x].marked = true;
+									score++;
+									//Update UI (hit)
+									gameUI.boardLabel[y][x].setText("o");
+								} else { //If not hit
+									client.boardGame.board[y][x].marked = true;
+									//Update UI (not hit)
+									gameUI.boardLabel[y][x].setText("x");
+								}
+								//TODO if enemy ship sunk
+								
+							} else if(input.indexOf("MARK") != -1) {
+								String index = input.substring(input.indexOf("_") + 1);
+								int y = Integer.parseInt(index.substring(0, 1));
+								int x = Integer.parseInt(index.substring(2));
+								boolean[] hitSunk = boardGame.fireShot(y, x);
+								boolean hit = hitSunk[0];
+								boolean sunk = hitSunk[1];
+								boolean lose = hitSunk[2];
+								//TODO Update UI
+								if(hit) {
+									gameUI.myBoardLabel[y][x].setText("o");
+								} else gameUI.myBoardLabel[y][x].setText("x");
+								//TODO check if the player won the game
+								out.println("RETURN_MARK_" + y + "," + x + "_" + hit + "," + sunk);
+								//If the player already loses the game
+								if(lose) {
+									out.println(CommandString.CLIENT_LOSE);
+									//TEST
+									JOptionPane.showMessageDialog(Main.this, "You lose the game.");
+								}
+								//It is your turn, change the state to playing
+								playerState = PlayerState.PLAYING;
+								myTurn = true;
 							}
 					}
 				}

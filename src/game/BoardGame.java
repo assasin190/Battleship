@@ -10,8 +10,8 @@ public class BoardGame implements Serializable{
 	 * 
 	 */
 	private static final long serialVersionUID = -6942097824451874494L;
-	private Square [][] board;
-	private Ship [] ships;
+	protected Square [][] board;
+	protected Ship [] ships;
 	
 	/*	a Board Game contains 4 ships
 	 * 	
@@ -72,7 +72,7 @@ public class BoardGame implements Serializable{
 		for(Square square : occupation) {
 			square.occupied = false;
 			//Remove ship graphically
-			square.label.setText("0");
+			square.label.setText("");
 		}
 	}
 	
@@ -87,6 +87,25 @@ public class BoardGame implements Serializable{
 		return false;
 		//If hit return true
 		//If not hit return false
+	}
+	
+	public boolean[] fireShot(int y, int x) { //Called when the opponent fireshot on a square
+		Square square = board[y][x];
+		boolean[] hitSunk = new boolean[3];
+		if(square.isOccupied()) { //If the square is already occupied by a ship
+			square.marked = true;
+			hitSunk[0] = true;
+			//Check if the ship is sunk/destroyed
+			if(square.occupyingShip.isSunk()) {
+				hitSunk[1] = true;
+				//Check if the player loses
+				for(Ship ship : ships) {
+					if(!ship.isSunk()) hitSunk[2] = false;
+					else hitSunk[2] = true;				
+				}
+			}
+		}
+		return hitSunk;
 	}
 	
 	

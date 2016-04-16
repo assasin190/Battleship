@@ -12,7 +12,7 @@ public class Ship implements Serializable {
 	 */
 	private static final long serialVersionUID = -651467608234216669L;
 	public Square [] occupancy;
-	public boolean isSunk;
+	public boolean sunk;
 	public int shipNumber;
 	
 	public Ship(int shipNumber) {
@@ -26,6 +26,14 @@ public class Ship implements Serializable {
 	
 	public Square[] getOccupancy() {
 		return occupancy;
+	}
+	
+	public boolean isSunk() {
+		for(Square square : occupancy) {
+			if(!square.marked) return false;
+		}
+		System.out.println(Thread.currentThread().getName() + ": ship " + shipNumber + " has been sunk!" );
+		return true;
 	}
 	
 }

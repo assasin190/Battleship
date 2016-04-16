@@ -153,8 +153,8 @@ public class GameUIState extends UI {
 							SquareLabel squareLabel = (SquareLabel) e.getSource();
 							int y = squareLabel.y;
 							int x = squareLabel.x;
-							squareLabel.setText("x");
 							main.client.mark(y, x);
+							//Game client will update the gui
 						} else return; //do nothing
 					}
 				});

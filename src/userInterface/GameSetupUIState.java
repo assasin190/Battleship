@@ -186,7 +186,7 @@ public class GameSetupUIState extends UI {
 								if(success) { //Success -> set ship graphically
 									for(SquareLabel label: highlighting) {
 										//TODO set ship icon on the board game
-										label.setText(shipNumber + 1 + "");
+										label.setText(shipNumber + "");
 									}
 									//Re-invoke mouse exited on e
 									mouseExited(e);

@@ -109,7 +109,7 @@ public class GameServer implements Runnable, Serializable {
 				currentPlayer = socketThread2;
 			}
 			currentPlayer.writeViaSocket(CommandString.SERVER_GRANT_TURN);
-			//GAME START
+			//START THE GAME
 			
 			
 		} catch (IOException e1) {
@@ -119,6 +119,11 @@ public class GameServer implements Runnable, Serializable {
 			
 		}
 		
+	}
+	
+	private void print(String input, int forwardNumber) {
+		if(forwardNumber == 1) socketThread1.writeViaSocket(input);
+		else socketThread2.writeViaSocket(input);
 	}
 	
 	private void forwardBoardGame(BoardGame boardGame, int forwardNumber) {
@@ -278,6 +283,19 @@ public class GameServer implements Runnable, Serializable {
 									
 								}
 								break;
+							case CommandString.CLIENT_LOSE:
+								//TEST
+								if(clientNumber == 1) print(CommandString.SERVER_INDICATE_YOU_WIN, 2);
+								else print(CommandString.SERVER_INDICATE_YOU_WIN, 1);
+							default:
+								if(input.indexOf("RETURN_MARK") != -1) {
+									if(clientNumber == 1) print(input, 2);
+									else print(input, 1);
+								}
+								if(input.indexOf("MARK") != -1) { //If is a mark command
+									if(clientNumber == 1) print(input, 2);
+									else print(input, 1);
+								}
 								
 						}
 						//Send input to GameServer
