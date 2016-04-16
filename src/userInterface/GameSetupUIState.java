@@ -150,7 +150,7 @@ public class GameSetupUIState extends UI {
 		boardLabel = new SquareLabel [8][8];
 		for(int y=0; y<8; y++) {
 			for(int x=0; x<8; x++) {
-				SquareLabel squareLabel = new SquareLabel("0");
+				SquareLabel squareLabel = new SquareLabel("", this.main);
 				squareLabel.setName(y + "," + x);
 				squareLabel.setIndex();
 				squareLabel.setSquare();
@@ -174,6 +174,7 @@ public class GameSetupUIState extends UI {
 									mouseEntered(e);
 								}
 							} else { //If it is a left click
+								if(highlighting == null) return; //If highlighting not exist, do nothing
 								//Check if any of the label in highlighting is occupied
 								if(main.client.boardGame.checkOccupation(highlighting)) { //If one of them already occupied, do nothing
 									return;
@@ -185,7 +186,7 @@ public class GameSetupUIState extends UI {
 								if(success) { //Success -> set ship graphically
 									for(SquareLabel label: highlighting) {
 										//TODO set ship icon on the board game
-										label.setText("1");
+										label.setText(shipNumber + 1 + "");
 									}
 									//Re-invoke mouse exited on e
 									mouseExited(e);
@@ -203,10 +204,16 @@ public class GameSetupUIState extends UI {
 						if(isShipPlacingEnabled()) { //If placing mode is enabled
 							//Search for eligible label to hightlight
 							//Check if any of the label in highlighting is occupied
-							highlighting = searchForEligibleHighlightLabel(squareLabel);
+							highlighting = searchForHighlightableLabel(squareLabel);
+							if(highlighting == null) return; //If highlighting not exist, do nothing
+							for(SquareLabel label : highlighting) {
+								label.setBorder(BorderFactory.createLineBorder(Color.RED, 3));
+							}
+							/*
 							if(main.client.boardGame.checkOccupation(highlighting)) { //If one of them already occupied, do nothing
 								return;
 							}
+							*/
 							//Else do highlighting
 							for(SquareLabel label : highlighting) {
 								label.setBorder(BorderFactory.createLineBorder(Color.RED, 3));
@@ -217,9 +224,9 @@ public class GameSetupUIState extends UI {
 					//Mouse left a JLabel
 					@Override
 					public void mouseExited(MouseEvent e) {
-						SquareLabel squareLabel = (SquareLabel) e.getSource();
 						if(isShipPlacingEnabled()) { //If placing mode is enabled
 							//Remove highlight from highlighted labels
+							if(highlighting == null) return; //If highlighting not exist, do nothing
 							for(SquareLabel label : highlighting) {
 								label.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 							}
@@ -362,6 +369,17 @@ public class GameSetupUIState extends UI {
 		readyButton.setBackground(new Color(153, 204, 0));
 		readyButton.setFont(new Font("Avenir", Font.PLAIN, 13));
 		readyButton.setPreferredSize(new Dimension(95, 60));
+		readyButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				//Check if all ship has been set
+				System.out.println(main.client.boardGame.isAllShipSet());
+				if(main.client.boardGame.isAllShipSet()) {
+					main.client.startGame();
+					
+				}
+			}
+		});
 		keyButton.add(readyButton, BorderLayout.EAST);
 		
 		JPanel gapName = new JPanel();
@@ -414,14 +432,14 @@ public class GameSetupUIState extends UI {
 				shipNumber = Integer.parseInt(shipLabel.getName().substring(shipLabel.getName().length()-1)) - 1;
 				//Clear ship occupation
 				Ship ship = main.client.boardGame.getShip(shipNumber);
-				if(ship != null) { //If there are already ship1 set, clear the occupation
+				if(ship != null) { //If there are already ship2 set, clear the occupation
 					main.client.boardGame.clearOccupation(ship);
 				}
 				//Enable ship placing mode
 				setShipPlacingEnabled(true);
 			}
 		});
-		JButton ship3 = new JButton("");
+		JButton ship3 = new JButton("ship3");
 		ship3.setName("ship3");
 		ship3.setIcon(new ImageIcon("ship3.gif"));
 		ship3.addActionListener(new ActionListener() {
@@ -432,14 +450,14 @@ public class GameSetupUIState extends UI {
 				shipNumber = Integer.parseInt(shipLabel.getName().substring(shipLabel.getName().length()-1)) - 1;
 				//Clear ship occupation
 				Ship ship = main.client.boardGame.getShip(shipNumber);
-				if(ship != null) { //If there are already ship1 set, clear the occupation
+				if(ship != null) { //If there are already ship3 set, clear the occupation
 					main.client.boardGame.clearOccupation(ship);
 				}
 				//Enable ship placing mode
 				setShipPlacingEnabled(true);
 			}
 		});
-		JButton ship4 = new JButton("");
+		JButton ship4 = new JButton("ship4");
 		ship4.setName("ship4");
 		ship4.setIcon(new ImageIcon("ship4.gif"));
 		ship4.addActionListener(new ActionListener() {
@@ -450,7 +468,7 @@ public class GameSetupUIState extends UI {
 				shipNumber = Integer.parseInt(shipLabel.getName().substring(shipLabel.getName().length()-1)) - 1;
 				//Clear ship occupation
 				Ship ship = main.client.boardGame.getShip(shipNumber);
-				if(ship != null) { //If there are already ship1 set, clear the occupation
+				if(ship != null) { //If there are already ship4 set, clear the occupation
 					main.client.boardGame.clearOccupation(ship);
 				}
 				//Enable ship placing mode
@@ -487,23 +505,134 @@ public class GameSetupUIState extends UI {
 		panel.add(bottom, BorderLayout.SOUTH);
 	}
 	
-	public SquareLabel[] searchForEligibleHighlightLabel(SquareLabel startingLabel) {
+	public SquareLabel[] searchForHighlightableLabel(SquareLabel startingLabel) {
 		int y = startingLabel.getYIndex();
 		int x = startingLabel.getXIndex();
 		//Find down/right label that don't cause IndexOutOfBoundError
-		if(shipPlacingDirection.equals("down")) {
-			if(y + 3 <= 7) { //If y index doesn't go over 7
-				return new SquareLabel []{boardLabel[y][x], boardLabel[y+1][x], boardLabel[y+2][x], boardLabel[y+3][x]};
-			} else { //Return label of [4][x], [5][x], [6][x], [7][x];
-				return new SquareLabel []{boardLabel[4][x], boardLabel[5][x], boardLabel[6][x], boardLabel[7][x]};
-			}
-		} else { //shipPlacing is in right direction
-			if(x +3 <= 7) { //If y index doesn't go over 7
-				return new SquareLabel []{boardLabel[y][x], boardLabel[y][x+1], boardLabel[y][x+2], boardLabel[y][x+3]};
-			} else { //Return label of [y][4], [y][5], [y][6], [y][7]
-				return new SquareLabel []{boardLabel[y][4], boardLabel[y][5], boardLabel[y][6], boardLabel[y][7]};
+		SquareLabel [] highlightable = new SquareLabel[4];
+		if(boardLabel[y][x].getSquare().isOccupied()) return null; //If the square is already occupied, return null
+		highlightable[0] = boardLabel[y][x]; //Add the first label into the array
+		int index = 1, failedAttempt = 0;
+		return checkNext(y, x, index, failedAttempt, shipPlacingDirection, highlightable);
+		/*
+		int failedAttempt = 0;
+		if(shipPlacingDirection.equals("down")) { //If the ship placing direction is down
+			if((y + 1 <= 7) && !boardLabel[y+1][x].getSquare().isOccupied()) { //If the next down square exists and is not occupied by a ship
+				highlightable[1] = boardLabel[y+1][x];
+			//Else trying to add the above next square
+			} else if((y - ++failedAttempt >= 0) && !boardLabel[y-failedAttempt][x].getSquare().isOccupied()){ //If the next above square exists and is not occupied by a ship
+				highlightable[1] = boardLabel[y-failedAttempt][x];
+			} else return null; //Else return null
+			if((y + 2 <= 7) && !boardLabel[y+2][x].getSquare().isOccupied()) { //If the next down square exists and is not occupied by a ship
+				highlightable[2] = boardLabel[y+2][x];
+			//Else trying to add the above next square
+			} else if((y - ++failedAttempt >= 0) && !boardLabel[y-failedAttempt][x].getSquare().isOccupied() && (failedAttempt == 0)){ //If the next above square exists and is not occupied by a ship (and must be consecutive)
+				highlightable[2] = boardLabel[y-failedAttempt][x];
+			} else return null; //Else return null
+			if((y + 3 <= 7) && !boardLabel[y+3][x].getSquare().isOccupied()) { //If the next down square exists and is not occupied by a ship
+				highlightable[3] = boardLabel[y+3][x];
+			//Else trying to add the above next square
+			} else if((y - ++failedAttempt >= 0) && !boardLabel[y-failedAttempt][x].getSquare().isOccupied() && (failedAttempt == 0)){ //If the next above square exists and is not occupied by a ship (and must be consecutive(failed = 0))
+				highlightable[3] = boardLabel[y-failedAttempt][x];
+			} else return null; //Else return null
+		
+		} else { //If the ship placing direction is right
+			if((x + 1 <= 7) && !boardLabel[y][x+1].getSquare().isOccupied()) { //If the next down square exists and is not occupied by a ship
+				highlightable[1] = boardLabel[y][x+1];
+			//Else trying to add the above next square
+			} else if((x - ++failedAttempt >= 0) && !boardLabel[y][x-failedAttempt].getSquare().isOccupied()){ //If the next above square exists and is not occupied by a ship
+				highlightable[1] = boardLabel[y][x-failedAttempt];
+			} else return null; //Else return null
+			if((x + 2 <= 7) && !boardLabel[y][x+2].getSquare().isOccupied()) { //If the next down square exists and is not occupied by a ship
+				highlightable[2] = boardLabel[y][x+2];
+			//Else trying to add the above next square
+			} else if((x - ++failedAttempt >= 0) && !boardLabel[y][x-failedAttempt].getSquare().isOccupied()){ //If the next above square exists and is not occupied by a ship
+				highlightable[2] = boardLabel[y][x-failedAttempt];
+			} else return null; //Else return null
+			if((x + 3 <= 7) && !boardLabel[y][x+3].getSquare().isOccupied()) { //If the next down square exists and is not occupied by a ship
+				highlightable[3] = boardLabel[y][x+3];
+			//Else trying to add the above next square
+			} else if((x - ++failedAttempt >= 0) && !boardLabel[y][x-failedAttempt].getSquare().isOccupied()){ //If the next above square exists and is not occupied by a ship
+				highlightable[3] = boardLabel[y][x-failedAttempt];
+			} else return null; //Else return null
+		}
+		*/
+	}
+	
+	public SquareLabel[] checkNext(int y, int x, int index, int failedAttempt, String direction, SquareLabel[] highlightable) {
+		//Check to continue;
+		if(index <= 3) {
+			if(direction.equals("down")) { //If down direction
+				//Check if the next square exists
+				if(y + index <= 7) { //If exists
+					//Check occupancy
+					if(!boardLabel[y+index][x].getSquare().isOccupied()) { //If not occupied
+						//Add the label to highlightable
+						highlightable[index] = boardLabel[y+index++][x];
+						highlightable = checkNext(y, x, index, failedAttempt, direction, highlightable);
+					} else { //If occupied
+						//Check previous square occupancy
+						highlightable = checkPrevious(y, x, index, ++failedAttempt, direction, highlightable);
+					}
+				} else { //If not exist
+					highlightable = checkPrevious(y, x, index, ++failedAttempt, direction, highlightable);
+				}
+			} else { //If right direction
+				//Check if the next square exists
+				if(x + index <= 7) { //If exists
+					//Check occupancy
+					if(!boardLabel[y][x+index].getSquare().isOccupied()) { //If not occupied
+						//Add the label to highlightable
+						highlightable[index] = boardLabel[y][x+index++];
+						highlightable = checkNext(y, x, index, failedAttempt, direction, highlightable);
+					} else { //If occupied
+						//Check upper square occupancy
+						highlightable = checkPrevious(y, x, index, ++failedAttempt, direction, highlightable);
+					}
+				} else { //If not exist, check for previous square
+					highlightable = checkPrevious(y, x, index, ++failedAttempt, direction, highlightable);
+				}
 			}
 		}
+		//Done
+		return highlightable;
+	}
+	
+	public SquareLabel[] checkPrevious(int y, int x, int index, int failedAttempt, String direction, SquareLabel[] highlightable) {
+		//Check to continue;
+		if(index <= 3) {
+			if(direction.equals("down")) { //If down direction
+				//Check if the next square exists
+				if(y - failedAttempt >= 0) { //If exists
+					//Check occupancy
+					if(!boardLabel[y-failedAttempt][x].getSquare().isOccupied()) { //If not occupied
+						//Add the label to highlightable
+						highlightable[index++] = boardLabel[y-failedAttempt++][x];
+						highlightable = checkPrevious(y, x, index, failedAttempt, direction, highlightable);
+					} else { //If occupied, return null
+						return null;
+					}
+				} else { //If not exsit, return null
+					return null;
+				}
+			} else { //If right direction
+				//Check if the next square exists
+				if(x - failedAttempt >= 0) { //If exists
+					//Check occupancy
+					if(!boardLabel[y][x-failedAttempt].getSquare().isOccupied()) { //If not occupied
+						//Add the label to highlightable
+						highlightable[index++] = boardLabel[y][x-failedAttempt++];
+						highlightable = checkPrevious(y, x, index, failedAttempt, direction, highlightable);
+					} else { //If occupied, return null
+						return null;
+					}
+				} else { //If not exsit, return null
+					return null;
+				}
+			}
+		}
+		//Done
+		return highlightable;
 	}
 	
 	public void setShipPlacingEnabled(boolean setting) {
@@ -541,57 +670,14 @@ public class GameSetupUIState extends UI {
 	@Override
 	public void obscuring() {
 		System.out.println(Thread.currentThread().getName() + ": " + stateString + " being stacked");
-		
+		main.setEnabled(false);
 	}
 
 
 	@Override
 	public void revealed() {
 		System.out.println(Thread.currentThread().getName() + ": " + stateString + " resumed");
-		
-	}
-	
-	public class SquareLabel extends JLabel {
-		int x;
-		int y;
-		boolean shipPlacingEnabled;
-		boolean MarkingEnabled;
-		Square square;
-		
-		public SquareLabel(String text) {
-			super(text);
-		}
-		
-		public void setIndex() {
-			String[] splitted = getName().split(",");
-			y = Integer.parseInt(splitted[0]);
-			x = Integer.parseInt(splitted[1]);
-		}
-		
-		public void setSquare() {
-			square = main.client.boardGame.getBoard()[y][x];
-			square.setSquareLabel(this);
-		}
-		
-		public void setShipPlacingEnabled(boolean shipPlacingEnabled) {
-			this.shipPlacingEnabled = shipPlacingEnabled;
-		}
-		
-		public boolean isShipPlacingEnabled() {
-			return shipPlacingEnabled;
-		}
-		
-		public int getXIndex() {
-			return x;
-		}
-		
-		public int getYIndex() {
-			return y;
-		}
-		
-		public Square getSquare() {
-			return this.square;
-		}
+		main.setEnabled(true);
 	}
 	
 }

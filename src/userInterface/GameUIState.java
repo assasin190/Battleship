@@ -8,6 +8,7 @@ import java.awt.Dimension;
 
 import javax.swing.JButton;
 import javax.imageio.ImageIO;
+import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -29,6 +30,9 @@ import javax.swing.border.LineBorder;
 import GameState.GameState;
 import GameState.GameStateManager;
 import game.Main;
+import game.Ship;
+import game.Square;
+import userInterface.SquareLabel;
 
 import java.awt.SystemColor;
 import java.awt.Toolkit;
@@ -46,10 +50,12 @@ import javax.swing.border.CompoundBorder;
 public class GameUIState extends UI {
 	
 	private Timer timer;
+	public SquareLabel[][] boardLabel;
+	public SquareLabel[][] myBoardLabel;
 	
 	public GameUIState(Main main) {
 		super(main);
-		stateString = GameState.GAME_SETUP_STATE;
+		stateString = GameState.GAME_STATE;
 
 		ImageIcon bgIcon = createImageIcon("bg.png",1024, 768);
 		Image img = bgIcon.getImage();
@@ -130,24 +136,31 @@ public class GameUIState extends UI {
 		GridLayout tableLayout = new GridLayout(8,8);
 		player1.setLayout(tableLayout);
 		
-		JLabel L[]= new JLabel[64];
-		for(int i=0; i<64; i++) {
-			 L[i] = new JLabel("0");
-			 L[i].setName(i + "");
-			 L[i].addMouseListener(new MouseAdapter() {
-				 
-				 @Override
-				 public void mouseClicked(MouseEvent e) {
-					 String name = ((JLabel)e.getComponent()).getName();
-					 int index = Integer.parseInt(name);
-					 System.out.println("Clicked!");
-					 L[index].setText("1");
-				 }
-			 });
-			 
-			player1.add(L[i]);
-			L[i].setHorizontalAlignment(SwingConstants.CENTER);
-			L[i].setBorder(new LineBorder(null, 1, true));
+		//Create the playing board label
+		boardLabel = new SquareLabel[8][8];
+		for(int y=0; y<8; y++) {
+			for(int x=0; x<8; x++) {
+				SquareLabel squareLabel = new SquareLabel("", this.main);
+				squareLabel.setName(y + "," + x);
+				squareLabel.setIndex();
+				squareLabel.setSquare();
+				squareLabel.setHorizontalAlignment(SwingConstants.CENTER);
+				squareLabel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+				squareLabel.addMouseListener(new MouseAdapter() {
+					@Override
+					public void mouseClicked(MouseEvent e) {
+						if(isMarkingEnabled()) { //If it is the player's turn
+							SquareLabel squareLabel = (SquareLabel) e.getSource();
+							int y = squareLabel.y;
+							int x = squareLabel.x;
+							squareLabel.setText("x");
+							main.client.mark(y, x);
+						} else return; //do nothing
+					}
+				});
+				boardLabel[y][x] = squareLabel;
+				player1.add(squareLabel);
+			}
 		}
 		
 		/*
@@ -377,8 +390,28 @@ public class GameUIState extends UI {
 		player2.add(gap3,BorderLayout.WEST);
 		player2.add(southPlayer2, BorderLayout.CENTER);
 		southPlayer2.setLayout(new GridLayout(8, 8, 0, 0));
-		for(int i =0; i<64; i++) {
-			southPlayer2.add(new JButton(""));
+		
+		//Create player's own board label
+		myBoardLabel = new SquareLabel[8][8];
+		for(int y=0; y<8; y++) {
+			for(int x=0; x<8; x++) {
+				SquareLabel squareLabel = new SquareLabel("", this.main);
+				squareLabel.setName(y + "," + x);
+				squareLabel.setIndex();
+				squareLabel.setSquare();
+				squareLabel.setHorizontalAlignment(SwingConstants.CENTER);
+				squareLabel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+				//Set own ship
+				myBoardLabel[y][x] = squareLabel;
+				southPlayer2.add(squareLabel);
+			}
+		}
+		
+		//Set ships in myBoardLabel
+		for(Ship ship : main.client.boardGame.getAllShips()) {
+			for(Square square : ship.getOccupancy()) {
+				myBoardLabel[square.getY()][square.getX()].setText(ship.shipNumber + "");
+			}
 		}
 		
 		/*RIGHT BORDER*/
@@ -392,6 +425,10 @@ public class GameUIState extends UI {
 		bottom.setPreferredSize(new Dimension(1024,50));
 		bottom.setOpaque(false);
 		panel.add(bottom, BorderLayout.SOUTH);
+	}
+	
+	public boolean isMarkingEnabled() {
+		return main.client.isMyTurn();
 	}
 
 	
@@ -425,14 +462,14 @@ public class GameUIState extends UI {
 	@Override
 	public void obscuring() {
 		System.out.println(Thread.currentThread().getName() + ": " + stateString + " being stacked");
-		
+		main.setEnabled(false);
 	}
 
 
 	@Override
 	public void revealed() {
 		System.out.println(Thread.currentThread().getName() + ": " + stateString + " resumed");
-		
+		main.setEnabled(true);
 	}
 
 }

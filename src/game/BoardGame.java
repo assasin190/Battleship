@@ -1,11 +1,15 @@
 package game;
 
-import java.util.ArrayList;
-
+import java.io.Serializable;
 import game.Square;
-import userInterface.GameSetupUIState.SquareLabel;
+import userInterface.SquareLabel;
 
-public class BoardGame {
+public class BoardGame implements Serializable{
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6942097824451874494L;
 	private Square [][] board;
 	private Ship [] ships;
 	
@@ -55,7 +59,7 @@ public class BoardGame {
 	
 	public boolean checkOccupation(SquareLabel[] highlighting) {
 		for(SquareLabel label : highlighting) {
-			if(label.getSquare().isOccupied) //If the square is occupied, return true
+			if(label.getSquare().isOccupied()) //If the square is occupied, return true
 			return true;
 		}
 		return false;
@@ -64,12 +68,25 @@ public class BoardGame {
 	public void clearOccupation(Ship ship) {
 		//Set array value as null
 		ships[ship.shipNumber] = null;
-		Square [] occupation = ship.occupation;
+		Square [] occupation = ship.getOccupancy();
 		for(Square square : occupation) {
-			square.isOccupied = false;
+			square.occupied = false;
 			//Remove ship graphically
 			square.label.setText("0");
 		}
+	}
+	
+	public boolean isAllShipSet() {
+		for(Ship ship : ships) {
+			if(ship == null) return false;
+		}
+		return true;
+	}
+	
+	public boolean mark(Square markingSquare) {
+		return false;
+		//If hit return true
+		//If not hit return false
 	}
 	
 	

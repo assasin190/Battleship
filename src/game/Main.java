@@ -6,6 +6,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.InetAddress;
@@ -26,12 +28,14 @@ import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 
 import GameState.*;
+import userInterface.GameReadyUIState;
 import userInterface.GameSetupReadyUIState;
 import userInterface.GameSetupUIState;
 import userInterface.GameUIState;
 import userInterface.MainMenuUIState;
 import userInterface.UI;
 import userInterface.WaitForConnectionUIState;
+import userInterface.WaitForOpponentReadyUIState;
 
 public class Main extends JFrame {
 	//public JFrame frame;
@@ -257,21 +261,23 @@ public class Main extends JFrame {
 		protected Socket socket;
 		protected PrintWriter out;
 		protected BufferedReader in;
+		protected ObjectOutputStream oos;
+		protected ObjectInputStream ois;
 		protected GameSetupUIState gameSetupUI;
+		protected GameUIState gameUI;
+		protected boolean myTurn;
 		//UI field related to GameClient
 		
-		//Non-serializable field
-		protected transient GameSetupUIState gameUI;
 		//Global serializable field
 		public Player player;
 		public BoardGame boardGame;
-		public boolean isYourTurn;
 		protected boolean isWithLocalServer = false;
 		private String playerState;
 		
 		protected GameClient(Socket socket) {
 			this.socket = socket;
 			playerState = PlayerState.NULL_STATE;
+			myTurn = false;
 			//Create a board game
 			boardGame = new BoardGame();
 			
@@ -279,6 +285,13 @@ public class Main extends JFrame {
 		
 		@Override
 		public void run() {
+			try {
+				out = new PrintWriter(socket.getOutputStream(), true);
+				in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			//Run background worker thread
 			new BackgroundInputReader().execute();
 			
@@ -342,6 +355,20 @@ public class Main extends JFrame {
 		public void startGameSetup() {
 			out.println(CommandString.CLIENT_GAME_SETUP_READY);
 			System.out.println(Thread.currentThread().getName() + ": " + CommandString.CLIENT_GAME_SETUP_READY + " sent");
+		}
+		
+		public void startGame() {
+			out.println(CommandString.CLIENT_GAME_START_READY);
+			System.out.println(Thread.currentThread().getName() + ": " + CommandString.CLIENT_GAME_START_READY + " sent");
+			playerState = PlayerState.EXPECT_SERVER_START_GAME;
+		}
+		
+		public void mark(int y, int x) {
+			
+		}
+		
+		public boolean isMyTurn() {
+			return myTurn;
 		}
 		
 		public void initialize() {
@@ -430,7 +457,6 @@ public class Main extends JFrame {
 			protected Void doInBackground() throws Exception {
 				//Repeatedly listen for input message
 				while(true) {
-					in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 					String input = in.readLine();
 					System.out.println(Thread.currentThread().getName() + ": " + input + " received");
 					if(input != null) publish(input);
@@ -444,47 +470,72 @@ public class Main extends JFrame {
 				//Client game logic
 				System.out.println(Thread.currentThread().getName() + ": process invoked");
 				System.out.println(Thread.currentThread().getName() + ": the size of inputList is " + inputList.size());
-				try {
-					out = new PrintWriter(socket.getOutputStream(), true);
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-				String input = inputList.get(0);
-				if(input == null); //TODO Raise NullMessageException
-				//TODO implement if inputList size > 1
-				
-				switch(input) {
-					case CommandString.SERVER_OTHER_CLIENT_NOT_AVAILABLE: //If another client has not connected to the server -> wait until another client's connection is accepted
-						if(!(playerState.equals(PlayerState.NULL_STATE))) break; //TODO Raise SynchronizeErrorException
-						System.out.println(Thread.currentThread().getName() + ": The other client is not available. waiting...");
-						//Push UI state -> WAIT_FOR_CONNECTION_STATE
-						GSM.pushState(new WaitForConnectionUIState(Main.this));
-						//Wait
-						//When another client connects, the server returns a string SERVER_ANOTHER_CLIENT_AVAILABLE to all clients
-						break;
-						
-					case CommandString.SERVER_OTHER_CLIENT_AVAILABLE:
-						if(!playerState.equals(PlayerState.NULL_STATE) || !playerState.equals(PlayerState.EXPECT_SERVER_OTHER_CLIENT_AVAILABLE)); //Raise SynchronizationErrorException
-						//The other client has connected
-						//Pop UI state UNTIL MAIN_GAME_STATE
-						GSM.popStateUntil(GameState.MAIN_MENU_STATE);
-						//Push GAME_SETUP_READY_STATE
-						GSM.pushState(new GameSetupReadyUIState(Main.this));
-						//Set playerState EXPECT_SERVER_GAME_SETUP
-						playerState = PlayerState.EXPECT_SERVER_GAME_SETUP;
-						//Wait for the player to press Ready...
-						break;
-					case CommandString.SERVER_START_GAME_SETUP:
-						if(!playerState.equals(PlayerState.EXPECT_SERVER_GAME_SETUP)); //Raise SynchronizationErrorException
-						//Server is ready to start game setup
-						//Start the game setup
-						//Pop UI state UNTIL MAIN_GAME_STATE
-						GSM.popStateUntil(GameState.MAIN_MENU_STATE);
-						//Change UI state -> GAME_SETUP_UI_STATE
-						gameSetupUI = new GameSetupUIState(Main.this);
-						GSM.changeState(gameSetupUI);
-						playerState = PlayerState.START_GAME_SETUP;
-						out.println(CommandString.CLIENT_START_GAME_SETUP);
+				for(String input : inputList) { //Process every input
+					if(input == null); //TODO Raise NullMessageException
+					switch(input) {
+						case CommandString.SERVER_OTHER_CLIENT_NOT_AVAILABLE: //If another client has not connected to the server -> wait until another client's connection is accepted
+							if(!(playerState.equals(PlayerState.NULL_STATE))) break; //TODO Raise SynchronizeErrorException
+							System.out.println(Thread.currentThread().getName() + ": The other client is not available. waiting...");
+							//Push UI state -> WAIT_FOR_CONNECTION_STATE
+							GSM.pushState(new WaitForConnectionUIState(Main.this));
+							//Wait
+							//When another client connects, the server returns a string SERVER_ANOTHER_CLIENT_AVAILABLE to all clients
+							break;
+							
+						case CommandString.SERVER_OTHER_CLIENT_AVAILABLE:
+							if(!playerState.equals(PlayerState.NULL_STATE) || !playerState.equals(PlayerState.EXPECT_SERVER_OTHER_CLIENT_AVAILABLE)); //Raise SynchronizationErrorException
+							//The other client has connected
+							//Pop UI state UNTIL MAIN_GAME_STATE
+							GSM.popStateUntil(GameState.MAIN_MENU_STATE);
+							//Push GAME_SETUP_READY_STATE
+							GSM.pushState(new GameSetupReadyUIState(Main.this));
+							//Set playerState EXPECT_SERVER_GAME_SETUP
+							playerState = PlayerState.EXPECT_SERVER_GAME_SETUP;
+							//Wait for the player to press Ready...
+							break;
+							
+						case CommandString.SERVER_START_GAME_SETUP:
+							if(!playerState.equals(PlayerState.EXPECT_SERVER_GAME_SETUP)); //Raise SynchronizationErrorException
+							//Server is ready to start game setup
+							//Start the game setup
+							//Pop UI state until MAIN_MENU_STATE
+							GSM.popStateUntil(GameState.MAIN_MENU_STATE);
+							//Change UI state -> GAME_SETUP_STATE
+							gameSetupUI = new GameSetupUIState(Main.this);
+							GSM.changeState(gameSetupUI);
+							playerState = PlayerState.START_GAME_SETUP;
+							out.println(CommandString.CLIENT_START_GAME_SETUP);
+							break;
+							
+						case CommandString.SERVER_OPPONENT_NOT_READY:
+							if(!playerState.equals(PlayerState.EXPECT_SERVER_START_GAME)) return; //If not pressing ready yet -> do nothing
+							//The other client is not ready
+							//Wait
+							//Push WAIT_FOR_OPPONENT_READY State
+							GSM.pushState(new WaitForOpponentReadyUIState(Main.this));
+							break;
+							
+						case CommandString.SERVER_START_GAME:
+							if(playerState.equals(PlayerState.EXPECT_SERVER_START_GAME) || playerState.equals(PlayerState.START_GAME_SETUP) ) {
+								//Server is ready to start game
+								//Start the game
+								//Pop UI state until GAME_SETUP_STATE
+								GSM.popStateUntil(GameState.GAME_SETUP_STATE);
+								//Change UI state -> GAME_STATE
+								gameUI = new GameUIState(Main.this);
+								GSM.changeState(gameUI);
+								playerState = PlayerState.IDLE;
+								break;	
+							}
+							//TODO
+							break;
+						case CommandString.SERVER_GRANT_TURN: //Server give you a turn
+							if(playerState.equals(PlayerState.IDLE)) {
+								playerState = PlayerState.PLAYING;
+								myTurn = true;
+								break;
+							}
+					}
 				}
 			}
 		}

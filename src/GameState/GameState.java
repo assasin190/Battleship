@@ -7,8 +7,9 @@ public interface GameState {
 	public static final String CONNECT_TO_SERVER_P2P_STATE = "CONNECT_TO_SERVER_P2P_STATE";
 	public static final String GAME_SETUP_STATE = "GAME_SETUP_STATE";
 	public static final String WAIT_FOR_CONNECTION_STATE = "WAIT_FOR_CONNECTION_STATE";
-	public static final String GAME_SETUP_READY_UI_STATE = "GAME_SETUP_READY_UI_STATE";
-	public static final String GAME_PLAY_STATE = "GAME_PLAY_STATE";
+	public static final String GAME_SETUP_READY_STATE = "GAME_SETUP_READY_STATE";
+	public static final String WAIT_FOR_OPPONENT_READY_STATE = "WAIT_FOR_OPPONENT_READY_STATE";
+	public static final String GAME_STATE = "GAME_STATE";
 	
 	public void entered();	//TODO implements function called after entered the state
 	public void leaving();   //TODO implements function called right before leaving the state

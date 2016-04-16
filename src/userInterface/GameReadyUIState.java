@@ -7,24 +7,23 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
 import GameState.GameState;
 import game.Main;
 
-public class GameSetupReadyUIState extends UI {
+public class GameReadyUIState extends UI {
 	public JDialog dialog;
 	public JButton readyBtn;
 	
-	public GameSetupReadyUIState() {
+	public GameReadyUIState() {
 		stateString = GameState.GAME_SETUP_READY_STATE;
 	}
 	/**
 	 * @wbp.parser.constructor
 	 */
-	public GameSetupReadyUIState(Main main) {
+	public GameReadyUIState(Main main) {
 		super(main);
 		stateString = GameState.GAME_SETUP_READY_STATE;
 		dialog = new JDialog(main, "Ready!");
@@ -36,7 +35,7 @@ public class GameSetupReadyUIState extends UI {
 	private void initialize() {
 		dialog.getContentPane().setLayout(new BorderLayout());
 		JLabel label = new JLabel("Press ready to start the game", SwingConstants.CENTER);
-		readyBtn = new JButton("Ready");
+		readyBtn = new JButton("Waiting for your opponent");
 		readyBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -53,27 +52,25 @@ public class GameSetupReadyUIState extends UI {
 	
 	@Override
 	public void entered() {
-		System.out.println(Thread.currentThread().getName() + ": entered " + stateString);
 		dialog.setVisible(true);
 		
 	}
 
 	@Override
 	public void leaving() {
-		System.out.println(Thread.currentThread().getName() + ": leaving " + stateString);
 		dialog.dispose();
 		
 	}
 
 	@Override
 	public void obscuring() {
-		System.out.println(Thread.currentThread().getName() + ": " + stateString + " being stacked");
+		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public void revealed() {
-		System.out.println(Thread.currentThread().getName() + ": " + stateString + " resumed");
+		// TODO Auto-generated method stub
 		
 	}
 

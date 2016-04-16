@@ -1,32 +1,49 @@
 package game;
 
+import java.io.Serializable;
+
 import javax.swing.JLabel;
+import userInterface.SquareLabel;
 
-import userInterface.GameSetupUIState.SquareLabel;
-
-public class Square {
+public class Square implements Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 7539706428845824277L;
 	protected int x;
 	protected int y;
-	protected boolean isMarked;
-	protected boolean isOccupied;
-	protected SquareLabel label;
-	//A square can only have one ship
+	protected boolean Marked;
+	protected boolean occupied;
 	protected Ship occupyingShip;
+	//Non-serializable
+	protected transient SquareLabel label;
 	
 	public Square(int y, int x) {
 		this.y = y;
 		this.x = x;
-		isMarked = false;
-		isOccupied = false;
+		Marked = false;
+		occupied = false;
 	}
 	public void setOccupyingShip(Ship ship) {
 		occupyingShip = ship;
-		isOccupied = true;
+		occupied = true;
 	}
 	
 	public void setSquareLabel(SquareLabel squareLabel) {
 		label = squareLabel;
+	}
+	
+	public boolean isOccupied() {
+		return occupied;
+	}
+	
+	public int getY() {
+		return y;
+	}
+	
+	public int getX() {
+		return x;
 	}
 	
 }
