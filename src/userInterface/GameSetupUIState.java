@@ -12,6 +12,8 @@ import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -152,7 +154,7 @@ public class GameSetupUIState extends UI {
 			for(int x=0; x<8; x++) {
 				SquareLabel squareLabel = new SquareLabel("", this.main);
 				squareLabel.setName(y + "," + x);
-				squareLabel.setIndex();
+				squareLabel.setMyBoardIndex();
 				squareLabel.setSquare();
 				squareLabel.setHorizontalAlignment(SwingConstants.CENTER);
 				squareLabel.setBorder(BorderFactory.createLineBorder(Color.BLACK));

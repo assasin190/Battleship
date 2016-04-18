@@ -35,6 +35,7 @@ import userInterface.GameSetupReadyUIState;
 import userInterface.GameSetupUIState;
 import userInterface.GameUIState;
 import userInterface.MainMenuUIState;
+import userInterface.SquareLabel;
 import userInterface.UI;
 import userInterface.WaitForConnectionUIState;
 import userInterface.WaitForOpponentReadyUIState;
@@ -557,14 +558,12 @@ public class Main extends JFrame {
 								System.out.println("hit: " + hit);
 								System.out.println("sunk: " + sunk);
 								if(hit) { //If hit
-									client.boardGame.board[y][x].marked = true;
+									boardGame.board[y][x].marked = true;
 									score++;
 									//Update UI (hit)
-									gameUI.boardLabel[y][x].setText("o");
 								} else { //If not hit
-									client.boardGame.board[y][x].marked = true;
+									boardGame.board[y][x].marked = true;
 									//Update UI (not hit)
-									gameUI.boardLabel[y][x].setText("x");
 								}
 								//TODO if enemy ship sunk
 								
@@ -576,10 +575,16 @@ public class Main extends JFrame {
 								boolean hit = hitSunk[0];
 								boolean sunk = hitSunk[1];
 								boolean lose = hitSunk[2];
+								Square hitSquare = boardGame.myBoard[y][x];
+								SquareLabel hitSquareLabel = boardGame.myBoard[y][x].getSquareLabel();
 								//TODO Update UI
 								if(hit) {
-									gameUI.myBoardLabel[y][x].setText("o");
-								} else gameUI.myBoardLabel[y][x].setText("x");
+									boardGame.myBoard[y][x].marked = true;
+									//Update hit UI
+								} else {
+									boardGame.myBoard[y][x].marked = true;
+									//Update miss UI
+								}
 								//TODO check if the player won the game
 								out.println("RETURN_MARK_" + y + "," + x + "_" + hit + "," + sunk);
 								//If the player already loses the game

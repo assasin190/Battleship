@@ -10,7 +10,8 @@ public class BoardGame implements Serializable{
 	 * 
 	 */
 	private static final long serialVersionUID = -6942097824451874494L;
-	protected Square [][] board;
+	public Square [][] myBoard; //my board game
+	public Square [][] board; //playing board
 	protected Ship [] ships;
 	
 	/*	a Board Game contains 4 ships
@@ -18,12 +19,13 @@ public class BoardGame implements Serializable{
 	 */
 	
 	public BoardGame() {
-		this.board = new Square[8][8];
+		myBoard = new Square[8][8];
+		board = new Square[8][8];
 		ships = new Ship[4];
 		//Create a square for slot
 		for(int y=0; y<8; y++) {
 			for(int x=0; x<8; x++) {
-				board[y][x] = new Square(y,x);
+				myBoard[y][x] = new Square(y,x);
 			}
 		}
 	}
@@ -34,7 +36,7 @@ public class BoardGame implements Serializable{
 		//Set occupation
 		Square[] occupation = new Square[4];
 		for(int i=0; i<4; i++) {
-			Square square = board[occupationLabel[i].getYIndex()][occupationLabel[i].getXIndex()];
+			Square square = myBoard[occupationLabel[i].getYIndex()][occupationLabel[i].getXIndex()];
 			square.setOccupyingShip(ship);
 			occupation[i] = square;
 		}
@@ -46,7 +48,7 @@ public class BoardGame implements Serializable{
 	}
 	
 	public Square[][] getBoard() {
-		return board;
+		return myBoard;
 	}
 	
 	public Ship[] getAllShips() {
@@ -90,7 +92,7 @@ public class BoardGame implements Serializable{
 	}
 	
 	public boolean[] fireShot(int y, int x) { //Called when the opponent fireshot on a square
-		Square square = board[y][x];
+		Square square = myBoard[y][x];
 		boolean[] hitSunk = new boolean[3];
 		if(square.isOccupied()) { //If the square is already occupied by a ship
 			square.marked = true;

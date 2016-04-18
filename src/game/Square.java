@@ -38,6 +38,10 @@ public class Square implements Serializable {
 		return occupied;
 	}
 	
+	public boolean isMarked() {
+		return marked;
+	}
+	
 	public SquareLabel getSquareLabel() {
 		return label;
 	}
