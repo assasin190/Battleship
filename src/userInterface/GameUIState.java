@@ -52,6 +52,7 @@ public class GameUIState extends UI {
 	public Timer timer;
 	public SquareLabel[][] boardLabel;
 	public SquareLabel[][] myBoardLabel;
+	public JLabel lblMinsec ;
 	
 	public GameUIState(Main main) {
 		super(main);
@@ -238,7 +239,7 @@ public class GameUIState extends UI {
 		status.setFont(new Font("Avenir", Font.PLAIN, 12));
 		rightTopP2.add(status);
 		
-		JLabel lblMinsec = new JLabel("MIN:SEC");
+	 lblMinsec = new JLabel("MIN:SEC");
 		lblMinsec.setHorizontalAlignment(SwingConstants.LEFT);
 		rightTopP2.add(lblMinsec);
 		

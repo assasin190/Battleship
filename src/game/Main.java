@@ -1,6 +1,8 @@
 package game;
 import java.awt.Dimension;
 import java.awt.EventQueue;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
@@ -28,17 +30,11 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
+import javax.swing.Timer;
 
+import game.*;
 import GameState.*;
-import userInterface.GameReadyUIState;
-import userInterface.GameSetupReadyUIState;
-import userInterface.GameSetupUIState;
-import userInterface.GameUIState;
-import userInterface.MainMenuUIState;
-import userInterface.SquareLabel;
-import userInterface.UI;
-import userInterface.WaitForConnectionUIState;
-import userInterface.WaitForOpponentReadyUIState;
+import userInterface.*;
 
 public class Main extends JFrame {
 	//public JFrame frame;
@@ -270,6 +266,7 @@ public class Main extends JFrame {
 		protected GameUIState gameUI;
 		protected boolean myTurn;
 		protected int score;
+		public Timer timer_turn_duration;
 		//UI field related to GameClient
 		
 		//Global serializable field
@@ -594,8 +591,36 @@ public class Main extends JFrame {
 									JOptionPane.showMessageDialog(Main.this, "You lose the game.");
 								}
 								//It is your turn, change the state to playing
-								playerState = PlayerState.PLAYING;
+								playerState = PlayerState.IDLE;
 								myTurn = true;
+								
+								//Sirawich
+								ActionListener timerTask = new ActionListener() {
+							         int countdown = 60;
+
+									@Override
+									public void actionPerformed(ActionEvent e) {
+
+							        	 if (countdown == 0) {
+								           gameUI.lblMinsec.setText("END");
+								           timer_turn_duration.stop();
+								           // time up  expire random mark(x,y)
+								           //mark()
+								  
+								           // System.out.println("end");
+								         } else {
+								        	  gameUI.lblMinsec.setText(countdown + "");
+								  
+								           // call start timer of GameUIState
+								  
+								        	  countdown--;
+								         }
+										
+									}
+							   };
+						       timer_turn_duration = new Timer(1000, timerTask);
+						       timer_turn_duration.start();
+								
 							}
 					}
 				}
