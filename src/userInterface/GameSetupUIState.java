@@ -92,6 +92,31 @@ public class GameSetupUIState extends UI {
 		leftTop.setOpaque(false);
 		rightTop.setPreferredSize(new Dimension(150,100));
 		rightTop.setOpaque(false);
+		rightTop.setLayout(new BorderLayout(0,0));
+		
+		JPanel pp1 = new JPanel();
+		pp1.setPreferredSize(new Dimension(25,35));
+		pp1.setOpaque(false);
+		
+		JPanel pp2 = new JPanel();
+		pp2.setPreferredSize(new Dimension(25,35));
+		pp2.setOpaque(false);
+		
+		JButton pp = new JButton();
+		pp.setIcon(new ImageIcon("btn-help.png"));
+		pp.setPreferredSize(new Dimension(100, 35));
+		pp.setBorderPainted(false);
+		pp.setContentAreaFilled(false);
+		pp.setFocusPainted(false);
+		
+		JPanel pp3 = new JPanel();
+		pp3.setPreferredSize(new Dimension(150,65));
+		pp3.setOpaque(false);
+		rightTop.add(pp1,BorderLayout.WEST);
+		rightTop.add(pp,BorderLayout.CENTER);
+		rightTop.add(pp2,BorderLayout.EAST);
+		rightTop.add(pp3,BorderLayout.SOUTH);
+	
 		
 		//Top logo
 		JButton logo = new JButton("");
@@ -137,7 +162,7 @@ public class GameSetupUIState extends UI {
 		
 		
 		JPanel bottomP1 = new JPanel(); //gap bottom of battle table1
-		bottomP1.setPreferredSize(new Dimension(300,100));
+		bottomP1.setPreferredSize(new Dimension(300, 168));
 		bottomP1.setOpaque(false);
 		
 		leftCol.setLayout(new BorderLayout(0,0));
@@ -193,7 +218,10 @@ public class GameSetupUIState extends UI {
 										//label.setText(shipNumber + "");
 										//label.setIcon(new ImageIcon("ship1.png"));
 										if(shipPlacingDirection.equals("right")){
-											label.setIcon(new ImageIcon("horizontal/ship"+(shipNumber+1)+""+(i++)+".png"));
+											label.setIcon(new ImageIcon("ship/horizontal/ship"+(shipNumber+1)+""+(i++)+".png"));
+				
+										}else{
+											label.setIcon(new ImageIcon("ship/vertical/ship"+(shipNumber+1)+""+(i++)+".png"));
 											
 										}
 										//label.setIcon(new ImageIcon("ship"+(shipNumber+1)+".png")); //PLACESHIP
