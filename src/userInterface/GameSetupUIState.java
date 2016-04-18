@@ -47,7 +47,7 @@ import javax.swing.border.CompoundBorder;
 public class GameSetupUIState extends UI {
 	
 	public JPanel panel;
-	public SquareLabel [][] boardLabel;
+	public SquareLabel [][] myBoardLabel;
 	//Ship setting
 	public SquareLabel [] highlighting;
 	public boolean shipPlacingEnabled;
@@ -174,13 +174,13 @@ public class GameSetupUIState extends UI {
 		player1.setLayout(tableLayout);
 		//Create JLabel for each square
 		
-		boardLabel = new SquareLabel [8][8];
+		myBoardLabel = new SquareLabel [8][8];
 		for(int y=0; y<8; y++) {
 			for(int x=0; x<8; x++) {
 				SquareLabel squareLabel = new SquareLabel("", this.main);
 				squareLabel.setName(y + "," + x);
-				squareLabel.setMyBoardIndex();
-				squareLabel.setSquare();
+				squareLabel.setIndex();
+				squareLabel.setMyBoardSquare();
 				squareLabel.setHorizontalAlignment(SwingConstants.CENTER);
 				squareLabel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 				
@@ -272,7 +272,7 @@ public class GameSetupUIState extends UI {
 						}
 					}
 				});
-				boardLabel[y][x] = squareLabel;
+				myBoardLabel[y][x] = squareLabel;
 				player1.add(squareLabel);
 			}
 		}
@@ -549,8 +549,8 @@ public class GameSetupUIState extends UI {
 		int x = startingLabel.getXIndex();
 		//Find down/right label that don't cause IndexOutOfBoundError
 		SquareLabel [] highlightable = new SquareLabel[4];
-		if(boardLabel[y][x].getSquare().isOccupied()) return null; //If the square is already occupied, return null
-		highlightable[0] = boardLabel[y][x]; //Add the first label into the array
+		if(myBoardLabel[y][x].getSquare().isOccupied()) return null; //If the square is already occupied, return null
+		highlightable[0] = myBoardLabel[y][x]; //Add the first label into the array
 		int index = 1, failedAttempt = 0;
 		return checkNext(y, x, index, failedAttempt, shipPlacingDirection, highlightable);
 		/*
@@ -605,9 +605,9 @@ public class GameSetupUIState extends UI {
 				//Check if the next square exists
 				if(y + index <= 7) { //If exists
 					//Check occupancy
-					if(!boardLabel[y+index][x].getSquare().isOccupied()) { //If not occupied
+					if(!myBoardLabel[y+index][x].getSquare().isOccupied()) { //If not occupied
 						//Add the label to highlightable
-						highlightable[index] = boardLabel[y+index++][x];
+						highlightable[index] = myBoardLabel[y+index++][x];
 						highlightable = checkNext(y, x, index, failedAttempt, direction, highlightable);
 					} else { //If occupied
 						//Check previous square occupancy
@@ -620,9 +620,9 @@ public class GameSetupUIState extends UI {
 				//Check if the next square exists
 				if(x + index <= 7) { //If exists
 					//Check occupancy
-					if(!boardLabel[y][x+index].getSquare().isOccupied()) { //If not occupied
+					if(!myBoardLabel[y][x+index].getSquare().isOccupied()) { //If not occupied
 						//Add the label to highlightable
-						highlightable[index] = boardLabel[y][x+index++];
+						highlightable[index] = myBoardLabel[y][x+index++];
 						highlightable = checkNext(y, x, index, failedAttempt, direction, highlightable);
 					} else { //If occupied
 						//Check upper square occupancy
@@ -644,9 +644,9 @@ public class GameSetupUIState extends UI {
 				//Check if the next square exists
 				if(y - failedAttempt >= 0) { //If exists
 					//Check occupancy
-					if(!boardLabel[y-failedAttempt][x].getSquare().isOccupied()) { //If not occupied
+					if(!myBoardLabel[y-failedAttempt][x].getSquare().isOccupied()) { //If not occupied
 						//Add the label to highlightable
-						highlightable[index++] = boardLabel[y-failedAttempt++][x];
+						highlightable[index++] = myBoardLabel[y-failedAttempt++][x];
 						highlightable = checkPrevious(y, x, index, failedAttempt, direction, highlightable);
 					} else { //If occupied, return null
 						return null;
@@ -658,9 +658,9 @@ public class GameSetupUIState extends UI {
 				//Check if the next square exists
 				if(x - failedAttempt >= 0) { //If exists
 					//Check occupancy
-					if(!boardLabel[y][x-failedAttempt].getSquare().isOccupied()) { //If not occupied
+					if(!myBoardLabel[y][x-failedAttempt].getSquare().isOccupied()) { //If not occupied
 						//Add the label to highlightable
-						highlightable[index++] = boardLabel[y][x-failedAttempt++];
+						highlightable[index++] = myBoardLabel[y][x-failedAttempt++];
 						highlightable = checkPrevious(y, x, index, failedAttempt, direction, highlightable);
 					} else { //If occupied, return null
 						return null;

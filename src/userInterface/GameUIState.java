@@ -126,7 +126,7 @@ public class GameUIState extends UI {
 		
 		
 		JPanel bottomP1 = new JPanel();
-		bottomP1.setPreferredSize(new Dimension(300,100));	
+		bottomP1.setPreferredSize(new Dimension(300, 168));	
 		bottomP1.setOpaque(false);
 		
 		leftCol.setLayout(new BorderLayout(0,0));
@@ -144,7 +144,7 @@ public class GameUIState extends UI {
 				SquareLabel squareLabel = new SquareLabel("", this.main);
 				squareLabel.setName(y + "," + x);
 				squareLabel.setBoardIndex();
-				squareLabel.setSquare();
+				squareLabel.setMyBoardSquare();
 				squareLabel.setHorizontalAlignment(SwingConstants.CENTER);
 				squareLabel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 				squareLabel.addMouseListener(new MouseAdapter() {
@@ -208,7 +208,7 @@ public class GameUIState extends UI {
 		
 		
 		JPanel bottomP2 = new JPanel();
-		bottomP2.setPreferredSize(new Dimension(300,100));	
+		bottomP2.setPreferredSize(new Dimension(300, 168));	
 		bottomP2.setOpaque(false);
 		
 		JPanel player2 = new JPanel();
@@ -399,8 +399,8 @@ public class GameUIState extends UI {
 			for(int x=0; x<8; x++) {
 				SquareLabel squareLabel = new SquareLabel("", this.main);
 				squareLabel.setName(y + "," + x);
-				squareLabel.setMyBoardIndex();
-				squareLabel.setSquare();
+				squareLabel.setIndex();
+				squareLabel.setBoardSquare();
 				squareLabel.setHorizontalAlignment(SwingConstants.CENTER);
 				squareLabel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 				//Set own ship

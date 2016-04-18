@@ -18,7 +18,10 @@ public class SquareLabel extends JLabel {
 			this.main = main;
 		}
 		
-		public void setMyBoardIndex() {
+		public void setIndex() {
+			String[] splitted = getName().split(",");
+			y = Integer.parseInt(splitted[0]);
+			x = Integer.parseInt(splitted[1]);
 		}
 		
 		public void setBoardIndex() {
@@ -27,8 +30,13 @@ public class SquareLabel extends JLabel {
 			x = Integer.parseInt(splitted[1]);
 		}
 		
-		public void setSquare() {
-			square = main.client.boardGame.getBoard()[y][x];
+		public void setBoardSquare() {
+			square = main.client.boardGame.board[y][x];
+			square.setSquareLabel(this);
+		}
+		
+		public void setMyBoardSquare() {
+			square = main.client.boardGame.myBoard[y][x];
 			square.setSquareLabel(this);
 		}
 		
