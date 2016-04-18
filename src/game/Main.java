@@ -620,6 +620,8 @@ public class Main extends JFrame {
 							   };
 						       timer_turn_duration = new Timer(1000, timerTask);
 						       timer_turn_duration.start();
+						       
+						       
 								
 							}
 					}

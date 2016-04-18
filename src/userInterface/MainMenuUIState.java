@@ -112,10 +112,6 @@ public class MainMenuUIState extends UI {
 				frame.add(panelSetting);
 				frame.setVisible(true);
 				
-				
-				
-				
-				
 		
 				System.out.println("click setting");
 				

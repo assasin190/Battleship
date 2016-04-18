@@ -93,6 +93,7 @@ public class ChangeBgDialog extends JPanel {
 					System.out.println("print in ChangeBgDialog");
 					MainMenuUIState.changeBg(IMAGES[index]);
 					
+					
 					//MainMenuUI.bg = IMAGES[index];
 
 					//MainMenuUI.this.revalidate();
@@ -100,9 +101,6 @@ public class ChangeBgDialog extends JPanel {
 					// MainMenuUI.this.repaint();
 					//Main.repaint();
 					
-					
-
-				
 				}
 			});
 		}
