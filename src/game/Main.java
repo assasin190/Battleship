@@ -1,6 +1,8 @@
 package game;
 import java.awt.Dimension;
 import java.awt.EventQueue;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
@@ -28,16 +30,11 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
+import javax.swing.Timer;
 
+import game.*;
 import GameState.*;
-import userInterface.GameReadyUIState;
-import userInterface.GameSetupReadyUIState;
-import userInterface.GameSetupUIState;
-import userInterface.GameUIState;
-import userInterface.MainMenuUIState;
-import userInterface.UI;
-import userInterface.WaitForConnectionUIState;
-import userInterface.WaitForOpponentReadyUIState;
+import userInterface.*;
 
 public class Main extends JFrame {
 	//public JFrame frame;
@@ -269,6 +266,7 @@ public class Main extends JFrame {
 		protected GameUIState gameUI;
 		protected boolean myTurn;
 		protected int score;
+		public Timer timer_turn_duration;
 		//UI field related to GameClient
 		
 		//Global serializable field
@@ -557,14 +555,12 @@ public class Main extends JFrame {
 								System.out.println("hit: " + hit);
 								System.out.println("sunk: " + sunk);
 								if(hit) { //If hit
-									client.boardGame.board[y][x].marked = true;
+									boardGame.board[y][x].marked = true;
 									score++;
 									//Update UI (hit)
-									gameUI.boardLabel[y][x].setText("o");
 								} else { //If not hit
-									client.boardGame.board[y][x].marked = true;
+									boardGame.board[y][x].marked = true;
 									//Update UI (not hit)
-									gameUI.boardLabel[y][x].setText("x");
 								}
 								//TODO if enemy ship sunk
 								
@@ -576,10 +572,16 @@ public class Main extends JFrame {
 								boolean hit = hitSunk[0];
 								boolean sunk = hitSunk[1];
 								boolean lose = hitSunk[2];
+								Square hitSquare = boardGame.myBoard[y][x];
+								SquareLabel hitSquareLabel = boardGame.myBoard[y][x].getSquareLabel();
 								//TODO Update UI
 								if(hit) {
-									gameUI.myBoardLabel[y][x].setText("o");
-								} else gameUI.myBoardLabel[y][x].setText("x");
+									boardGame.myBoard[y][x].marked = true;
+									//Update hit UI
+								} else {
+									boardGame.myBoard[y][x].marked = true;
+									//Update miss UI
+								}
 								//TODO check if the player won the game
 								out.println("RETURN_MARK_" + y + "," + x + "_" + hit + "," + sunk);
 								//If the player already loses the game
@@ -589,8 +591,36 @@ public class Main extends JFrame {
 									JOptionPane.showMessageDialog(Main.this, "You lose the game.");
 								}
 								//It is your turn, change the state to playing
-								playerState = PlayerState.PLAYING;
+								playerState = PlayerState.IDLE;
 								myTurn = true;
+								
+								//Sirawich
+								ActionListener timerTask = new ActionListener() {
+							         int countdown = 60;
+
+									@Override
+									public void actionPerformed(ActionEvent e) {
+
+							        	 if (countdown == 0) {
+								           gameUI.lblMinsec.setText("END");
+								           timer_turn_duration.stop();
+								           // time up  expire random mark(x,y)
+								           //mark()
+								  
+								           // System.out.println("end");
+								         } else {
+								        	  gameUI.lblMinsec.setText(countdown + "");
+								  
+								           // call start timer of GameUIState
+								  
+								        	  countdown--;
+								         }
+										
+									}
+							   };
+						       timer_turn_duration = new Timer(1000, timerTask);
+						       timer_turn_duration.start();
+								
 							}
 					}
 				}

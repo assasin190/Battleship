@@ -18,7 +18,10 @@ public class SquareLabel extends JLabel {
 			this.main = main;
 		}
 		
-		public void setIndex() {
+		public void setMyBoardIndex() {
+		}
+		
+		public void setBoardIndex() {
 			String[] splitted = getName().split(",");
 			y = Integer.parseInt(splitted[0]);
 			x = Integer.parseInt(splitted[1]);

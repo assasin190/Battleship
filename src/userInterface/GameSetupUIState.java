@@ -179,7 +179,7 @@ public class GameSetupUIState extends UI {
 			for(int x=0; x<8; x++) {
 				SquareLabel squareLabel = new SquareLabel("", this.main);
 				squareLabel.setName(y + "," + x);
-				squareLabel.setIndex();
+				squareLabel.setMyBoardIndex();
 				squareLabel.setSquare();
 				squareLabel.setHorizontalAlignment(SwingConstants.CENTER);
 				squareLabel.setBorder(BorderFactory.createLineBorder(Color.BLACK));

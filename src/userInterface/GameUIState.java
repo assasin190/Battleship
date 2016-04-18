@@ -49,9 +49,10 @@ import javax.swing.border.CompoundBorder;
 
 public class GameUIState extends UI {
 	
-	private Timer timer;
+	public Timer timer;
 	public SquareLabel[][] boardLabel;
 	public SquareLabel[][] myBoardLabel;
+	public JLabel lblMinsec ;
 	
 	public GameUIState(Main main) {
 		super(main);
@@ -142,7 +143,7 @@ public class GameUIState extends UI {
 			for(int x=0; x<8; x++) {
 				SquareLabel squareLabel = new SquareLabel("", this.main);
 				squareLabel.setName(y + "," + x);
-				squareLabel.setIndex();
+				squareLabel.setBoardIndex();
 				squareLabel.setSquare();
 				squareLabel.setHorizontalAlignment(SwingConstants.CENTER);
 				squareLabel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
@@ -153,6 +154,7 @@ public class GameUIState extends UI {
 							SquareLabel squareLabel = (SquareLabel) e.getSource();
 							int y = squareLabel.y;
 							int x = squareLabel.x;
+							if(boardLabel[y][x].getSquare().isMarked()) return; 
 							main.client.mark(y, x);
 							//Game client will update the gui
 						} else return; //do nothing
@@ -237,7 +239,7 @@ public class GameUIState extends UI {
 		status.setFont(new Font("Avenir", Font.PLAIN, 12));
 		rightTopP2.add(status);
 		
-		JLabel lblMinsec = new JLabel("MIN:SEC");
+	 lblMinsec = new JLabel("MIN:SEC");
 		lblMinsec.setHorizontalAlignment(SwingConstants.LEFT);
 		rightTopP2.add(lblMinsec);
 		
@@ -397,7 +399,7 @@ public class GameUIState extends UI {
 			for(int x=0; x<8; x++) {
 				SquareLabel squareLabel = new SquareLabel("", this.main);
 				squareLabel.setName(y + "," + x);
-				squareLabel.setIndex();
+				squareLabel.setMyBoardIndex();
 				squareLabel.setSquare();
 				squareLabel.setHorizontalAlignment(SwingConstants.CENTER);
 				squareLabel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
