@@ -74,7 +74,8 @@ public class BoardGame implements Serializable{
 		for(Square square : occupation) {
 			square.occupied = false;
 			//Remove ship graphically
-			square.label.setText("");
+			square.label.setIcon(null);
+			square.label.revalidate();
 		}
 	}
 	
