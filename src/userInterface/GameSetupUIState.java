@@ -12,6 +12,8 @@ import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -56,7 +58,7 @@ public class GameSetupUIState extends UI {
 		super(main);
 		stateString = GameState.GAME_SETUP_STATE;
 		shipPlacingEnabled = false;
-		shipPlacingDirection = "down";
+		shipPlacingDirection = "down"; //SHIPDIRECTION
 		shipNumber = 0;
 		initialize();
 	}
@@ -186,7 +188,9 @@ public class GameSetupUIState extends UI {
 								if(success) { //Success -> set ship graphically
 									for(SquareLabel label: highlighting) {
 										//TODO set ship icon on the board game
-										label.setText(shipNumber + "");
+										//label.setText(shipNumber + "");
+										//label.setIcon(new ImageIcon("ship1.png"));
+										label.setIcon(new ImageIcon("ship"+(shipNumber+1)+".png")); //PLACESHIP
 									}
 									//Re-invoke mouse exited on e
 									mouseExited(e);
@@ -217,6 +221,7 @@ public class GameSetupUIState extends UI {
 							//Else do highlighting
 							for(SquareLabel label : highlighting) {
 								label.setBorder(BorderFactory.createLineBorder(Color.RED, 3));
+								
 							}
 						}
 					}
@@ -405,7 +410,7 @@ public class GameSetupUIState extends UI {
 		shipPanel.setLayout(new GridLayout(4, 0, 0, 0));
 		JButton ship1 = new JButton("ship1");
 		ship1.setName("ship1");
-		ship1.setIcon(new ImageIcon("ship1.gif"));
+		ship1.setIcon(new ImageIcon("ship1.png"));
 		ship1.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -423,7 +428,7 @@ public class GameSetupUIState extends UI {
 		});
 		JButton ship2 = new JButton("ship2");
 		ship2.setName("ship2");
-		ship2.setIcon(new ImageIcon("ship2.gif"));
+		ship2.setIcon(new ImageIcon("ship2.png"));
 		ship2.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -441,7 +446,7 @@ public class GameSetupUIState extends UI {
 		});
 		JButton ship3 = new JButton("ship3");
 		ship3.setName("ship3");
-		ship3.setIcon(new ImageIcon("ship3.gif"));
+		ship3.setIcon(new ImageIcon("ship3.png"));
 		ship3.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -459,7 +464,7 @@ public class GameSetupUIState extends UI {
 		});
 		JButton ship4 = new JButton("ship4");
 		ship4.setName("ship4");
-		ship4.setIcon(new ImageIcon("ship4.gif"));
+		ship4.setIcon(new ImageIcon("ship4.png"));
 		ship4.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -657,6 +662,7 @@ public class GameSetupUIState extends UI {
 	public void entered() {
 		System.out.println(Thread.currentThread().getName() + ": entered " + stateString);
 		main.replaceCurrentPanel(panel);
+		JOptionPane.showMessageDialog(main, "Welcome, Alice!");
 	}
 
 	@Override
