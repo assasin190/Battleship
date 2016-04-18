@@ -185,12 +185,18 @@ public class GameSetupUIState extends UI {
 								Ship ship = new Ship(shipNumber);
 								//Set ship on board game
 								boolean success = main.client.boardGame.setShip(ship, shipNumber, highlighting);
+								
 								if(success) { //Success -> set ship graphically
+									int i = 1;
 									for(SquareLabel label: highlighting) {
 										//TODO set ship icon on the board game
 										//label.setText(shipNumber + "");
 										//label.setIcon(new ImageIcon("ship1.png"));
-										label.setIcon(new ImageIcon("ship"+(shipNumber+1)+".png")); //PLACESHIP
+										if(shipPlacingDirection.equals("right")){
+											label.setIcon(new ImageIcon("horizontal/ship"+(shipNumber+1)+""+(i++)+".png"));
+											
+										}
+										//label.setIcon(new ImageIcon("ship"+(shipNumber+1)+".png")); //PLACESHIP
 									}
 									//Re-invoke mouse exited on e
 									mouseExited(e);
