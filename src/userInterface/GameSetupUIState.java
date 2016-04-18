@@ -25,6 +25,7 @@ import java.awt.FlowLayout;
 import java.awt.Color;
 import javax.swing.JTextField;
 import javax.swing.JFormattedTextField;
+import javax.swing.JFrame;
 import javax.swing.JTextPane;
 import javax.swing.border.LineBorder;
 
@@ -102,12 +103,35 @@ public class GameSetupUIState extends UI {
 		pp2.setPreferredSize(new Dimension(25,35));
 		pp2.setOpaque(false);
 		
+		// sirawich help
 		JButton pp = new JButton();
 		pp.setIcon(new ImageIcon("btn-help.png"));
 		pp.setPreferredSize(new Dimension(100, 35));
 		pp.setBorderPainted(false);
 		pp.setContentAreaFilled(false);
 		pp.setFocusPainted(false);
+		
+		 pp.addActionListener(new ActionListener()
+		    {
+		      public void actionPerformed(ActionEvent e)
+		      {
+		        // display/center the jdialog when the button is pressed
+		    	  
+		    	  
+		    	  JFrame frame = new JFrame();
+		    	  
+		    	  JPanel panel = new JPanel();
+		    	  JLabel jlabel = new JLabel("1. A player has to place all 4 ships on the left board at the beginning, then click on ready button. \n 2. The first player who begins the game will be randomly chosen.  \n 3. Each turn, a player has 10 seconds to select where to fire a shot the opposite player’s ship. If the player do not shot his enemy’s ship within 10 seconds, there will be automatically randomly shot the opposite’s side. \n 4. The result of each turn, hit or miss, will be shown at the right board. \n 5. The game will end after a player can shoot all 4 ships (whole ship) of opposite’s side.");
+		    	  panel.add(jlabel);
+		    	 // JTextArea text = JTextArea();
+		    
+					frame.add(panel);
+					frame.setVisible(true);
+		    	  
+		        System.out.println("click help");
+		      }
+		    });
+		
 		
 		JPanel pp3 = new JPanel();
 		pp3.setPreferredSize(new Dimension(150,65));

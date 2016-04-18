@@ -101,6 +101,7 @@ public class MainMenuUIState extends UI {
 		btnSetting.setContentAreaFilled(false);
 		btnSetting.setFocusPainted(false);
 
+		// sirawich click setting
 		btnSetting.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
