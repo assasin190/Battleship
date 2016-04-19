@@ -41,7 +41,8 @@ public class MainMenuUIState extends UI {
 		stateString = GameState.MAIN_MENU_STATE;
 		ImageIcon bgIcon = createImageIcon(bg, 1024, 768);
 		Image bgImg = bgIcon.getImage();
-		panel = UI.createJPanelWithBackground(bgImg);
+	//	panel = UI.createJPanelWithBackground(bgImg);
+		panel = new PanelThatCanSetBackground(bgImg);
 		/*
 		panel = new JPanel() {
 			@Override
@@ -109,8 +110,8 @@ public class MainMenuUIState extends UI {
 				// frame.setVisible(true);
 
 				JFrame frame = new JFrame();
-				panelSetting = new ChangeBgDialog();
-				frame.add(panelSetting);
+				panelSetting = new ChangeBgDialog(main);
+				frame.add(panelSetting.panel);
 				frame.setVisible(true);
 				
 		
@@ -256,11 +257,7 @@ public class MainMenuUIState extends UI {
 		buttonPanel.add(serverBtn);
 	}
 
-	public static void changeBg(String imgIndex){
-		bg = imgIndex;
-		panelSetting.repaint();
-		System.out.println("repaint invoke");
-	}
+
 	
 	
 

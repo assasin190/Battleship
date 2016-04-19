@@ -66,7 +66,7 @@ public class GameSetupUIState extends UI {
 		initialize();
 	}
 
-	private void initialize() {
+	public void initialize() {
 
 		ImageIcon bgIcon = createImageIcon("bg.png", 1024, 768);
 		Image img = bgIcon.getImage();
