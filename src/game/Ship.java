@@ -14,10 +14,12 @@ public class Ship implements Serializable {
 	public Square [] occupancy;
 	public boolean sunk;
 	public int shipNumber;
+	public String direction;
 	
-	public Ship(int shipNumber) {
+	public Ship(int shipNumber, String direction) {
 		occupancy = new Square[4];
 		this.shipNumber = shipNumber;
+		this.direction = direction;
 	}
 	
 	public void setOccupation(Square[] occupancy) {

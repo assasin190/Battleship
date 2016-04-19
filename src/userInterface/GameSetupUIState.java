@@ -121,7 +121,7 @@ public class GameSetupUIState extends UI {
 		    	  JFrame frame = new JFrame();
 		    	  
 		    	  JPanel panel = new JPanel();
-		    	  JLabel jlabel = new JLabel("1. A player has to place all 4 ships on the left board at the beginning, then click on ready button. \n 2. The first player who begins the game will be randomly chosen.  \n 3. Each turn, a player has 10 seconds to select where to fire a shot the opposite player’s ship. If the player do not shot his enemy’s ship within 10 seconds, there will be automatically randomly shot the opposite’s side. \n 4. The result of each turn, hit or miss, will be shown at the right board. \n 5. The game will end after a player can shoot all 4 ships (whole ship) of opposite’s side.");
+		    	  JLabel jlabel = new JLabel("1. A player has to place all 4 ships on the left board at the beginning, then click on ready button. \n 2. The first player who begins the game will be randomly chosen.  \n 3. Each turn, a player has 10 seconds to select where to fire a shot the opposite playerï¿½s ship. If the player do not shot his enemyï¿½s ship within 10 seconds, there will be automatically randomly shot the oppositeï¿½s side. \n 4. The result of each turn, hit or miss, will be shown at the right board. \n 5. The game will end after a player can shoot all 4 ships (whole ship) of oppositeï¿½s side.");
 		    	  panel.add(jlabel);
 		    	 // JTextArea text = JTextArea();
 		    
@@ -231,21 +231,22 @@ public class GameSetupUIState extends UI {
 									return;
 								}
 								//Create a ship on those squares
-								Ship ship = new Ship(shipNumber);
+								Ship ship = new Ship(shipNumber, shipPlacingDirection);
 								//Set ship on board game
 								boolean success = main.client.boardGame.setShip(ship, shipNumber, highlighting);
 								
 								if(success) { //Success -> set ship graphically
 									int i = 1;
-									for(SquareLabel label: highlighting) {
+									for(Square square: ship.getOccupancy()) {
+										SquareLabel squareLabel = square.getSquareLabel();
 										//TODO set ship icon on the board game
 										//label.setText(shipNumber + "");
 										//label.setIcon(new ImageIcon("ship1.png"));
 										if(shipPlacingDirection.equals("right")){
-											label.setIcon(new ImageIcon("ship/horizontal/ship"+(shipNumber+1)+""+(i++)+".png"));
+											squareLabel.setIcon(new ImageIcon("ship/horizontal/ship"+(shipNumber+1)+""+(i++)+".png"));
 				
 										}else{
-											label.setIcon(new ImageIcon("ship/vertical/ship"+(shipNumber+1)+""+(i++)+".png"));
+											squareLabel.setIcon(new ImageIcon("ship/vertical/ship"+(shipNumber+1)+""+(i++)+".png"));
 											
 										}
 										//label.setIcon(new ImageIcon("ship"+(shipNumber+1)+".png")); //PLACESHIP
@@ -511,7 +512,7 @@ public class GameSetupUIState extends UI {
 				JButton shipLabel = (JButton) e.getSource();
 				//Set ship number
 				shipNumber = Integer.parseInt(shipLabel.getName().substring(shipLabel.getName().length()-1)) - 1;
-				//Clear ship occupation
+				//Clear ship occupancy
 				Ship ship = main.client.boardGame.getShip(shipNumber);
 				if(ship != null) { //If there are already ship3 set, clear the occupation
 					main.client.boardGame.clearOccupation(ship);

@@ -1,6 +1,8 @@
 package game;
 
 import java.io.Serializable;
+import java.util.Arrays;
+
 import game.Square;
 import userInterface.SquareLabel;
 
@@ -25,6 +27,7 @@ public class BoardGame implements Serializable{
 		//Create a square for slot
 		for(int y=0; y<8; y++) {
 			for(int x=0; x<8; x++) {
+				board[y][x] = new Square(y,x);
 				myBoard[y][x] = new Square(y,x);
 			}
 		}
@@ -34,13 +37,14 @@ public class BoardGame implements Serializable{
 		//Check if square has already been occupied (by the other ships)
 		//...
 		//Set occupation
-		Square[] occupation = new Square[4];
+		Square[] occupancy = new Square[4];
 		for(int i=0; i<4; i++) {
 			Square square = myBoard[occupationLabel[i].getYIndex()][occupationLabel[i].getXIndex()];
 			square.setOccupyingShip(ship);
-			occupation[i] = square;
+			occupancy[i] = square;
 		}
-		ship.setOccupation(occupation);
+		Arrays.sort(occupancy);
+		ship.setOccupation(occupancy);
 		//Set ship
 		ships[shipNumber] = ship;
 		//If setShip succeed, return true
@@ -81,7 +85,11 @@ public class BoardGame implements Serializable{
 	
 	public boolean isAllShipSet() {
 		for(Ship ship : ships) {
-			if(ship == null) return false;
+			if(ship == null) {
+				System.out.println("null");
+				return false;
+			}
+			System.out.println(ship.shipNumber);
 		}
 		return true;
 	}

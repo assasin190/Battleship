@@ -411,8 +411,13 @@ public class GameUIState extends UI {
 		
 		//Set ships in myBoardLabel
 		for(Ship ship : main.client.boardGame.getAllShips()) {
+			int i = 1;
 			for(Square square : ship.getOccupancy()) {
-				myBoardLabel[square.getY()][square.getX()].setText(ship.shipNumber + "");
+				if(ship.direction.equals("right")) {
+					myBoardLabel[square.getY()][square.getX()].setIcon(new ImageIcon("ship/horizontal/ship"+(ship.shipNumber+1)+""+(i++)+".png"));
+				} else {
+					myBoardLabel[square.getY()][square.getX()].setIcon(new ImageIcon("ship/vertical/ship"+(ship.shipNumber+1)+""+(i++)+".png"));
+				}
 			}
 		}
 		
@@ -434,9 +439,6 @@ public class GameUIState extends UI {
 	}
 
 	
-	private void initialize() {
-
-	}
 	public static ImageIcon createImageIcon(String path, int width, int height) {
 		Image img = null;
 		try {

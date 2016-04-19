@@ -572,14 +572,14 @@ public class Main extends JFrame {
 								boolean hit = hitSunk[0];
 								boolean sunk = hitSunk[1];
 								boolean lose = hitSunk[2];
-								Square hitSquare = boardGame.myBoard[y][x];
+								Square markedSquare = boardGame.myBoard[y][x];
 								SquareLabel hitSquareLabel = boardGame.myBoard[y][x].getSquareLabel();
 								//TODO Update UI
 								if(hit) {
-									boardGame.myBoard[y][x].marked = true;
+									markedSquare.marked = true;
 									//Update hit UI
 								} else {
-									boardGame.myBoard[y][x].marked = true;
+									markedSquare.marked = true;
 									//Update miss UI
 								}
 								//TODO check if the player won the game
@@ -621,8 +621,6 @@ public class Main extends JFrame {
 						       timer_turn_duration = new Timer(1000, timerTask);
 						       timer_turn_duration.start();
 						       
-						       
-								
 							}
 					}
 				}
