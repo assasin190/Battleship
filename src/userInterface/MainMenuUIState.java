@@ -28,7 +28,7 @@ public class MainMenuUIState extends UI {
 	public static String bg = "Bg-play3.png";
 	static ChangeBgDialog panelSetting;
 	public ConnectToServerP2PUIState popUpDialog;
-	public JTextField name; // Player's name
+	public JTextField nameField; // Player's name
 	public ImageIcon profilePic; // Player's profile photo
 
 	//Test purpose
@@ -160,10 +160,12 @@ public class MainMenuUIState extends UI {
 		JButton btnP[] = new JButton[6];
 		ImageIcon img[] = new ImageIcon[6];
 		ImageIcon imgP[] = new ImageIcon[6];
+		ImageIcon imgPP[] = new ImageIcon[6];
 
 		for (int i = 0; i < 6; i++) {
 			img[i] = createImageIcon("p" + (i + 1) + ".png", 50, 50);
 			imgP[i] = createImageIcon("p" + (i + 1) + ".png", 200, 200);
+			imgPP[i] = createImageIcon("p" + (i + 1) + ".png", 80, 80); //variable for setup profile pic 
 			btnP[i] = new JButton(img[i]);
 			btnP[i].setName(i + "");
 			selectPlayer.add(btnP[i]);
@@ -174,7 +176,8 @@ public class MainMenuUIState extends UI {
 					String name = ((JButton) e.getComponent()).getName();
 					int index = Integer.parseInt(name);
 					profile.setIcon(imgP[index]);
-					profilePic = imgP[index];
+					profilePic = imgPP[index];
+					main.player.setImage(profilePic);
 				}
 			});
 		}
@@ -202,10 +205,10 @@ public class MainMenuUIState extends UI {
 		modePanel.add(lblLogInAs);
 		center.add(modePanel, BorderLayout.NORTH);
 
-		name = new JTextField();
-		name.setFont(new Font("Avenir", Font.PLAIN, 14));
-		name.setColumns(10);
-		modePanel.add(name);
+		nameField = new JTextField();
+		nameField.setFont(new Font("Avenir", Font.PLAIN, 14));
+		nameField.setColumns(10);
+		modePanel.add(nameField);
 
 		// modePanel.setOpaque(false);
 
@@ -226,6 +229,8 @@ public class MainMenuUIState extends UI {
 			public void actionPerformed(ActionEvent e) {
 				// User clicked client button
 				//Push UI state -> CONNECT_TO_SERVER_P2P_STATE
+				main.player.setImage(profilePic);
+				main.player.setName(nameField.getText());
 				main.GSM.pushState(new ConnectToServerP2PUIState(MainMenuUIState.this.main));
 
 			}
@@ -238,6 +243,8 @@ public class MainMenuUIState extends UI {
 			public void actionPerformed(ActionEvent e) {
 				//User clicked server button
 				//Run server mode
+				main.player.setImage(profilePic);
+				main.player.setName(nameField.getText());
 				main.startLocalServer();
 				/* Push UI state -> WAIT_FOR_CONNECTION_STATE
 				   startLocalServer will update UI

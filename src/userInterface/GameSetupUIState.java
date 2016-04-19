@@ -407,15 +407,17 @@ public class GameSetupUIState extends UI {
 		topP2.add(gap2, BorderLayout.SOUTH);
 
 		rightTopP2.setLayout(new GridLayout(1, 5, 0, 0));
-		JLabel p1 = new JLabel("YOU");
+		JLabel p1 = new JLabel(main.player.getName());
 		p1.setHorizontalAlignment(SwingConstants.CENTER);
 		p1.setFont(new Font("Avenir", Font.PLAIN, 10));
 		JButton b1 = new JButton("READY");
+		b1.setEnabled(false);
 		b1.setFont(new Font("Lucida Grande", Font.PLAIN, 9));
 		JLabel p2 = new JLabel("ENEMY");
 		p2.setHorizontalAlignment(SwingConstants.CENTER);
 		p2.setFont(new Font("Avenir", Font.PLAIN, 10));
 		JButton b2 = new JButton("READY");
+		b2.setEnabled(false);
 		b2.setFont(new Font("Lucida Grande", Font.PLAIN, 9));
 		rightTopP2.add(status);
 		rightTopP2.add(p1);
@@ -439,7 +441,8 @@ public class GameSetupUIState extends UI {
 		JPanel namePanel = new JPanel();
 		namePanel.setPreferredSize(new Dimension(190, 30));
 		namePanel.setLayout(new BorderLayout(0, 0));
-		JLabel name = new JLabel("PLAYER1");
+		System.out.println("name = : " + main.player.getName());
+		JLabel name = new JLabel(main.player.getName());
 		name.setFont(new Font("Avenir", Font.PLAIN, 13));
 		name.setHorizontalAlignment(SwingConstants.CENTER);
 		namePanel.add(name);
@@ -451,8 +454,8 @@ public class GameSetupUIState extends UI {
 		northPlayer2.add(playerPanel, BorderLayout.SOUTH);
 		playerPanel.setLayout(new BorderLayout(0, 0));
 
-		JButton profile = new JButton("");
-		profile.setIcon(new ImageIcon("avatarr.png"));
+		JLabel profile = new JLabel(main.player.getImage());
+		//profile.setIcon(main.player.getImage());
 		profile.setBackground(Color.GRAY);
 		profile.setPreferredSize(new Dimension(80, 100));
 		playerPanel.add(profile, BorderLayout.WEST);
@@ -794,7 +797,7 @@ public class GameSetupUIState extends UI {
 	public void entered() {
 		System.out.println(Thread.currentThread().getName() + ": entered " + stateString);
 		main.replaceCurrentPanel(panel);
-		JOptionPane.showMessageDialog(main, "Welcome, Alice!");
+		JOptionPane.showMessageDialog(main, "Welcome, " + main.player.getName());
 	}
 
 	@Override

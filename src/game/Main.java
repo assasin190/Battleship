@@ -1,6 +1,7 @@
 package game;
 import java.awt.Dimension;
 import java.awt.EventQueue;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
@@ -44,6 +45,7 @@ public class Main extends JFrame {
 	boolean start = true;
 	public GameClient client;
 	private Socket socket;
+	public Player player;
 	
 	/**
 	 * Launch the application.
@@ -69,6 +71,7 @@ public class Main extends JFrame {
 		setResizable(false);
 		insertBGM("login.wav");
 		start = false;
+		player = new Player();
 		//Change UI state -> MAIN_MENU_STATE
 		GSM.setState(new MainMenuUIState(this));
 	}
