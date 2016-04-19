@@ -20,7 +20,7 @@ public abstract class UI implements GameState{
 	 */
 	
 	public Main main;
-	public JPanel panel;
+	public PanelThatCanSetBackground panel;
 	public JDialog dialog;
 	public String stateString;
 	

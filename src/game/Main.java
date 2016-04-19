@@ -39,7 +39,7 @@ import userInterface.*;
 public class Main extends JFrame {
 	//public JFrame frame;
 	public final GameStateManager GSM = new GameStateManager();
-	public JPanel currentStatePanel;
+	public PanelThatCanSetBackground currentStatePanel;
 	public boolean isClient;
 	boolean start = true;
 	public GameClient client;
@@ -205,7 +205,7 @@ public class Main extends JFrame {
 		}
 	}
 	
-	public void replaceCurrentPanel(JPanel panel) {
+	public void replaceCurrentPanel(PanelThatCanSetBackground panel) {
 		//if currentStatePanel is not null, remove the currentStatePanel
 		if(currentStatePanel != null) {
 			getContentPane().remove(currentStatePanel);
