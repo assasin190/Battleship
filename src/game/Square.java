@@ -5,7 +5,7 @@ import java.io.Serializable;
 import javax.swing.JLabel;
 import userInterface.SquareLabel;
 
-public class Square implements Serializable {
+public class Square implements Comparable<Square> {
 	
 	/**
 	 * 
@@ -52,6 +52,18 @@ public class Square implements Serializable {
 	
 	public int getX() {
 		return x;
+	}
+	@Override
+	public int compareTo(Square o) {
+		if(occupyingShip.direction.equals("down")) {
+			if(y < o.y) return -1;
+			else if(y > o.y) return 1;
+			else return 0;
+		} else {
+			if(x < o.x) return -1;
+			else if(x > o.x) return 1;
+			else return 0;
+		}
 	}
 	
 }

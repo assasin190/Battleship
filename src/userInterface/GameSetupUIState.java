@@ -112,7 +112,6 @@ public class GameSetupUIState extends UI {
 		pp.setBorderPainted(false);
 		pp.setContentAreaFilled(false);
 		pp.setFocusPainted(false);
-
 		pp.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
@@ -151,10 +150,10 @@ public class GameSetupUIState extends UI {
 
 		        txt1.setText("\n \n 1. A player has to place all 4 ships on the left board"+"\n"+" at the beginning, then click on ready button.");
 		        txt2.setText("\n \n 2. The first player who begins the game will be randomly chosen." );
-		        txt3.setText("\n \n 3. Each turn, a player has 10 seconds to select where to fire a shot the opposite"+"\n"+" player’s ship. If the player do not shot his enemy’s ship within 10 seconds,"
-						+"\n"+ " there will be automatically randomly shot the opposite’s side." );
+		        txt3.setText("\n \n 3. Each turn, a player has 10 seconds to select where to fire a shot the opposite"+"\n"+" playerï¿½s ship. If the player do not shot his enemyï¿½s ship within 10 seconds,"
+						+"\n"+ " there will be automatically randomly shot the oppositeï¿½s side." );
 		        txt4.setText("\n \n 4. The result of each turn, hit or miss, will be shown at the right board." );
-		        txt5.setText("\n \n 5. The game will end after a player can shoot all 4 ships (whole ship) of "+"\n"+"opposite’s side." );
+		        txt5.setText("\n \n 5. The game will end after a player can shoot all 4 ships (whole ship) of "+"\n"+"oppositeï¿½s side." );
 				
 				
 				
@@ -174,7 +173,6 @@ public class GameSetupUIState extends UI {
 				
 			}
 		});
-
 		JPanel pp3 = new JPanel();
 		pp3.setPreferredSize(new Dimension(150, 65));
 		pp3.setOpaque(false);
@@ -283,27 +281,24 @@ public class GameSetupUIState extends UI {
 																							// nothing
 									return;
 								}
-								// Create a ship on those squares
-								Ship ship = new Ship(shipNumber);
-								// Set ship on board game
+								//Create a ship on those squares
+								Ship ship = new Ship(shipNumber, shipPlacingDirection);
+								//Set ship on board game
 								boolean success = main.client.boardGame.setShip(ship, shipNumber, highlighting);
 
 								if (success) { // Success -> set ship
 												// graphically
 									int i = 1;
-									for (SquareLabel label : highlighting) {
-										// TODO set ship icon on the board game
-										// label.setText(shipNumber + "");
-										// label.setIcon(new
-										// ImageIcon("ship1.png"));
-										if (shipPlacingDirection.equals("right")) {
-											label.setIcon(new ImageIcon(
-													"ship/horizontal/ship" + (shipNumber + 1) + "" + (i++) + ".png"));
-
-										} else {
-											label.setIcon(new ImageIcon(
-													"ship/vertical/ship" + (shipNumber + 1) + "" + (i++) + ".png"));
-
+									for(Square square: ship.getOccupancy()) {
+										SquareLabel squareLabel = square.getSquareLabel();
+										//TODO set ship icon on the board game
+										//label.setText(shipNumber + "");
+										//label.setIcon(new ImageIcon("ship1.png"));
+										if(shipPlacingDirection.equals("right")){
+											squareLabel.setIcon(new ImageIcon("ship/horizontal/ship"+(shipNumber+1)+""+(i++)+".png"));
+				
+										}else{
+											squareLabel.setIcon(new ImageIcon("ship/vertical/ship"+(shipNumber+1)+""+(i++)+".png"));
 										}
 										// label.setIcon(new
 										// ImageIcon("ship"+(shipNumber+1)+".png"));
@@ -563,9 +558,9 @@ public class GameSetupUIState extends UI {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				JButton shipLabel = (JButton) e.getSource();
-				// Set ship number
-				shipNumber = Integer.parseInt(shipLabel.getName().substring(shipLabel.getName().length() - 1)) - 1;
-				// Clear ship occupation
+				//Set ship number
+				shipNumber = Integer.parseInt(shipLabel.getName().substring(shipLabel.getName().length()-1)) - 1;
+				//Clear ship occupancy
 				Ship ship = main.client.boardGame.getShip(shipNumber);
 				if (ship != null) { // If there are already ship3 set, clear the
 									// occupation
