@@ -52,7 +52,8 @@ public class GameUIState extends UI {
 	public Timer timer;
 	public SquareLabel[][] boardLabel;
 	public SquareLabel[][] myBoardLabel;
-	public JLabel lblMinsec ;
+	public JLabel lblTimer ;
+	public JLabel P1Score;
 	
 	public GameUIState(Main main) {
 		super(main);
@@ -152,6 +153,10 @@ public class GameUIState extends UI {
 							int x = squareLabel.x;
 							if(boardLabel[y][x].getSquare().isMarked()) return; 
 							main.client.mark(y, x);
+							
+							main.client.timer_turn_duration.stop();
+							lblTimer.setText("END");
+							
 							//Game client will update the gui
 						} else return; //do nothing
 					}
@@ -232,15 +237,15 @@ public class GameUIState extends UI {
 		status.setFont(new Font("Avenir", Font.PLAIN, 12));
 		rightTopP2.add(status);
 		
-	 lblMinsec = new JLabel("MIN:SEC");
-		lblMinsec.setHorizontalAlignment(SwingConstants.LEFT);
-		rightTopP2.add(lblMinsec);
+		lblTimer = new JLabel("END");
+		lblTimer.setHorizontalAlignment(SwingConstants.LEFT);
+		rightTopP2.add(lblTimer);
 		
-		///////////////////////////////////
-		
+		/////////////////////////////////// sirawich
+		/*
 		ActionListener timerTask = new ActionListener() {
 	          
-            int countdown = 60;
+            int countdown = 5;
             @Override
             public void actionPerformed(ActionEvent e) {
                if(countdown==0){
@@ -255,6 +260,8 @@ public class GameUIState extends UI {
         };
         timer = new Timer(1000, timerTask);
         timer.start();
+        */
+        
 		///////////////////////////////////
 		rightCol.add(player2,BorderLayout.CENTER);
 		rightCol.add(bottomP2, BorderLayout.SOUTH);
@@ -325,7 +332,7 @@ public class GameUIState extends UI {
 		client.add(scoreClient, BorderLayout.EAST);
 		scoreClient.setLayout(new BorderLayout(0, 0));
 		
-		JLabel P1Score = new JLabel("XX");
+		P1Score = new JLabel("0");
 		P1Score.setHorizontalAlignment(SwingConstants.CENTER);
 		scoreClient.add(P1Score, BorderLayout.CENTER);
 		

@@ -120,12 +120,6 @@ public class GameServer implements Runnable, Serializable {
 		if(forwardNumber == 1) socketThread1.writeViaSocket(input);
 		else socketThread2.writeViaSocket(input);
 	}
-	
-	private void forwardBoardGame(BoardGame boardGame, int forwardNumber) {
-		if(forwardNumber == 1) {
-			socketThread1.writeObjectViaSocket(boardGame);
-		} else socketThread2.writeObjectViaSocket(boardGame);
-	}
 
 	private void setupClient() {
 		try {
@@ -289,8 +283,7 @@ public class GameServer implements Runnable, Serializable {
 								if(input.indexOf("RETURN_MARK") != -1) {
 									if(clientNumber == 1) print(input, 2);
 									else print(input, 1);
-								}
-								if(input.indexOf("MARK") != -1) { //If is a mark command
+								} else if(input.indexOf("MARK") != -1) { //If is a mark command
 									if(clientNumber == 1) print(input, 2);
 									else print(input, 1);
 								}
