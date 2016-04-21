@@ -653,11 +653,14 @@ public class Main extends JFrame {
 										Random r = new Random();
 								    	int Low = 0;
 								    	int High = 8;
-								    	int random_x = r.nextInt(High-Low) + Low;
-								    	int random_y = r.nextInt(High-Low) + Low;
-										
-								    	System.out.println("random:" + random_y + ", " + random_x);
-										mark(random_y,random_x);
+								    	int random_x;
+								    	int random_y;
+								    	while(true) {
+									    	random_x = r.nextInt(High-Low) + Low;
+									    	random_y = r.nextInt(High-Low) + Low;
+									    	if(!client.boardGame.board[random_y][random_x].isMarked()) break;
+								    	}
+								    	mark(random_y,random_x);
 										
 										gameUI.lblTimer.setText("END");
 										timer_turn_duration.stop();
