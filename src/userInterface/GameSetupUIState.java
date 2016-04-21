@@ -359,12 +359,18 @@ public class GameSetupUIState extends UI {
 		rightCol.setOpaque(false);
 		center.add(rightCol, BorderLayout.EAST);
 
-		JPanel statusPanel = new JPanel();
+		/*JPanel statusPanel = new JPanel();
 		statusPanel.setPreferredSize(new Dimension(300, 50));
 		statusPanel.setLayout(new BorderLayout(0, 0));
-		statusPanel.setOpaque(false);
+		statusPanel.setOpaque(false); 
+		*/
+		
 		JPanel topP2 = new JPanel();
 		topP2.setOpaque(false);
+		topP2.setPreferredSize(new Dimension(300, 50));
+		topP2.setLayout(new BorderLayout(0, 0));
+		rightCol.setLayout(new BorderLayout(0, 0));
+		rightCol.add(topP2, BorderLayout.NORTH);
 
 		JPanel bottomP2 = new JPanel();
 		bottomP2.setPreferredSize(new Dimension(300, 100));
@@ -374,44 +380,46 @@ public class GameSetupUIState extends UI {
 		player2.setPreferredSize(new Dimension(300, 300));
 		player2.setOpaque(false);
 
-		rightCol.setLayout(new BorderLayout(0, 0));
-		rightCol.add(topP2, BorderLayout.NORTH);
-		topP2.setLayout(new BorderLayout(0, 0));
-
-		JLabel status = new JLabel("STATUS:");
-		status.setHorizontalAlignment(SwingConstants.RIGHT);
-		status.setFont(new Font("Avenir", Font.PLAIN, 12));
-
+	
 		JPanel rightTopP2 = new JPanel();
 		rightTopP2.setBorder(new LineBorder(null, 1, true));
-		rightTopP2.setBackground(SystemColor.control);
-		rightTopP2.setPreferredSize(new Dimension(300, 40));
-		topP2.add(rightTopP2, BorderLayout.EAST);
+		rightTopP2.setPreferredSize(new Dimension(260, 40));
+		topP2.add(rightTopP2, BorderLayout.CENTER);
 
 		JPanel gap2 = new JPanel();
-		gap2.setPreferredSize(new Dimension(220, 10));
+		gap2.setPreferredSize(new Dimension(260, 10));
 		gap2.setOpaque(false);
 		topP2.add(gap2, BorderLayout.SOUTH);
 
-		rightTopP2.setLayout(new GridLayout(1, 3, 0, 0));
+		JLabel status = new JLabel("STATUS:");
+		status.setHorizontalAlignment(SwingConstants.CENTER);
+		status.setFont(new Font("Avenir", Font.PLAIN, 12));
+		status.setPreferredSize(new Dimension(50,40));
+		
+		rightTopP2.setLayout(new GridLayout(1,3));
 		JPanel statusP1 = new JPanel();
+		statusP1.setPreferredSize(new Dimension(105,40));
 		statusP1.setLayout(new BorderLayout());
 		JPanel statusP2 = new JPanel();
 		statusP2.setLayout(new BorderLayout());
+		statusP2.setPreferredSize(new Dimension(105,40));
 		
 		b1 = new JLabel(main.createImageIcon("notready.png",10,10));
+		//b1.setHorizontalAlignment(SwingConstants.RIGHT);
 		JLabel p1 = new JLabel(main.player.getName());
 		p1.setHorizontalAlignment(SwingConstants.CENTER);
-		p1.setFont(new Font("Avenir", Font.PLAIN, 10));
+		//p1.setVerticalAlignment(SwingConstants.CENTER);
+		p1.setFont(new Font("Avenir", Font.PLAIN, 12));
 		b2 = new JLabel(main.createImageIcon("notready.png",10,10));
 		p2 = new JLabel("");
 		p2.setHorizontalAlignment(SwingConstants.CENTER);
-		p2.setFont(new Font("Avenir", Font.PLAIN, 10));
+		p2.setFont(new Font("Avenir", Font.PLAIN, 12));
 		
 		statusP1.add(b1,BorderLayout.WEST);
-		statusP1.add(p1,BorderLayout.EAST);
-		statusP1.add(b2,BorderLayout.WEST);
-		statusP1.add(p2,BorderLayout.EAST);
+		statusP1.add(p1,BorderLayout.CENTER);
+		statusP2.add(b2,BorderLayout.WEST);
+		statusP2.add(p2,BorderLayout.CENTER);
+		
 		rightTopP2.add(status);
 		rightTopP2.add(statusP1);
 		rightTopP2.add(statusP2);
@@ -858,12 +866,13 @@ public class GameSetupUIState extends UI {
 		System.out.println(Thread.currentThread().getName() + ": entered " + stateString);
 		main.replaceCurrentPanel(panel);
 		JOptionPane.showMessageDialog(main, "Welcome, " + main.player.getName());
+		main.setEnabled(true);
 	}
 
 	@Override
 	public void leaving() {
 		System.out.println(Thread.currentThread().getName() + ": leaving " + stateString);
-		// TODO Auto-generated method stub
+		main.setEnabled(false);
 
 	}
 
