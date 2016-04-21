@@ -36,8 +36,8 @@ import javax.swing.JButton;
 import javax.swing.SwingConstants;
 
 public class ChangeBgUIState extends UI {
-	public static final String[] IMAGES = new String[] { "Bg-play.png", "Bg-play2.png", "Bg-play3.png",
-			"Bg-play4.png" };
+	public static final String[] IMAGES = new String[] { "bg/Bg-play.png", "bg/Bg-play2.png", "bg/Bg-play3.png",
+			"bg/Bg-play4.png" };
 
 	public ChangeBgUIState(Main main) {
 		super(main);

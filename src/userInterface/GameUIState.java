@@ -58,10 +58,7 @@ public class GameUIState extends UI {
 		super(main);
 		stateString = GameState.GAME_STATE;
 
-		ImageIcon bgIcon = createImageIcon("bg.png",1024, 768);
-		Image img = bgIcon.getImage();
-		panel = UI.createJPanelWithBackground(img);
-		
+		panel = UI.createJPanelWithBackground(main.background);
 		panel.setLayout(new BorderLayout(0, 0));
 		panel.setPreferredSize(new Dimension(1024,768)); // 768-568-100
 		
@@ -109,8 +106,7 @@ public class GameUIState extends UI {
 		leftCol.setOpaque(false);
 		
 		
-		JPanel player1 = UI.createJPanelWithBackground(Main.createImageIcon("oceanbg.png", 300, 300).getImage());
-		//player1.setBackground(Color.PINK);
+		JPanel player1 = UI.createJPanelWithBg("oceanbg.png",300,300);
 		player1.setPreferredSize(new Dimension(300,300));
 		
 		JPanel topP1 = new JPanel();
@@ -386,8 +382,7 @@ public class GameUIState extends UI {
 		JPanel gap3 = new JPanel();
 		gap3.setOpaque(false);
 		gap3.setPreferredSize(new Dimension(50, 250));
-		JPanel southPlayer2 = new JPanel();
-		southPlayer2.setBackground(new Color(204, 204, 255));
+		JPanel southPlayer2 = UI.createJPanelWithBg("oceanbg.png",300,300);
 		southPlayer2.setPreferredSize(new Dimension(250, 250));
 		player2.add(gap3,BorderLayout.WEST);
 		player2.add(southPlayer2, BorderLayout.CENTER);
