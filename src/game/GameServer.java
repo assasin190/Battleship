@@ -106,7 +106,7 @@ public class GameServer implements Runnable, Serializable {
 			currentPlayer.writeViaSocket(CommandString.SERVER_GRANT_TURN);
 			//START THE GAME
 			
-			
+			setupGame();
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -114,6 +114,44 @@ public class GameServer implements Runnable, Serializable {
 			
 		}
 		
+	}
+	
+	public void setupGame() throws InterruptedException {
+		//Set GAME_SETUP_LOCK
+		CustomLock gameSetupReadyLock = new CustomLock(CustomLock.GAME_SETUP_READY_LOCK);
+		socketThread1.setLock(gameSetupReadyLock);
+		socketThread2.setLock(gameSetupReadyLock);
+		synchronized(gameSetupReadyLock) {
+			while(gameSetupReadyLock.getCounter() != 2) {
+				gameSetupReadyLock.wait();
+				System.out.println(Thread.currentThread().getName() + ": setup lock waked " + gameSetupReadyLock.getCounter() + " time");
+			}
+		}
+		//Write via sockets
+		socketThread1.writeViaSocket(CommandString.SERVER_START_GAME_SETUP);
+		socketThread2.writeViaSocket(CommandString.SERVER_START_GAME_SETUP);
+		//Set next lock
+		CustomLock gameStartReadyLock = new CustomLock(CustomLock.GAME_START_READY_LOCK);
+		socketThread1.setLock(gameStartReadyLock);
+		socketThread2.setLock(gameStartReadyLock);
+		System.out.println(Thread.currentThread().getName() + ": current counter is " + gameStartReadyLock.getCounter());
+		synchronized(gameStartReadyLock) {
+			while(gameStartReadyLock.getCounter() != 2) {
+				gameStartReadyLock.wait();
+				System.out.println(Thread.currentThread().getName() + ": start lock waked " + gameStartReadyLock.getCounter() + " time");
+			}
+		}
+		//Write via sockets
+		socketThread1.writeViaSocket(CommandString.SERVER_START_GAME);
+		socketThread2.writeViaSocket(CommandString.SERVER_START_GAME);
+		//Random for the first player
+		if(Math.random() < 0.5) {
+			currentPlayer = socketThread1;
+		} else {
+			currentPlayer = socketThread2;
+		}
+		currentPlayer.writeViaSocket(CommandString.SERVER_GRANT_TURN);
+		//START THE GAME
 	}
 	
 	private void print(String input, int forwardNumber) {
@@ -272,13 +310,29 @@ public class GameServer implements Runnable, Serializable {
 									
 								}
 								break;
+								
 							case CommandString.CLIENT_WIN:
 								if(clientNumber ==1) print(CommandString.SERVER_INDICATE_YOU_LOSE, 2);
 								else print(CommandString.SERVER_INDICATE_YOU_WIN, 1);
+								break;
+								
 							case CommandString.CLIENT_LOSE:
 								//TEST
 								if(clientNumber == 1) print(CommandString.SERVER_INDICATE_YOU_WIN, 2);
 								else print(CommandString.SERVER_INDICATE_YOU_WIN, 1);
+								break;
+							
+							case CommandString.CLIENT_REQUEST_NEXT_GAME:
+								if(currentLock.getCounter() == 0) { //If not ready -> wait for the opponent
+									System.out.println(Thread.currentThread().getName() + ": The other client is not ready");
+									out.println(CommandString.SERVER_OPPONENT_NOT_READY);
+								}
+								synchronized(currentLock) {
+									currentLock.incrementCounter();
+									currentLock.notify();
+								}
+								break;
+								
 							default:
 								if(input.indexOf("RETURN_MARK") != -1) {
 									if(clientNumber == 1) print(input, 2);
