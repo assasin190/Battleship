@@ -52,10 +52,10 @@ public class EndGameDialogUIState extends UI {
 		panel.add(mainP,BorderLayout.NORTH);
 		
 		JPanel gap1 = new JPanel();
-		gap1.setPreferredSize(new Dimension(50,50));
+		gap1.setPreferredSize(new Dimension(20,50));
 		
 		JPanel gap2 = new JPanel();
-		gap2.setPreferredSize(new Dimension(50,50));
+		gap2.setPreferredSize(new Dimension(20,50));
 		panel.add(gap1, BorderLayout.WEST);
 		panel.add(gap2, BorderLayout.EAST);
 		
@@ -65,8 +65,8 @@ public class EndGameDialogUIState extends UI {
 		button.setLayout(new BorderLayout());
 		panel.add(button,BorderLayout.CENTER);
 		
-		JButton cont = new JButton(new ImageIcon("btn-cont.png"));
-		cont.setPreferredSize(new Dimension(150,60));
+		JButton cont = new JButton(Main.createImageIcon("btn-cont.png",150,50));
+		cont.setBorderPainted(false);
 		cont.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -77,8 +77,8 @@ public class EndGameDialogUIState extends UI {
 		});
 		
 		
-		JButton exit = new JButton(new ImageIcon("btn-jexit.png"));
-		exit.setPreferredSize(new Dimension(150,60));
+		JButton exit =new JButton(Main.createImageIcon("btn-jexit.png",150,50));
+		exit.setBorderPainted(false);
 		exit.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				System.exit(0);
@@ -91,7 +91,7 @@ public class EndGameDialogUIState extends UI {
 		button.add(exit, BorderLayout.EAST);
 		
 		JPanel south = new JPanel();
-		south.setPreferredSize(new Dimension(400,40));
+		south.setPreferredSize(new Dimension(400,20));
 		panel.add(south, BorderLayout.SOUTH);
 		
 		dialog.pack();
