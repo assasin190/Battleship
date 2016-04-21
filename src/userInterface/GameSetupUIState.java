@@ -59,7 +59,7 @@ public class GameSetupUIState extends UI {
 	public JButton readyButton;
 	public JButton cancelButton;
 	public JLabel lblPressReady;
-	public JLabel p2;
+	public JLabel p2,b1,b2;
 
 	public GameSetupUIState(Main main) {
 		super(main);
@@ -393,24 +393,30 @@ public class GameSetupUIState extends UI {
 		gap2.setOpaque(false);
 		topP2.add(gap2, BorderLayout.SOUTH);
 
-		rightTopP2.setLayout(new GridLayout(1, 5, 0, 0));
+		rightTopP2.setLayout(new GridLayout(1, 3, 0, 0));
+		JPanel statusP1 = new JPanel();
+		statusP1.setLayout(new BorderLayout());
+		JPanel statusP2 = new JPanel();
+		statusP2.setLayout(new BorderLayout());
+		
+		b1 = new JLabel(main.createImageIcon("notready.png",10,10));
 		JLabel p1 = new JLabel(main.player.getName());
 		p1.setHorizontalAlignment(SwingConstants.CENTER);
 		p1.setFont(new Font("Avenir", Font.PLAIN, 10));
-		JButton b1 = new JButton("READY");
-		b1.setEnabled(false);
-		b1.setFont(new Font("Lucida Grande", Font.PLAIN, 9));
+		b2 = new JLabel(main.createImageIcon("notready.png",10,10));
 		p2 = new JLabel("");
 		p2.setHorizontalAlignment(SwingConstants.CENTER);
 		p2.setFont(new Font("Avenir", Font.PLAIN, 10));
-		JButton b2 = new JButton("READY");
-		b2.setEnabled(false);
-		b2.setFont(new Font("Lucida Grande", Font.PLAIN, 9));
+		
+		statusP1.add(b1,BorderLayout.WEST);
+		statusP1.add(p1,BorderLayout.EAST);
+		statusP1.add(b2,BorderLayout.WEST);
+		statusP1.add(p2,BorderLayout.EAST);
 		rightTopP2.add(status);
-		rightTopP2.add(p1);
-		rightTopP2.add(b1);
-		rightTopP2.add(p2);
-		rightTopP2.add(b2);
+		rightTopP2.add(statusP1);
+		rightTopP2.add(statusP2);
+		
+		
 
 		rightCol.add(player2, BorderLayout.CENTER);
 		rightCol.add(bottomP2, BorderLayout.SOUTH);

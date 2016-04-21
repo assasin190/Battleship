@@ -354,7 +354,8 @@ public class GameUIState extends UI {
 		server.setLayout(new BorderLayout(0, 0));
 		serverPanel.add(server, BorderLayout.SOUTH);
 		
-		JLabel lblServer = new JLabel(main.client.opponentName);
+		JLabel lblServer = new JLabel(main.client.opponent
+				Name);
 		lblServer.setVerticalAlignment(SwingConstants.TOP);
 		lblServer.setFont(new Font("Avenir", Font.PLAIN, 12));
 		lblServer.setHorizontalAlignment(SwingConstants.CENTER);
