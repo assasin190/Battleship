@@ -152,7 +152,10 @@ public class GameUIState extends UI {
 							int x = squareLabel.x;
 							if(boardLabel[y][x].getSquare().isMarked()) return; 
 							main.client.mark(y, x);
+							
+							main.client.timer_turn_duration.stop();
 							lblTimer.setText("END");
+							
 							//Game client will update the gui
 						} else return; //do nothing
 					}
