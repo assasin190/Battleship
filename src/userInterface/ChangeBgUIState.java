@@ -7,6 +7,7 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
@@ -44,7 +45,20 @@ public class ChangeBgUIState extends UI {
 		stateString = GameState.GameState.CHANGE_BG_STATE;
 		dialog = new JDialog(main, "Change Background");
 		dialog.setLocation(main.getLocation());
+		dialog.setMinimumSize(new Dimension(500,500));
 		dialog.setPreferredSize(new Dimension(500,500));
+		// sirawich
+		
+		
+		
+		Point p = main.getLocation();
+		
+		Point popUpLocation = Main.getPopUpLocation(this);
+		
+		dialog.setLocation(popUpLocation);
+		
+		
+		
 		initialize();
 
 	}
