@@ -280,7 +280,7 @@ public class GameServer implements Runnable, Serializable {
 								break;
 							case CommandString.CLIENT_WIN:
 								if(clientNumber ==1) print(CommandString.SERVER_INDICATE_YOU_LOSE, 2);
-								else print(CommandString.SERVER_INDICATE_YOU_WIN, 1);
+								else print(CommandString.SERVER_INDICATE_YOU_LOSE, 1);
 							case CommandString.CLIENT_LOSE:
 								//TEST
 								if(clientNumber == 1) print(CommandString.SERVER_INDICATE_YOU_WIN, 2);
