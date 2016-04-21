@@ -334,6 +334,21 @@ public class GameServer implements Runnable, Serializable {
 									currentLock.notify();
 								}
 								break;
+							
+							case CommandString.CLIENT_RESET_GAME:
+								//Go past GAME_START_READY_LOCK
+								synchronized(currentLock) {
+									currentLock.incrementCounter();
+									currentLock.incrementCounter();
+									currentLock.notify();
+								}
+								if(clientNumber == 1) {
+									out.println(CommandString.SERVER_RESET_GAME);
+									print(CommandString.SERVER_RESET_GAME, 2);
+								} else {
+									out.println(CommandString.SERVER_RESET_GAME);
+									print(CommandString.SERVER_RESET_GAME, 1);
+								}
 								
 							default:
 								if(input.indexOf("RETURN_MARK") != -1) {

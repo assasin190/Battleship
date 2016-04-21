@@ -275,6 +275,12 @@ public class GameUIState extends UI {
 		
 		JButton reset = new JButton("RESET");
 		rightTopP2.add(reset);
+		reset.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				main.client.resetGame();
+			}
+		});
 		
 		/////////////////////////////////// sirawich
 		/*

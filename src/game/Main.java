@@ -369,13 +369,18 @@ public class Main extends JFrame {
 
 		public void startGame() {
 			out.println(CommandString.CLIENT_GAME_START_READY);
-			System.out
-					.println(Thread.currentThread().getName() + ": " + CommandString.CLIENT_GAME_START_READY + " sent");
+			System.out.println(Thread.currentThread().getName() + ": " + CommandString.CLIENT_GAME_START_READY + " sent");
 			playerState = PlayerState.EXPECT_SERVER_START_GAME;
 		}
 		
 		public void requestNewGame() {
 			out.println(CommandString.CLIENT_REQUEST_NEW_GAME);
+			playerState = PlayerState.EXPECT_SERVER_START_GAME;
+			myTurn = false;
+		}
+		
+		public void resetGame() {
+			out.println(CommandString.CLIENT_RESET_GAME);
 			playerState = PlayerState.EXPECT_SERVER_START_GAME;
 			myTurn = false;
 		}
@@ -566,6 +571,12 @@ public class Main extends JFrame {
 						currentScore = 0;
 						battleClip.close();
 						break;
+						
+					case CommandString.SERVER_RESET_GAME: //Somebody reset the game
+						gameSetupUI = new GameSetupUIState(Main.this);
+						GSM.changeState(gameSetupUI);
+						timer_turn_duration.stop();
+						playerState = PlayerState.START_GAME_SETUP;
 						
 					default:
 						if (input.indexOf("RETURN_MARK") != -1) {
