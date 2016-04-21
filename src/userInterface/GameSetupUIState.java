@@ -67,8 +67,8 @@ public class GameSetupUIState extends UI {
 		shipPlacingEnabled = false;
 		shipPlacingDirection = "down"; // SHIPDIRECTION
 		shipNumber = 0;
-		main.start=false;
-	//	main.insertBGM("login.wav");
+		main.start = false;
+		// main.insertBGM("login.wav");
 		initialize();
 	}
 
@@ -118,7 +118,7 @@ public class GameSetupUIState extends UI {
 				mainFrame.setResizable(false);
 				mainFrame.setLocationRelativeTo(null);
 				mainFrame.setVisible(true);
-				
+
 			}
 		});
 		JPanel pp3 = new JPanel();
@@ -132,17 +132,34 @@ public class GameSetupUIState extends UI {
 		// Top logo
 		JButton logo = new JButton("");
 		logo.setIcon(new ImageIcon("logo/logo.png"));
-		int i = 1;
-		
+
 		logo.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				//logo.setIcon(new ImageIcon("logo/logo1.png"));
-				logo.setIcon(new ImageIcon("logo/logo"+i+".png"));
+
+				// logo.setIcon(new ImageIcon("logo/logo1.png"));
+
+				String logo_name = logo.getIcon().toString();
+				String num = logo_name.substring(9, 10);
+				int mynum = Integer.parseInt(num);
+
+				System.out.println("logo name = " + logo_name);
+				System.out.println("string num = " + num);
+
+				int r;
+				while (true) {
+					// random 1-7
+					r = (int) (Math.round(Math.random() * 6) + 1);
+					if (r != mynum) {
+						break;
+					}
+				}
+
+				logo.setIcon(new ImageIcon("logo/logo" + r + ".png"));
+
 			}
 		});
-		
-		
+
 		top.add(leftTop, BorderLayout.WEST);
 		top.add(logo, BorderLayout.CENTER);
 		top.add(rightTop, BorderLayout.EAST);
@@ -170,7 +187,7 @@ public class GameSetupUIState extends UI {
 		JPanel player1 = new JPanel();
 		player1.setPreferredSize(new Dimension(300, 300));
 		// bg of battle table1
-		player1 = UI.createJPanelWithBg("bg/oceanbg.png",300,300);
+		player1 = UI.createJPanelWithBg("bg/oceanbg.png", 300, 300);
 
 		JPanel topP1 = new JPanel(); // Panel for label "Place your ships!"
 		topP1.setPreferredSize(new Dimension(300, 100));
@@ -231,31 +248,34 @@ public class GameSetupUIState extends UI {
 											// nothing
 								// Check if any of the label in highlighting is
 								// occupied
-								//Create a ship on those squares
+								// Create a ship on those squares
 								Ship ship = new Ship(shipNumber, shipPlacingDirection);
-								//Set ship on board game
+								// Set ship on board game
 								boolean success = main.client.boardGame.setShip(ship, shipNumber, highlighting);
 
 								if (success) { // Success -> set ship
 												// graphically
 									int i = 1;
-									for(Square square: ship.getOccupancy()) {
+									for (Square square : ship.getOccupancy()) {
 										SquareLabel squareLabel = square.getSquareLabel();
-										//TODO set ship icon on the board game
-										//label.setText(shipNumber + "");
-										//label.setIcon(new ImageIcon("ship1.png"));
-										if(shipPlacingDirection.equals("right")){
-											squareLabel.setIcon(new ImageIcon("ship/horizontal/ship"+(shipNumber+1)+""+(i++)+".png"));
-				
-										}else{
-											squareLabel.setIcon(new ImageIcon("ship/vertical/ship"+(shipNumber+1)+""+(i++)+".png"));
+										// TODO set ship icon on the board game
+										// label.setText(shipNumber + "");
+										// label.setIcon(new
+										// ImageIcon("ship1.png"));
+										if (shipPlacingDirection.equals("right")) {
+											squareLabel.setIcon(new ImageIcon(
+													"ship/horizontal/ship" + (shipNumber + 1) + "" + (i++) + ".png"));
+
+										} else {
+											squareLabel.setIcon(new ImageIcon(
+													"ship/vertical/ship" + (shipNumber + 1) + "" + (i++) + ".png"));
 										}
 										// label.setIcon(new
 										// ImageIcon("ship"+(shipNumber+1)+".png"));
 										// //PLACESHIP
 										cancelButton.setEnabled(true);
 									}
-									
+
 									main.insertBGM("sound/ship.wav");
 									try {
 										Thread.sleep(1000);
@@ -263,11 +283,11 @@ public class GameSetupUIState extends UI {
 										// TODO Auto-generated catch block
 										e1.printStackTrace();
 									}
-									
+
 									// Re-invoke mouse exited on e
 									mouseExited(e);
 									if (main.client.boardGame.isAllShipSet()) {
-										//main.client.startGame();
+										// main.client.startGame();
 										readyButton.setEnabled(true);
 										lblPressReady.setText("Press Ready !!");
 										main.repaint();
@@ -421,7 +441,7 @@ public class GameSetupUIState extends UI {
 		playerPanel.setLayout(new BorderLayout(0, 0));
 
 		JLabel profile = new JLabel(main.player.getImage());
-		//profile.setIcon(main.player.getImage());
+		// profile.setIcon(main.player.getImage());
 		profile.setBackground(Color.GRAY);
 		profile.setPreferredSize(new Dimension(80, 100));
 		playerPanel.add(profile, BorderLayout.WEST);
@@ -447,8 +467,8 @@ public class GameSetupUIState extends UI {
 		cancelButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				// Check if all ship has been set
-			 main.client.boardGame.clearAllShip();
-			 cancelButton.setEnabled(false);
+				main.client.boardGame.clearAllShip();
+				cancelButton.setEnabled(false);
 			}
 		});
 
@@ -465,7 +485,6 @@ public class GameSetupUIState extends UI {
 				System.out.println(main.client.boardGame.isAllShipSet());
 				if (main.client.boardGame.isAllShipSet()) {
 					main.client.startGame();
-					
 
 				}
 			}
@@ -485,39 +504,39 @@ public class GameSetupUIState extends UI {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				int y ;
-				int x ; 
+				int y;
+				int x;
 				String direction = null;
-				//Clear all ship
-				for(int i = 0; i <= 3; i++) {
+				// Clear all ship
+				for (int i = 0; i <= 3; i++) {
 					SquareLabel[] position = null;
-					while(position == null) {
-						if(Math.random()<0.5) {
+					while (position == null) {
+						if (Math.random() < 0.5) {
 							direction = "down";
-							y = (int) Math.round(Math.random()*4);
-							x = (int) Math.round(Math.random()*7);
+							y = (int) Math.round(Math.random() * 4);
+							x = (int) Math.round(Math.random() * 7);
 							position = searchForHighlightableLabel(y, x, direction);
 						} else {
 							direction = "right";
-							y = (int) Math.round(Math.random()*7);
-							x = (int) Math.round(Math.random()*4);
+							y = (int) Math.round(Math.random() * 7);
+							x = (int) Math.round(Math.random() * 4);
 							position = searchForHighlightableLabel(y, x, direction);
 						}
 					}
 					Ship ship = new Ship(i, direction);
-					//Set ship on board game
+					// Set ship on board game
 					main.client.boardGame.setShip(ship, i, position);
 					int j = 1;
-					for(Square square: ship.getOccupancy()) {
+					for (Square square : ship.getOccupancy()) {
 						SquareLabel squareLabel = square.getSquareLabel();
-						//TODO set ship icon on the board game
-						//label.setText(shipNumber + "");
-						//label.setIcon(new ImageIcon("ship1.png"));
-						if(direction.equals("right")){
-							squareLabel.setIcon(new ImageIcon("ship/horizontal/ship"+(i+1)+""+(j++)+".png"));
+						// TODO set ship icon on the board game
+						// label.setText(shipNumber + "");
+						// label.setIcon(new ImageIcon("ship1.png"));
+						if (direction.equals("right")) {
+							squareLabel.setIcon(new ImageIcon("ship/horizontal/ship" + (i + 1) + "" + (j++) + ".png"));
 
-						}else{
-							squareLabel.setIcon(new ImageIcon("ship/vertical/ship"+(i+1)+""+(j++)+".png"));
+						} else {
+							squareLabel.setIcon(new ImageIcon("ship/vertical/ship" + (i + 1) + "" + (j++) + ".png"));
 						}
 						// label.setIcon(new
 						// ImageIcon("ship"+(shipNumber+1)+".png"));
@@ -526,7 +545,7 @@ public class GameSetupUIState extends UI {
 					}
 				}
 			}
-			
+
 		});
 
 		/* SHIP PANEL */
@@ -555,7 +574,7 @@ public class GameSetupUIState extends UI {
 					main.client.boardGame.clearOccupation(ship);
 					readyButton.setEnabled(false);
 					lblPressReady.setText("");
-					
+
 				}
 				// Enable ship placing mode
 				setShipPlacingEnabled(true);
@@ -589,9 +608,9 @@ public class GameSetupUIState extends UI {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				JButton shipLabel = (JButton) e.getSource();
-				//Set ship number
-				shipNumber = Integer.parseInt(shipLabel.getName().substring(shipLabel.getName().length()-1)) - 1;
-				//Clear ship occupancy
+				// Set ship number
+				shipNumber = Integer.parseInt(shipLabel.getName().substring(shipLabel.getName().length() - 1)) - 1;
+				// Clear ship occupancy
 				Ship ship = main.client.boardGame.getShip(shipNumber);
 				if (ship != null) { // If there are already ship3 set, clear the
 									// occupation
@@ -653,14 +672,15 @@ public class GameSetupUIState extends UI {
 		bottom.setOpaque(false);
 		panel.add(bottom, BorderLayout.SOUTH);
 	}
-	
+
 	public SquareLabel[] searchForHighlightableLabel(int y, int x, String direction) {
 		SquareLabel[] highlightable = new SquareLabel[4];
-		if(myBoardLabel[y][x].getSquare().isOccupied()) return null;
+		if (myBoardLabel[y][x].getSquare().isOccupied())
+			return null;
 		highlightable[0] = myBoardLabel[y][x];
 		int index = 1, failedAttempt = 0;
 		return checkNext(y, x, index, failedAttempt, direction, highlightable);
-		
+
 	}
 
 	public SquareLabel[] searchForHighlightableLabel(SquareLabel startingLabel) {
@@ -739,7 +759,9 @@ public class GameSetupUIState extends UI {
 				// Check if the next square exists
 				if (y + index <= 7) { // If exists
 					// Check occupancy
-					if (!myBoardLabel[y + index][x].getSquare().isOccupied()) { // If not occupied
+					if (!myBoardLabel[y + index][x].getSquare().isOccupied()) { // If
+																				// not
+																				// occupied
 						// Add the label to highlightable
 						highlightable[index] = myBoardLabel[y + index++][x];
 						highlightable = checkNext(y, x, index, failedAttempt, direction, highlightable);
@@ -754,7 +776,9 @@ public class GameSetupUIState extends UI {
 				// Check if the next square exists
 				if (x + index <= 7) { // If exists
 					// Check occupancy
-					if (!myBoardLabel[y][x + index].getSquare().isOccupied()) { // If not occupied
+					if (!myBoardLabel[y][x + index].getSquare().isOccupied()) { // If
+																				// not
+																				// occupied
 						// Add the label to highlightable
 						highlightable[index] = myBoardLabel[y][x + index++];
 						highlightable = checkNext(y, x, index, failedAttempt, direction, highlightable);
