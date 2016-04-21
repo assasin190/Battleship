@@ -315,7 +315,7 @@ public class GameServer implements Runnable, Serializable {
 								
 							case CommandString.CLIENT_WIN:
 								if(clientNumber ==1) print(CommandString.SERVER_INDICATE_YOU_LOSE, 2);
-								else print(CommandString.SERVER_INDICATE_YOU_WIN, 1);
+								else print(CommandString.SERVER_INDICATE_YOU_LOSE, 1);
 								break;
 								
 							case CommandString.CLIENT_LOSE:
@@ -324,7 +324,7 @@ public class GameServer implements Runnable, Serializable {
 								else print(CommandString.SERVER_INDICATE_YOU_WIN, 1);
 								break;
 							
-							case CommandString.CLIENT_REQUEST_NEXT_GAME:
+							case CommandString.CLIENT_REQUEST_NEW_GAME:
 								if(currentLock.getCounter() == 0) { //If not ready -> wait for the opponent
 									System.out.println(Thread.currentThread().getName() + ": The other client is not ready");
 									out.println(CommandString.SERVER_OPPONENT_NOT_READY);

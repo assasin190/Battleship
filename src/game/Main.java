@@ -324,7 +324,7 @@ public class Main extends JFrame {
 		protected GameSetupUIState gameSetupUI;
 		protected GameUIState gameUI;
 		protected boolean myTurn;
-		protected int historicalScore;
+		protected int accumulativeScore;
 		protected int currentScore;
 		public String opponentName;
 		public Timer timer_turn_duration;
@@ -340,6 +340,7 @@ public class Main extends JFrame {
 			playerState = PlayerState.NULL_STATE;
 			myTurn = false;
 			currentScore = 0;
+			accumulativeScore =0;
 			// Create a board game
 			boardGame = new BoardGame();
 
@@ -361,8 +362,7 @@ public class Main extends JFrame {
 
 		public void startGameSetup() {
 			out.println(CommandString.CLIENT_GAME_SETUP_READY);
-			System.out
-					.println(Thread.currentThread().getName() + ": " + CommandString.CLIENT_GAME_SETUP_READY + " sent");
+			System.out.println(Thread.currentThread().getName() + ": " + CommandString.CLIENT_GAME_SETUP_READY + " sent");
 		}
 
 		public void startGame() {
@@ -370,6 +370,12 @@ public class Main extends JFrame {
 			System.out
 					.println(Thread.currentThread().getName() + ": " + CommandString.CLIENT_GAME_START_READY + " sent");
 			playerState = PlayerState.EXPECT_SERVER_START_GAME;
+		}
+		
+		public void requestNewGame() {
+			out.println(CommandString.CLIENT_REQUEST_NEW_GAME);
+			playerState = PlayerState.EXPECT_SERVER_START_GAME;
+			myTurn = false;
 		}
 
 		public void mark(int y, int x) {
@@ -400,9 +406,6 @@ public class Main extends JFrame {
 			this.boardGame = boardGame;
 		}
 
-		public void gameSetup() {
-
-		}
 
 		class BackgroundInputReader extends SwingWorker<Void, String> {
 
@@ -512,7 +515,7 @@ public class Main extends JFrame {
 
 							// Sirawich
 							ActionListener timerTask = new ActionListener() {
-								int countdown = 5;
+								int countdown = 10;
 
 								@Override
 								public void actionPerformed(ActionEvent e) {
@@ -550,14 +553,15 @@ public class Main extends JFrame {
 						}
 
 					case CommandString.SERVER_INDICATE_YOU_WIN: //You won the game
-						//TEST
-						JOptionPane.showMessageDialog(Main.this, "Congratulations! You win the game.");
-						battleClip.close();
+						
 						break;
 						
 					case CommandString.SERVER_INDICATE_YOU_LOSE: //You lose the game
-						//TEST
-						JOptionPane.showMessageDialog(Main.this, "Congratulations! You lose the game.");
+						GSM.pushState(new EndGameDialogUIState(Main.this, "You lose."));
+						timer_turn_duration.stop();
+						//Add current score to accumulative score and reset current score
+						accumulativeScore += currentScore;
+						currentScore = 0;
 						battleClip.close();
 						break;
 						
@@ -569,10 +573,7 @@ public class Main extends JFrame {
 							int x = Integer.parseInt(index.substring(2));
 							boolean sunk = Boolean.parseBoolean(input.substring(input.lastIndexOf(",") + 1));
 							String sub = input.substring(0, input.lastIndexOf(","));
-							System.out.println("sub: " + sub);
 							boolean hit = Boolean.parseBoolean(sub.substring(sub.lastIndexOf("_") + 1));
-							System.out.println("hit: " + hit);
-							System.out.println("sunk: " + sunk);
 							Square markedSquare = boardGame.board[y][x];
 							SquareLabel hitSquareLabel = markedSquare.getSquareLabel();
 							markedSquare.marked = true;
@@ -603,8 +604,12 @@ public class Main extends JFrame {
 							if (currentScore == 16) {
 								// Win
 								out.println(CommandString.CLIENT_WIN);
-								JOptionPane.showMessageDialog(Main.this,
-										"Congratulations! " + player.getName() + " win the game.");
+								GSM.pushState(new EndGameDialogUIState(Main.this, "Congratulations, You win!"));
+								timer_turn_duration.stop();
+								//Add current score to accumulative score and reset current score
+								accumulativeScore += currentScore;
+								currentScore = 0;
+								battleClip.close();
 							}
 								
 						} else if(input.indexOf("MARK") != -1) {
@@ -624,7 +629,6 @@ public class Main extends JFrame {
 								repaint();
 								revalidate();
 							} else { //If not hit
-								boardGame.board[y][x].marked = true;
 								//Update UI (not hit)
 								hitSquareLabel.setIcon(createImageIcon("effect/miss.png", 37, 37));
 							}
@@ -636,7 +640,7 @@ public class Main extends JFrame {
 
 							// Sirawich
 							ActionListener timerTask = new ActionListener() {
-								int countdown = 5;
+								int countdown = 10;
 
 								@Override
 								public void actionPerformed(ActionEvent e) {
@@ -662,7 +666,6 @@ public class Main extends JFrame {
 										gameUI.lblTimer.setText(countdown + "");
 
 										// call start timer of GameUIState
-										System.out.println("countdown = " + countdown);
 										countdown--;
 									}
 								}

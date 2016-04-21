@@ -7,7 +7,7 @@ public class CommandString {
 	public static final String CLIENT_GAME_START_READY = "CLIENT_GAME_START_READY";
 	public static final String CLIENT_START_GAME_SETUP = "CLIENT_START_GAME_SETUP";
 	public static final String CLIENT_LOSE = "CLIENT_LOSE";
-	public static final String CLIENT_REQUEST_NEXT_GAME = "CLIENT_REQUEST_NEXT_GAME";
+	public static final String CLIENT_REQUEST_NEW_GAME = "CLIENT_REQUEST_NEW_GAME";
 	
 	public static final String SERVER_OTHER_CLIENT_NOT_AVAILABLE = "SERVER_OTHER_CLIENT_NOT_AVAILABLE";
 	public static final String SERVER_OTHER_CLIENT_AVAILABLE = "SERVER_OTHER_CLIENT_AVAILABLE";
