@@ -28,9 +28,13 @@ public class Server {
 	public Server() throws IOException {
 		socketList = new ArrayList<Socket>();
 		gameServerList = new ArrayList<GameServer>();
-		executor = Executors.newFixedThreadPool(10);
+		executor = Executors.newFixedThreadPool(20);
 		serverSocket = new ServerSocket(8000);
 		matchingLock = new CustomLock();
+	}
+	
+	public void createGameServer() {
+		
 	}
 	
 	class SocketInputThread implements Runnable {
@@ -55,7 +59,12 @@ public class Server {
 					//If input = match -> Start matching
 					if(firstClientMatching == null) {
 						firstClientMatching = socket;
+						//Prepare (create) the game server
+						GameServer gameServer = new GameServer(8080);
+						gameServerList.add(gameServer);
+						executor.execute(gameServer);
 						//Print MATCH_SERVER_OTHER_MATCHING_NOT_AVAILABLE
+						out.println(CommandString.MATCH_SERVER_OTHER_MATCHING_NOT_AVAILABLE);
 						while(!matchingLock.wasSignaled()) {
 							matchingLock.wait();
 						}
@@ -64,7 +73,11 @@ public class Server {
 						matchingLock.signal(true);
 						matchingLock.notify();
 					}
-					//Print MATCH_SERVER_OTHER_MATCHING_AVAILABLE
+					out.println(CommandString.MATCH_SERVER_OTHER_MATCHING_AVAILABLE);
+					//Client will connect to the available Game Server prepared
+					//Clear ClientMatching
+					firstClientMatching = null;
+					secondClientMatching = null;
 				}
 				
 			} catch (IOException e) {
@@ -91,8 +104,6 @@ public class Server {
 					e.printStackTrace();
 				}
 			}
-		}
-		
+		}	
 	}
-	
 }
