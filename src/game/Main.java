@@ -381,6 +381,7 @@ public class Main extends JFrame {
 			out.println(CommandString.CLIENT_REQUEST_NEW_GAME);
 			playerState = PlayerState.EXPECT_SERVER_START_GAME;
 			myTurn = false;
+			setupClip.start();
 			GSM.popState(); //Pop EndGameDialogUIState
 		}
 		

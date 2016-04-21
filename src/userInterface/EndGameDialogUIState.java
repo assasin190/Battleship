@@ -45,7 +45,7 @@ public class EndGameDialogUIState extends UI {
 		mainP.setLayout(new BorderLayout());
 		textLabel = new JLabel(text);
 		textLabel.setFont(new Font("Arial", Font.BOLD, 16));
-		textLabel.setForeground(Color.WHITE);
+		textLabel.setForeground(Color.BLACK);
 		textLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		mainP.add(textLabel, BorderLayout.CENTER);
 		panel.setLayout(new BorderLayout());
