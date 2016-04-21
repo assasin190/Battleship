@@ -48,4 +48,16 @@ public abstract class UI implements GameState{
 		};
 	}
 	
+	public static JPanel createJPanelWithBg(String path, int width, int height) {
+		return new JPanel() {
+			
+			@Override
+			public void paintComponent(Graphics g) {
+				super.paintComponent(g);
+				((Graphics2D)g.create()).drawImage(Main.createImageIcon(path,width,height).getImage(), 0, 0, width, height, this);
+			}
+			
+		};
+	}
+	
 }

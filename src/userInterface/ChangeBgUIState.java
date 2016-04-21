@@ -7,6 +7,8 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.Toolkit;
+import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
@@ -34,19 +36,28 @@ import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JButton;
 import javax.swing.SwingConstants;
+import java.awt.Color;
 
 public class ChangeBgUIState extends UI {
-	public static final String[] IMAGES = new String[] { "Bg-play.png", "Bg-play2.png", "Bg-play3.png",
-			"Bg-play4.png" };
+	public static final String[] IMAGES = new String[] { "bg/Bg-play.png", "bg/Bg-play2.png", "bg/Bg-play3.png",
+			"bg/Bg-play4.png" };
 
 	public ChangeBgUIState(Main main) {
 		super(main);
 		stateString = GameState.GameState.CHANGE_BG_STATE;
 		dialog = new JDialog(main, "Change Background");
-		dialog.setLocation(main.getLocation());
-		dialog.setPreferredSize(new Dimension(500,500));
+	
+		dialog.getContentPane().setBackground(Color.BLACK);
+		final Toolkit toolkit = Toolkit.getDefaultToolkit();
+		final Dimension screenSize = toolkit.getScreenSize();
+		final int x = (screenSize.width - dialog.getWidth()) / 4;
+		final int y = (screenSize.height - dialog.getHeight()) / 4;
+		dialog.setLocation(x, y);
+		dialog.setVisible(true);
+		dialog.setPreferredSize(new Dimension(600,400));
+		dialog.setResizable(false);
+		
 		initialize();
-
 	}
 	
 	private void initialize() {
@@ -56,9 +67,11 @@ public class ChangeBgUIState extends UI {
 		dialog.getContentPane().setLayout(new BorderLayout());
 		
 		JPanel title = new JPanel();
+		title.setOpaque(false);
 		title.setPreferredSize(new Dimension(500, 80));
 		title.setLayout(new BorderLayout(0, 0));
 		JLabel lblChangeBattleshipBackground = new JLabel("CHANGE BACKGROUND");
+		lblChangeBattleshipBackground.setForeground(Color.WHITE);
 		lblChangeBattleshipBackground.setHorizontalAlignment(SwingConstants.CENTER);
 		lblChangeBattleshipBackground.setVerticalAlignment(SwingConstants.BOTTOM);
 		lblChangeBattleshipBackground.setFont(new Font("Arial", Font.BOLD, 16));
@@ -66,10 +79,12 @@ public class ChangeBgUIState extends UI {
 		dialog.getContentPane().add(title, BorderLayout.NORTH);
 
 		JPanel bgPanel = new JPanel();
+		bgPanel.setOpaque(false);
 		bgPanel.setPreferredSize(new Dimension(500, 300));
 		dialog.getContentPane().add(bgPanel, BorderLayout.SOUTH);
 
 		JPanel gap = new JPanel();
+		gap.setOpaque(false);
 		gap.setPreferredSize(new Dimension(500, 20));
 		dialog.getContentPane().add(gap, BorderLayout.CENTER);
 

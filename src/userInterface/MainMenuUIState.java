@@ -38,6 +38,7 @@ public class MainMenuUIState extends UI {
 	public MainMenuUIState(Main main) {
 		super(main);
 		stateString = GameState.MAIN_MENU_STATE;
+		main.insertBGM("menu.wav");
 		initialize();
 	//	panel = UI.createJPanelWithBackground(bgImg);
 	}
@@ -150,7 +151,9 @@ public class MainMenuUIState extends UI {
 		select.setHorizontalAlignment(SwingConstants.CENTER);
 		northMenu.add(select, BorderLayout.SOUTH);
 
-		ImageIcon P = Main.createImageIcon("avatar.png", 200, 200);
+		ImageIcon P = Main.createImageIcon("player/p0.png", 200, 200);
+		ImageIcon pNull = Main.createImageIcon("player/p0.png", 80, 80);
+		profilePic = pNull;
 
 		JPanel player = new JPanel();
 		player.setOpaque(false);
@@ -171,9 +174,9 @@ public class MainMenuUIState extends UI {
 		ImageIcon imgPP[] = new ImageIcon[6];
 
 		for (int i = 0; i < 6; i++) {
-			img[i] = Main.createImageIcon("p" + (i + 1) + ".png", 50, 50);
-			imgP[i] = Main.createImageIcon("p" + (i + 1) + ".png", 200, 200);
-			imgPP[i] = Main.createImageIcon("p" + (i + 1) + ".png", 80, 80); //variable for setup profile pic 
+			img[i] = Main.createImageIcon("player/p" + (i + 1) + ".png", 50, 50);
+			imgP[i] = Main.createImageIcon("player/p" + (i + 1) + ".png", 200, 200);
+			imgPP[i] = Main.createImageIcon("player/p" + (i + 1) + ".png", 80, 80); //variable for setup profile pic 
 			btnP[i] = new JButton(img[i]);
 			btnP[i].setName(i + "");
 			selectPlayer.add(btnP[i]);

@@ -2,6 +2,7 @@ package game;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Image;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
@@ -44,7 +45,7 @@ public class Main extends JFrame {
 	public final GameStateManager GSM = new GameStateManager();
 	public JPanel currentStatePanel;
 	public boolean isClient;
-	boolean start = true;
+	public boolean start = true;
 	public GameClient client;
 	private Socket socket;
 	public Player player;
@@ -72,10 +73,10 @@ public class Main extends JFrame {
 		setBounds(100, 100, 1024, 768);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setResizable(false);
-		insertBGM("login.wav");
-		start = false;
+		//insertBGM("login.wav");
+		//start = false;
 		player = new Player();
-		background = createImageIcon("Bg-play3.png", 1024, 768).getImage();
+		background = createImageIcon("bg/Bg-play.png", 1024, 768).getImage();
 		//Change UI state -> MAIN_MENU_STATE
 		GSM.setState(new MainMenuUIState(this));
 	}
@@ -187,6 +188,44 @@ public class Main extends JFrame {
 		getContentPane().add(panel);
 		repaint();
 		revalidate();
+	}
+	
+	public static Point getPopUpLocation(UI ui) {
+		//Point frame_location = ui.main.getLocation();
+		
+		// frame 
+		Dimension frame_size =ui.main.getSize();
+		int frame_width = frame_size.width;
+		int frame_height =frame_size.height;
+		
+		Point frame_point = ui.main.getLocation();
+		int frame_x =frame_point.x;
+		int frame_y =frame_point.y;
+		
+		// dialog
+		Dimension dialog_size = ui.dialog.getSize();
+		int dialog_width = dialog_size.width;
+		int dialog_height = dialog_size.height;
+		
+		Point dialog =frame_point; // start at the same as frame
+		
+		
+						
+		System.out.println("mainFrame_width/2 = "+frame_size.getWidth()/2);
+		System.out.println("mainFrame_height/2 = "+frame_size.getHeight()/2);
+		System.out.println("dialog_width/2 = "+dialog_width/2);
+		System.out.println("dialog_height/2 = "+dialog_height/2);
+				
+		
+		int x_dialog= (frame_width/2)-(dialog_width/2)+frame_x;
+		int y_dialog= (frame_height/2)-(dialog_height/2)+frame_y;
+		Point result = new Point(x_dialog,y_dialog);
+				
+		
+		//System.out.println("sirawich point main x= : "+frame_location.getX()+" , y= "+frame_location.getY());
+		System.out.println("sirawich point dialog x= :" +x_dialog +", y = "+y_dialog);
+				
+		return result;
 	}
 	
 	public static ImageIcon createImageIcon(String path, int width, int height) {
@@ -533,7 +572,6 @@ public class Main extends JFrame {
 							//TEST
 							JOptionPane.showMessageDialog(Main.this, "Congratulations! You win the game.");
 							break;
-							
 						default:
 							if(input.indexOf("RETURN_MARK") != -1) {
 								String index = input.substring(input.indexOf("_", input.indexOf("_") + 1) + 1, input.indexOf(",") + 2);
@@ -560,7 +598,7 @@ public class Main extends JFrame {
 								if(currentScore == 16) {
 									//Win
 									out.println(CommandString.CLIENT_WIN);
-									JOptionPane.showMessageDialog(Main.this, "Congratulations! You win the game.");
+									JOptionPane.showMessageDialog(Main.this, "Congratulations! " + player.getName() + " win the game.");
 								}
 								//TODO if enemy ship sunk
 								
@@ -591,7 +629,7 @@ public class Main extends JFrame {
 								if(lose) {
 									out.println(CommandString.CLIENT_LOSE);
 									//TEST
-									JOptionPane.showMessageDialog(Main.this, "You lose the game.");
+									JOptionPane.showMessageDialog(Main.this, player.getName()+" loses the game.");
 								}
 								*/
 								//It is your turn, change the state to playing

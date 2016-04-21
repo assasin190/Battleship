@@ -58,10 +58,7 @@ public class GameUIState extends UI {
 		super(main);
 		stateString = GameState.GAME_STATE;
 
-		ImageIcon bgIcon = createImageIcon("bg.png",1024, 768);
-		Image img = bgIcon.getImage();
-		panel = UI.createJPanelWithBackground(img);
-		
+		panel = UI.createJPanelWithBackground(main.background);
 		panel.setLayout(new BorderLayout(0, 0));
 		panel.setPreferredSize(new Dimension(1024,768)); // 768-568-100
 		
@@ -109,15 +106,14 @@ public class GameUIState extends UI {
 		leftCol.setOpaque(false);
 		
 		
-		JPanel player1 = UI.createJPanelWithBackground(Main.createImageIcon("oceanbg.png", 300, 300).getImage());
-		//player1.setBackground(Color.PINK);
+		JPanel player1 = UI.createJPanelWithBg("bg/oceanbg.png",300,300);
 		player1.setPreferredSize(new Dimension(300,300));
 		
 		JPanel topP1 = new JPanel();
 		topP1.setPreferredSize(new Dimension(300, 100));
 		topP1.setOpaque(false);
 		
-		JLabel lblPlaceYourShip = new JLabel("PLACE YOUR SHIPS!");
+		JLabel lblPlaceYourShip = new JLabel("HIT THE OPPONENT SHIPS!");
 		lblPlaceYourShip.setForeground(Color.WHITE);
 		lblPlaceYourShip.setVerticalAlignment(SwingConstants.BOTTOM);
 		lblPlaceYourShip.setFont(new Font("Avenir", Font.BOLD, 20));
@@ -146,7 +142,7 @@ public class GameUIState extends UI {
 				squareLabel.setBoardIndex();
 				squareLabel.setBoardSquare();
 				squareLabel.setHorizontalAlignment(SwingConstants.CENTER);
-				squareLabel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+				squareLabel.setBorder(BorderFactory.createLineBorder(Color.CYAN));
 				squareLabel.addMouseListener(new MouseAdapter() {
 					@Override
 					public void mouseClicked(MouseEvent e) {
@@ -184,9 +180,6 @@ public class GameUIState extends UI {
         */
 
 			
-		
-		
-		
 		/*CENTER GAP*/
 		JPanel centerCol = new JPanel();
 		centerCol.setPreferredSize(new Dimension(124,300));
@@ -303,7 +296,7 @@ public class GameUIState extends UI {
 		nameClient.setPreferredSize(new Dimension(100, 30));
 		clientPanel.add(nameClient, BorderLayout.NORTH);
 		
-		JLabel lblClient = new JLabel("PLAYER1");
+		JLabel lblClient = new JLabel(main.player.getName());
 		lblClient.setVerticalAlignment(SwingConstants.TOP);
 		lblClient.setFont(new Font("Avenir", Font.PLAIN, 12));
 		lblClient.setHorizontalAlignment(SwingConstants.CENTER);
@@ -316,14 +309,19 @@ public class GameUIState extends UI {
 		clientPanel.add(client, BorderLayout.SOUTH);
 		
 		JPanel profileClient = new JPanel();
-		profileClient.setPreferredSize(new Dimension(50, 60));
+		profileClient.setPreferredSize(new Dimension(60, 60));
 		JLabel P1 = new JLabel();
-		P1.setIcon ( new ImageIcon ( "profile.png" ) );
+	
+		
+		Image img = main.player.getImage().getImage();
+		Image newimg = img.getScaledInstance(60, 60,  java.awt.Image.SCALE_SMOOTH);
+		P1.setIcon ( new ImageIcon(newimg));
+		
 		profileClient.add(P1);
 		client.add(profileClient,BorderLayout.WEST);
 		
 		JPanel scoreClient = new JPanel();
-		scoreClient.setPreferredSize(new Dimension(50, 60));
+		scoreClient.setPreferredSize(new Dimension(40, 60));
 		client.add(scoreClient, BorderLayout.EAST);
 		scoreClient.setLayout(new BorderLayout(0, 0));
 		
@@ -352,7 +350,7 @@ public class GameUIState extends UI {
 		nameServer.add(lblServer);
 		
 		JPanel scoreServer = new JPanel();
-		scoreServer.setPreferredSize(new Dimension(50, 30));
+		scoreServer.setPreferredSize(new Dimension(40, 60));
 		server.add(scoreServer, BorderLayout.WEST);
 		scoreServer.setLayout(new BorderLayout(0, 0));
 		
@@ -361,7 +359,7 @@ public class GameUIState extends UI {
 		scoreServer.add(P2Score, BorderLayout.CENTER);
 		
 		JPanel profileServer = new JPanel();
-		profileServer.setPreferredSize(new Dimension(50, 30));
+		profileServer.setPreferredSize(new Dimension(60, 60));
 		server.add(profileServer, BorderLayout.EAST);
 		JLabel P2 = new JLabel();
 		P2.setIcon ( new ImageIcon ( "profile.png" ) );
@@ -386,8 +384,7 @@ public class GameUIState extends UI {
 		JPanel gap3 = new JPanel();
 		gap3.setOpaque(false);
 		gap3.setPreferredSize(new Dimension(50, 250));
-		JPanel southPlayer2 = new JPanel();
-		southPlayer2.setBackground(new Color(204, 204, 255));
+		JPanel southPlayer2 = UI.createJPanelWithBg("bg/oceanbg.png",300,300);
 		southPlayer2.setPreferredSize(new Dimension(250, 250));
 		player2.add(gap3,BorderLayout.WEST);
 		player2.add(southPlayer2, BorderLayout.CENTER);
@@ -402,7 +399,7 @@ public class GameUIState extends UI {
 				squareLabel.setIndex();
 				squareLabel.setMyBoardSquare();
 				squareLabel.setHorizontalAlignment(SwingConstants.CENTER);
-				squareLabel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+				squareLabel.setBorder(BorderFactory.createLineBorder(Color.CYAN));
 				//Set own ship
 				myBoardLabel[y][x] = squareLabel;
 				southPlayer2.add(squareLabel);
