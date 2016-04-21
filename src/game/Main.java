@@ -685,7 +685,10 @@ public class Main extends JFrame {
 							}
 							// TODO if enemy ship sunk
 
-						} else if (input.indexOf("MARK") != -1) {
+						
+						
+								
+						} else if(input.indexOf("MARK") != -1) {
 							String index = input.substring(input.indexOf("_") + 1);
 							int y = Integer.parseInt(index.substring(0, 1));
 							int x = Integer.parseInt(index.substring(2));
@@ -695,16 +698,38 @@ public class Main extends JFrame {
 							boolean lose = hitSunk[2];
 							Square markedSquare = boardGame.myBoard[y][x];
 							SquareLabel hitSquareLabel = boardGame.myBoard[y][x].getSquareLabel();
-							// TODO Update UI
-							if (hit) {
-								markedSquare.marked = true;
-								// Update hit UI
-								hitSquareLabel.setIcon(createImageIcon("effect/hit2.png", 30, 30));
-							} else {
-								markedSquare.marked = true;
-								// Update miss UI
-								hitSquareLabel.setIcon(createImageIcon("effect/miss2.png", 30, 30));
+							//TODO Update UI
+							if(hit) { //If hit
+								System.out.println(Thread.currentThread().getName() + "HIT!");
+								gameUI.P1Score.setText(currentScore++ + "");
+								//Update UI (hit)
+								hitSquareLabel.setIcon(createImageIcon("effect/hit.png", 37, 37));
+								repaint();
+								revalidate();
+							} else { //If not hit
+								boardGame.board[y][x].marked = true;
+								//Update UI (not hit)
+								hitSquareLabel.setIcon(createImageIcon("effect/miss.png", 37, 37));
 							}
+							if(currentScore == 16) {
+								//Win
+								out.println(CommandString.CLIENT_WIN);
+								JOptionPane.showMessageDialog(Main.this, "Congratulations! " + player.getName() + " win the game.");
+							}
+							//TODO check if the player won the game
+							out.println("RETURN_MARK_" + y + "," + x + "_" + hit + "," + sunk);
+							//If the player already loses the game
+							/*
+							if(lose) {
+								out.println(CommandString.CLIENT_LOSE);
+								//TEST
+								JOptionPane.showMessageDialog(Main.this, player.getName()+" loses the game.");
+							}
+							*/
+							//It is your turn, change the state to playing
+							playerState = PlayerState.IDLE;
+							myTurn = true;
+							
 							// TODO check if the player won the game
 							out.println("RETURN_MARK_" + y + "," + x + "_" + hit + "," + sunk);
 							// If the player already loses the game
@@ -754,6 +779,7 @@ public class Main extends JFrame {
 							};
 							timer_turn_duration = new Timer(1000, timerTask);
 							timer_turn_duration.start();
+							
 						}
 					}
 				}

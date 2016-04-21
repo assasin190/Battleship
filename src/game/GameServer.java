@@ -120,12 +120,6 @@ public class GameServer implements Runnable, Serializable {
 		if(forwardNumber == 1) socketThread1.writeViaSocket(input);
 		else socketThread2.writeViaSocket(input);
 	}
-	
-	private void forwardBoardGame(BoardGame boardGame, int forwardNumber) {
-		if(forwardNumber == 1) {
-			socketThread1.writeObjectViaSocket(boardGame);
-		} else socketThread2.writeObjectViaSocket(boardGame);
-	}
 
 	private void setupClient() {
 		try {
@@ -280,7 +274,7 @@ public class GameServer implements Runnable, Serializable {
 								break;
 							case CommandString.CLIENT_WIN:
 								if(clientNumber ==1) print(CommandString.SERVER_INDICATE_YOU_LOSE, 2);
-								else print(CommandString.SERVER_INDICATE_YOU_LOSE, 1);
+								else print(CommandString.SERVER_INDICATE_YOU_WIN, 1);
 							case CommandString.CLIENT_LOSE:
 								//TEST
 								if(clientNumber == 1) print(CommandString.SERVER_INDICATE_YOU_WIN, 2);
