@@ -273,6 +273,9 @@ public class GameUIState extends UI {
 		lblTimer.setHorizontalAlignment(SwingConstants.LEFT);
 		rightTopP2.add(lblTimer);
 		
+		JButton reset = new JButton("RESET");
+		rightTopP2.add(reset);
+		
 		/////////////////////////////////// sirawich
 		/*
 		ActionListener timerTask = new ActionListener() {
@@ -413,6 +416,7 @@ public class GameUIState extends UI {
 		scorePanel.add(vsPanel, BorderLayout.CENTER);
 		
 		JLabel lblVs = new JLabel("VS");
+		lblVs.setForeground(Color.WHITE);
 		lblVs.setHorizontalAlignment(SwingConstants.CENTER);
 		lblVs.setFont(new Font("Avenir", Font.PLAIN, 13));
 		vsPanel.add(lblVs);
