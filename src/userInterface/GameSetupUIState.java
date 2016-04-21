@@ -202,8 +202,9 @@ public class GameSetupUIState extends UI {
 		center.add(leftCol, BorderLayout.WEST);
 
 		JPanel player1 = new JPanel();
-		player1.setBackground(Color.PINK); // bg of battle table1
+		//player1.setBackground(Color.PINK); // bg of battle table1
 		player1.setPreferredSize(new Dimension(300, 300));
+		player1 = UI.createJPanelWithBackground(Main.createImageIcon("oceanbg.png", 300, 300).getImage());
 
 		JPanel topP1 = new JPanel(); // Panel for label "Place your ships!"
 		topP1.setPreferredSize(new Dimension(300, 100));

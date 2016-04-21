@@ -109,8 +109,8 @@ public class GameUIState extends UI {
 		leftCol.setOpaque(false);
 		
 		
-		JPanel player1 = new JPanel();
-		player1.setBackground(Color.PINK);
+		JPanel player1 = UI.createJPanelWithBackground(Main.createImageIcon("oceanbg.png", 300, 300).getImage());
+		//player1.setBackground(Color.PINK);
 		player1.setPreferredSize(new Dimension(300,300));
 		
 		JPanel topP1 = new JPanel();
