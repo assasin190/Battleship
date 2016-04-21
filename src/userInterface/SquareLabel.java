@@ -7,8 +7,8 @@ import game.Square;
 
 public class SquareLabel extends JLabel {
 		public Main main;
-		int x;
 		int y;
+		int x;
 		boolean shipPlacingEnabled;
 		boolean MarkingEnabled;
 		Square square;

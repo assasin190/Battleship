@@ -156,7 +156,7 @@ public class Main extends JFrame {
 		System.out.println(Thread.currentThread().getName() + ": connecting to the server...");
 		//Connect to match server
 		try {
-			socket = new Socket(serverAddr , 8000);
+			socket = new Socket(serverAddr , 8080);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

@@ -144,7 +144,7 @@ public class GameUIState extends UI {
 				SquareLabel squareLabel = new SquareLabel("", this.main);
 				squareLabel.setName(y + "," + x);
 				squareLabel.setBoardIndex();
-				squareLabel.setMyBoardSquare();
+				squareLabel.setBoardSquare();
 				squareLabel.setHorizontalAlignment(SwingConstants.CENTER);
 				squareLabel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 				squareLabel.addMouseListener(new MouseAdapter() {
@@ -400,7 +400,7 @@ public class GameUIState extends UI {
 				SquareLabel squareLabel = new SquareLabel("", this.main);
 				squareLabel.setName(y + "," + x);
 				squareLabel.setIndex();
-				squareLabel.setBoardSquare();
+				squareLabel.setMyBoardSquare();
 				squareLabel.setHorizontalAlignment(SwingConstants.CENTER);
 				squareLabel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 				//Set own ship
