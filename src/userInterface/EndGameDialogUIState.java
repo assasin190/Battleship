@@ -30,13 +30,14 @@ public class EndGameDialogUIState extends UI {
 		dialog.setSize(400, 300);
 		dialog.setPreferredSize(new Dimension(400, 300));
 		dialog.setLocation(Main.getPopUpLocation(this));
+		dialog.getContentPane().setBackground(Color.BLACK);
 		initialize(text);
 		
 	}
 	
 	private void initialize(String text) {
 		JPanel panel = new JPanel();
-		panel.setBackground(Color.BLACK);
+		panel.setOpaque(false);
 		dialog.getContentPane().add(panel);
 		JPanel mainP = new JPanel();
 		mainP.setPreferredSize(new Dimension(400,200));
