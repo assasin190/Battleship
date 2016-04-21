@@ -45,7 +45,7 @@ public class Main extends JFrame {
 	public final GameStateManager GSM = new GameStateManager();
 	public JPanel currentStatePanel;
 	public boolean isClient;
-	boolean start = true;
+	public boolean start = true;
 	public GameClient client;
 	private Socket socket;
 	public Player player;
@@ -73,8 +73,8 @@ public class Main extends JFrame {
 		setBounds(100, 100, 1024, 768);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setResizable(false);
-		insertBGM("login.wav");
-		start = false;
+		//insertBGM("login.wav");
+		//start = false;
 		player = new Player();
 		background = createImageIcon("bg/Bg-play.png", 1024, 768).getImage();
 		//Change UI state -> MAIN_MENU_STATE
@@ -96,38 +96,6 @@ public class Main extends JFrame {
 	
 	//P2P Server case
 	public void startLocalServer() {
-		/* OLD IMPLEMENTATION
-		System.out.println("Main_thread: P2P server running");
-		//Create and set the local game client
-		GameClient localClient = client = new GameClient();
-		GameServer gameServer = new GameServer(localClient);
-		localClient.setLocalServer(gameServer);
-		Thread setupConnectionThread = new SetupConnectionThread(gameServer);
-		//Setup another client's connection
-		//And wait for a connection
-		setupConnectionThread.setName("P2PsetupConThread");
-		setupConnectionThread.start();
-		//Push UI state -> WAIT_FOR_CONNECTION_STATE
-		GSM.pushState(new WaitForConnectionUIState(this));
-		//Wait for the thread to finish
-		try {
-			setupConnectionThread.join();
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		//Connection accepted
-		//Run server on new thread
-		new Thread(gameServer).start();
-		//Pop WAIT_FOR_CONNECTION_STATE
-		GSM.popState();
-		//change UI state -> GAME_SETUP_STATE
-		GSM.changeState(new GameSetupUIState(this));
-		//Run the game (local client)
-		System.out.println("The game is running...");
-		localClient.run();
-		*/
-		//NEW IMPLEMENTATION
 		System.out.println(Thread.currentThread().getName() + ": P2P server mode running" );
 		//Create the local server
 		GameServer gameServer = new GameServer(8080);
@@ -150,9 +118,9 @@ public class Main extends JFrame {
 		
 	}
 	
-	//P2P/Server-Client client case
-	public void Connect(String serverAddr, String serverPort) {
-		System.out.println(Thread.currentThread().getName() + ": P2P/Server-Client client mode running");
+	//P2P Client case
+	public void connect(String serverAddr, String serverPort) {
+		System.out.println(Thread.currentThread().getName() + ": P2P client mode running");
 		//Connect to the server
 		System.out.println(Thread.currentThread().getName() + ": connecting to the server...");
 		//Connect to match server
@@ -163,6 +131,29 @@ public class Main extends JFrame {
 		}
 		System.out.println(Thread.currentThread().getName() + ": connection accepted");
 		//Run the game client
+		client = new GameClient(socket);
+		client.run();
+	}
+	
+	//Server-client case
+	public void connect() {
+		//Set the server address here
+		String serverAddr = "localhost";
+		System.out.println(Thread.currentThread().getName() + ": Server-client mode running");
+		//Connect to match server
+		System.out.println(Thread.currentThread().getName() + ": connecting to the match server...");
+		try {
+			socket = new Socket(serverAddr, 8000); //Match server use port 8000
+			BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+			String input = in.readLine();
+			String portStr = input.substring(input.indexOf("_") + 1);
+			int portNumber = Integer.parseInt(portStr);
+			System.out.println(Thread.currentThread().getName() + ": got port number " + portNumber);
+			socket.close();
+			socket = new Socket(serverAddr, portNumber);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		client = new GameClient(socket);
 		client.run();
 	}
@@ -289,7 +280,8 @@ public class Main extends JFrame {
 		protected GameSetupUIState gameSetupUI;
 		protected GameUIState gameUI;
 		protected boolean myTurn;
-		protected int score;
+		protected int historicalScore;
+		protected int currentScore;
 		public Timer timer_turn_duration;
 		//UI field related to GameClient
 		
@@ -303,7 +295,7 @@ public class Main extends JFrame {
 			this.socket = socket;
 			playerState = PlayerState.NULL_STATE;
 			myTurn = false;
-			score = 0;
+			currentScore = 0;
 			//Create a board game
 			boardGame = new BoardGame();
 			
@@ -592,6 +584,12 @@ public class Main extends JFrame {
 						case CommandString.SERVER_INDICATE_YOU_WIN: //You won the game
 							//TEST
 							JOptionPane.showMessageDialog(Main.this, "Congratulations! You win the game.");
+							break;
+							
+						case CommandString.SERVER_INDICATE_YOU_LOSE: //You lose the game
+							//TEST
+							JOptionPane.showMessageDialog(Main.this, "Congratulations! You win the game.");
+							break;
 						default:
 							if(input.indexOf("RETURN_MARK") != -1) {
 								String index = input.substring(input.indexOf("_", input.indexOf("_") + 1) + 1, input.indexOf(",") + 2);
@@ -607,13 +605,18 @@ public class Main extends JFrame {
 								SquareLabel hitSquareLabel = markedSquare.getSquareLabel();
 								markedSquare.marked = true;
 								if(hit) { //If hit
-									score++;
+									currentScore++;
 									//Update UI (hit)
 									hitSquareLabel.setIcon(createImageIcon("effect/hit.png", 37, 37));
 								} else { //If not hit
 									boardGame.board[y][x].marked = true;
 									//Update UI (not hit)
 									hitSquareLabel.setIcon(createImageIcon("effect/miss.png", 37, 37));
+								}
+								if(currentScore == 16) {
+									//Win
+									out.println(CommandString.CLIENT_WIN);
+									JOptionPane.showMessageDialog(Main.this, "Congratulations! " + player.getName() + " win the game.");
 								}
 								//TODO if enemy ship sunk
 								
@@ -640,12 +643,13 @@ public class Main extends JFrame {
 								//TODO check if the player won the game
 								out.println("RETURN_MARK_" + y + "," + x + "_" + hit + "," + sunk);
 								//If the player already loses the game
+								/*
 								if(lose) {
 									out.println(CommandString.CLIENT_LOSE);
 									//TEST
-									JOptionPane.showMessageDialog(Main.this, "You lose the game.");
+									JOptionPane.showMessageDialog(Main.this, player.getName()+" loses the game.");
 								}
-								
+								*/
 								//It is your turn, change the state to playing
 								playerState = PlayerState.IDLE;
 								myTurn = true;

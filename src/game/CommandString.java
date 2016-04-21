@@ -16,12 +16,13 @@ public class CommandString {
 	public static final String SERVER_START_GAME = "SERVER_START_GAME";
 	public static final String SERVER_GRANT_TURN = "SERVER_GRANT_TURN";
 	public static final String SERVER_INDICATE_YOU_WIN = "SERVER_INDICATE_YOU_WIN";
-;	
+	public static final String SERVER_INDICATE_YOU_LOSE = "SERVER_INDICATE_YOU_LOSE";
 	public static final String SERVER_REQUEST_BOARD_EXCHANGE = "SERVER_REQUEST_BOARD_EXCHANGE";
 	public static final String CLIENT_SUBMIT_BOARD_EXCHANGE = "CLIENT_SUBMIT_EXCHANGE_REQUEST";
 	
 	public static final String MATCH_SERVER_OTHER_MATCHING_NOT_AVAILABLE = "MATCH_SERVER_OTHER_MATCHING_NOT_AVAILABLE";
 	public static final String MATCH_SERVER_OTHER_MATCHING_AVAILABLE = "MATCH_SERVER_OTHER_MATCHING_AVAILABLE";
+	public static final String CLIENT_WIN = "CLIENT_WIN";
 	
 	/*	Validate a command string
 		If the command string is valid, return true
