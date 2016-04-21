@@ -154,6 +154,7 @@ public class MainMenuUIState extends UI {
 		ImageIcon P = Main.createImageIcon("player/p0.png", 200, 200);
 		ImageIcon pNull = Main.createImageIcon("player/p0.png", 80, 80);
 		profilePic = pNull;
+		main.picImage="player/p0.png";
 
 		JPanel player = new JPanel();
 		player.setOpaque(false);
@@ -180,6 +181,7 @@ public class MainMenuUIState extends UI {
 			btnP[i] = new JButton(img[i]);
 			btnP[i].setName(i + "");
 			selectPlayer.add(btnP[i]);
+			main.picImage="player/p" + (i + 1) + ".png";
 			btnP[i].addMouseListener(new MouseAdapter() {
 
 				@Override
