@@ -294,6 +294,15 @@ public class GameSetupUIState extends UI {
 										// //PLACESHIP
 										cancelButton.setEnabled(true);
 									}
+									
+									main.insertBGM("sound/ship.wav");
+									try {
+										Thread.sleep(1000);
+									} catch (InterruptedException e1) {
+										// TODO Auto-generated catch block
+										e1.printStackTrace();
+									}
+									
 									// Re-invoke mouse exited on e
 									mouseExited(e);
 									if (main.client.boardGame.isAllShipSet()) {

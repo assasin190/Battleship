@@ -25,6 +25,7 @@ import javax.imageio.ImageIO;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
+import javax.sound.sampled.FloatControl;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.ImageIcon;
@@ -202,7 +203,7 @@ public class Main extends JFrame {
 		}
 
 
-/*
+
 	public void insertBGM(String sound) {
 		File soundFile = new File(sound);
 		AudioInputStream audioIn = null;
@@ -223,7 +224,7 @@ public class Main extends JFrame {
 			e.printStackTrace();
 		}
 	}
-	*/
+	
 	
 	public void replaceCurrentPanel(JPanel panel) {
 		//if currentStatePanel is not null, remove the currentStatePanel
@@ -600,6 +601,11 @@ public class Main extends JFrame {
 								//Change UI state -> GAME_STATE
 								setupClip.close();
 								battleClip.start();
+								
+								FloatControl gainControl = 
+									    (FloatControl) battleClip.getControl(FloatControl.Type.MASTER_GAIN);
+									gainControl.setValue(-5.0f); // Reduce volume by 10 decibels.
+								
 								gameUI = new GameUIState(Main.this);
 								GSM.changeState(gameUI);
 								//INSERT SOUND
@@ -643,10 +649,24 @@ public class Main extends JFrame {
 									currentScore++;
 									//Update UI (hit)
 									hitSquareLabel.setIcon(createImageIcon("effect/hit.png", 37, 37));
+									insertBGM("sound/hit.wav");
+									try {
+										Thread.sleep(100);
+									} catch (InterruptedException e1) {
+										// TODO Auto-generated catch block
+										e1.printStackTrace();
+									}
 								} else { //If not hit
 									boardGame.board[y][x].marked = true;
 									//Update UI (not hit)
 									hitSquareLabel.setIcon(createImageIcon("effect/miss.png", 37, 37));
+									insertBGM("sound/miss.wav");
+									try {
+										Thread.sleep(100);
+									} catch (InterruptedException e1) {
+										// TODO Auto-generated catch block
+										e1.printStackTrace();
+									}
 								}
 								if(currentScore == 16) {
 									//Win
