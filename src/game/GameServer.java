@@ -10,8 +10,8 @@ public class GameServer implements Runnable, Serializable {
 	public ServerSocket serverSocket;
 	private Socket firstClientSocket;
 	private Socket secondClientSocket;
-	private SocketThread socketThread1;
-	private SocketThread socketThread2;
+	protected SocketThread socketThread1;
+	protected SocketThread socketThread2;
 	private OutputStream out;
 	private InputStream in;
 	//private ObjectInputStream ois;
@@ -247,6 +247,22 @@ public class GameServer implements Runnable, Serializable {
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+			}
+		}
+		
+		public void resetServer() {
+			//Go past GAME_START_READY_LOCK
+			synchronized(currentLock) {
+				currentLock.incrementCounter();
+				currentLock.incrementCounter();
+				currentLock.notify();
+			}
+			if(clientNumber == 1) {
+				out.println(CommandString.SERVER_RESET_GAME);
+				print(CommandString.SERVER_RESET_GAME, 2);
+			} else {
+				out.println(CommandString.SERVER_RESET_GAME);
+				print(CommandString.SERVER_RESET_GAME, 1);
 			}
 		}
 		 

@@ -145,10 +145,12 @@ public class Server {
 			add(currentNumberPlayerLabel, BorderLayout.CENTER);
 			resetButton = new JButton("Reset");
 			resetButton.addActionListener(new ActionListener() {
+				//Reset every Game Server
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					// TODO Auto-generated method stub
-					
+					for(GameServer gameServer : gameServerList) {
+						gameServer.socketThread1.resetServer();
+					}
 				}
 				
 			});
