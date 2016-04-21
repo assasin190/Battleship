@@ -698,8 +698,6 @@ public class Main extends JFrame {
 							main.player.setImage(profilePic);
 							
 							
-							
-							
 						}
 						
 						*/
