@@ -122,9 +122,9 @@ public class MainMenuUIState extends UI {
 				frame.add(panelSetting.panel);
 				frame.setVisible(true);
 				
-		
-				System.out.println("click setting");
-				*/
+		*/
+				//System.out.println("click setting");
+				
 				
 				// open new jframe for bg setting
 
@@ -189,6 +189,11 @@ public class MainMenuUIState extends UI {
 					profile.setIcon(imgP[index]);
 					profilePic = imgPP[index];
 					main.player.setImage(profilePic);
+					
+					System.out.println("profile pic select : "+profilePic);
+					System.out.println("name : "+name);
+					
+					
 				}
 			});
 		}
