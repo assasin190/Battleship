@@ -72,6 +72,7 @@ public class BoardGame implements Serializable{
 	}
 	
 	public void clearOccupation(Ship ship) {
+		if(ship == null) return;
 		//Set array value as null
 		ships[ship.shipNumber] = null;
 		Square [] occupation = ship.getOccupancy();

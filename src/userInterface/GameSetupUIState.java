@@ -131,7 +131,7 @@ public class GameSetupUIState extends UI {
 
 		// Top logo
 		JButton logo = new JButton("");
-		logo.setIcon(new ImageIcon("logo/logo.png"));
+		logo.setIcon(new ImageIcon("logo/logo1.png"));
 
 		logo.addMouseListener(new MouseAdapter() {
 			@Override
@@ -149,7 +149,7 @@ public class GameSetupUIState extends UI {
 				int r;
 				while (true) {
 					// random 1-7
-					r = (int) (Math.round(Math.random() * 6) + 1);
+					r = (int) (Math.round(Math.random() * 7) + 1);
 					if (r != mynum) {
 						break;
 					}
@@ -469,6 +469,7 @@ public class GameSetupUIState extends UI {
 				// Check if all ship has been set
 				main.client.boardGame.clearAllShip();
 				cancelButton.setEnabled(false);
+				readyButton.setEnabled(true);
 			}
 		});
 
@@ -508,6 +509,7 @@ public class GameSetupUIState extends UI {
 				int x;
 				String direction = null;
 				// Clear all ship
+				main.client.boardGame.clearAllShip();
 				for (int i = 0; i <= 3; i++) {
 					SquareLabel[] position = null;
 					while (position == null) {
