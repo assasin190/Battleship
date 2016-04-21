@@ -21,7 +21,10 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.Point;
+import java.awt.Toolkit;
 import java.awt.Color;
+import java.awt.Cursor;
 
 public class MainMenuUIState extends UI {
 	//public static String bg = "Bg-play.png";
@@ -286,6 +289,7 @@ public class MainMenuUIState extends UI {
 		buttonPanel.add(clientBtn);
 		buttonPanel.add(serverBtn);
 		buttonPanel.add(connectBtn);
+		
 	}
 
 	@Override

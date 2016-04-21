@@ -15,7 +15,7 @@ public class WaitForOpponentReadyUIState extends UI {
 		super(main);
 		stateString = GameState.WAIT_FOR_OPPONENT_READY_STATE;
 		dialog = new JDialog(main, "");
-		dialog.setLocation(main.getLocation());
+		dialog.setLocation(Main.getPopUpLocation(this));
 		dialog.setPreferredSize(new Dimension(300,50));
 		initialize();
 	}

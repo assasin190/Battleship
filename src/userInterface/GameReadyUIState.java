@@ -14,7 +14,6 @@ import GameState.GameState;
 import game.Main;
 
 public class GameReadyUIState extends UI {
-	public JDialog dialog;
 	public JButton readyBtn;
 	
 	public GameReadyUIState() {
@@ -27,8 +26,9 @@ public class GameReadyUIState extends UI {
 		super(main);
 		stateString = GameState.GAME_SETUP_READY_STATE;
 		dialog = new JDialog(main, "Ready!");
-		dialog.setLocation(main.getLocation());
+		dialog.setSize(300, 80);
 		dialog.setPreferredSize(new Dimension(300,80));
+		dialog.setLocation(Main.getPopUpLocation(this));
 		initialize();
 	}
 

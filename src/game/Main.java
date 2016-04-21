@@ -1,9 +1,11 @@
 package game;
 
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Image;
 import java.awt.Point;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
@@ -90,6 +92,12 @@ public class Main extends JFrame {
 		GSM.setState(new MainMenuUIState(this));
 		createSound();
 		mainmenuClip.start();
+	
+		Toolkit toolkit = Toolkit.getDefaultToolkit();
+		Image image = toolkit.getImage("cursor_blue.png");
+		Point hotSpot = new Point(0, 0);
+		Cursor cursor = toolkit.createCustomCursor(image, hotSpot, "cursor");
+		this.setCursor(cursor);
 
 	}
 
@@ -265,8 +273,8 @@ public class Main extends JFrame {
 		// System.out.println("dialog_width/2 = "+dialog_width/2);
 		// System.out.println("dialog_height/2 = "+dialog_height/2);
 
-		int x_dialog = (frame_width / 2) - (dialog_width / 2) + frame_x;
-		int y_dialog = (frame_height / 2) - (dialog_height / 2) + frame_y;
+		int x_dialog = frame_x + (frame_width / 2) - (dialog_width / 2);
+		int y_dialog = frame_y + (frame_height / 2) - (dialog_height / 2);
 		Point result = new Point(x_dialog, y_dialog);
 
 		// System.out.println("sirawich point main x= :
@@ -276,7 +284,7 @@ public class Main extends JFrame {
 
 		return result;
 	}
-
+	
 	public static ImageIcon createImageIcon(String path, int width, int height) {
 		Image img = null;
 		try {
@@ -336,6 +344,7 @@ public class Main extends JFrame {
 		protected boolean myTurn;
 		protected int accumulativeScore;
 		protected int currentScore;
+		protected int opponentScore;
 		public String opponentName,opponentPic;
 		public Timer timer_turn_duration;
 		// UI field related to GameClient
@@ -348,6 +357,7 @@ public class Main extends JFrame {
 		protected GameClient(Socket socket) {
 			this.socket = socket;
 			playerState = PlayerState.NULL_STATE;
+			accumulativeScore = 0;
 			initialize();
 
 		}
@@ -355,7 +365,7 @@ public class Main extends JFrame {
 		protected void initialize() {
 			myTurn = false;
 			currentScore = 0;
-			accumulativeScore = 0;
+			opponentScore = 0;
 			// Create a board game
 			boardGame = new BoardGame();
 		}
@@ -451,70 +461,6 @@ public class Main extends JFrame {
 				// Client game logic
 				System.out.println(Thread.currentThread().getName() + ": process invoked");
 				System.out.println(Thread.currentThread().getName() + ": the size of inputList is " + inputList.size());
-<<<<<<< HEAD
-				for (String input : inputList) { // Process every input
-					if (input == null)
-						; // TODO Raise NullMessageException
-					switch (input) {
-					case CommandString.SERVER_OTHER_CLIENT_NOT_AVAILABLE: // If
-																			// another
-																			// client
-																			// has
-																			// not
-																			// connected
-																			// to
-																			// the
-																			// server
-																			// ->
-																			// wait
-																			// until
-																			// another
-																			// client's
-																			// connection
-																			// is
-																			// accepted
-						if (!(playerState.equals(PlayerState.NULL_STATE)))
-							break; // TODO Raise SynchronizeErrorException
-						System.out.println(
-								Thread.currentThread().getName() + ": The other client is not available. waiting...");
-						// Push UI state -> WAIT_FOR_CONNECTION_STATE
-						GSM.pushState(new WaitForConnectionUIState(Main.this));
-						// Wait
-						// When another client connects, the server returns a
-						// string SERVER_ANOTHER_CLIENT_AVAILABLE to all clients
-						break;
-
-					case CommandString.SERVER_OTHER_CLIENT_AVAILABLE:
-						if (!playerState.equals(PlayerState.NULL_STATE)
-								|| !playerState.equals(PlayerState.EXPECT_SERVER_OTHER_CLIENT_AVAILABLE))
-							; // Raise SynchronizationErrorException
-						// The other client has connected 
-						// Pop UI state UNTIL MAIN_GAME_STATE
-						GSM.popStateUntil(GameState.MAIN_MENU_STATE);
-						// Push GAME_SETUP_READY_STATE
-						GSM.pushState(new GameSetupReadyUIState(Main.this));
-						// Set playerState EXPECT_SERVER_GAME_SETUP
-						playerState = PlayerState.EXPECT_SERVER_GAME_SETUP;
-						// Wait for the player to press Ready...
-						// System.out.println("name :" + player.name);
-						// out.println("CLIENT_NAME_" + player.getName());
-						break;
-
-					case CommandString.SERVER_START_GAME_SETUP:
-						if (!playerState.equals(PlayerState.EXPECT_SERVER_GAME_SETUP))
-							; // Raise SynchronizationErrorException
-						// Server is ready to start game setup
-						// Start the game setup
-						// Pop UI state until MAIN_MENU_STATE
-						out.println("CLIENT_NAME_" + player.getName());
-						GSM.popStateUntil(GameState.MAIN_MENU_STATE);
-						// Change UI state -> GAME_SETUP_STATE
-						gameSetupUI = new GameSetupUIState(Main.this);
-						mainmenuClip.stop();
-						setupClip.start();
-						GSM.changeState(gameSetupUI);
-						playerState = PlayerState.START_GAME_SETUP;
-=======
 				for(String input : inputList) { //Process every input
 					if(input == null) {
 						//Opponent has left the game
@@ -560,7 +506,6 @@ public class Main extends JFrame {
 							setupClip.start();
 							GSM.changeState(gameSetupUI);
 							playerState = PlayerState.START_GAME_SETUP;
->>>>>>> e843ae408f5a62ef995352c8e12eba787a992da9
 
 					case CommandString.SERVER_OPPONENT_NOT_READY:
 						if (!playerState.equals(PlayerState.EXPECT_SERVER_START_GAME))
@@ -624,22 +569,7 @@ public class Main extends JFrame {
 
 										gameUI.lblTimer.setText("END");
 										timer_turn_duration.stop();
-										
-										
-										
-										// sirawich
-										point_opponent = 0;
-										for (int i = 0; i < 7; i++) {
-											for (int j = 0; j < 7; j++) {
-												// if(client.boardGame.board[i][j].isMarked()){
-												if (client.boardGame.myBoard[i][j].isMarked()) {
-													point_opponent += 1;
-												}
-											}
-										}
-										// P2Score
-										gameUI.P2Score.setText("" + point_opponent);
-										
+						
 
 										// System.out.println("end");
 									} else {
@@ -676,9 +606,6 @@ public class Main extends JFrame {
 						currentScore = 0;
 						battleClip.close();
 						break;
-<<<<<<< HEAD
-
-=======
 						
 					case CommandString.SERVER_RESET_GAME: //Somebody reset the game
 						initialize();
@@ -687,7 +614,6 @@ public class Main extends JFrame {
 						if(timer_turn_duration != null) timer_turn_duration.stop();
 						playerState = PlayerState.START_GAME_SETUP;
 						
->>>>>>> e843ae408f5a62ef995352c8e12eba787a992da9
 					default:
 						if (input.indexOf("RETURN_MARK") != -1) {
 							String index = input.substring(input.indexOf("_", input.indexOf("_") + 1) + 1,
@@ -755,6 +681,8 @@ public class Main extends JFrame {
 							// TODO Update UI
 							if (hit) { // If hit
 								// Update UI (hit)
+								opponentScore++;
+								gameUI.P2Score.setText(opponentScore + "");
 								hitSquareLabel.setIcon(createImageIcon("effect/hit.png", 37, 37));
 								repaint();
 								revalidate();
@@ -825,33 +753,6 @@ public class Main extends JFrame {
 						} else if (input.indexOf("CLIENT_NAME") != -1) {
 							opponentName = input.substring(input.lastIndexOf("_") + 1);
 							gameSetupUI.p2.setText(opponentName);
-<<<<<<< HEAD
-
-							// System.out.println("CLIENT_NAME input name =
-							// "+input.toString());
-
-							// sirawich
-
-						} /*
-							 * else if (input.indexOf("")!=-1){
-							 * 
-							 * String name = ((JButton)
-							 * e.getComponent()).getName(); int index =
-							 * Integer.parseInt(name);
-							 * profile.setIcon(imgP[index]); profilePic =
-							 * imgPP[index];
-							 * 
-							 * 
-							 * 
-							 * main.player.setImage(profilePic);
-							 * 
-							 * 
-							 * 
-							 * 
-							 * }
-							 * 
-							 */
-=======
 							Main.this.repaint();
 							Main.this.revalidate();
 							
@@ -859,12 +760,8 @@ public class Main extends JFrame {
 							
 						} else if (input.indexOf("CLIENT_PIC") != -1){
 							opponentPic = input.substring(input.lastIndexOf("_") + 1);
-							System.out.print("OPPO PIC" +opponentPic);
-							Main.this.repaint();
-							Main.this.revalidate();
 							
 						}
->>>>>>> e843ae408f5a62ef995352c8e12eba787a992da9
 					}
 				}
 			}

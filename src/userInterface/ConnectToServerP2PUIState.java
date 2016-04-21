@@ -26,7 +26,7 @@ public class ConnectToServerP2PUIState extends UI {
 		super(main);
 		stateString = GameState.CONNECT_TO_SERVER_P2P_STATE;
 		dialog = new JDialog(main, "Enter IP Address");
-		dialog.setLocation(main.getLocation()); 
+		dialog.setLocation(Main.getPopUpLocation(this)); 
 		initialize();
 	}
 	private void initialize() {

@@ -22,7 +22,8 @@ public class WaitForConnectionUIState extends UI {
 		super(main);
 		stateString = GameState.WAIT_FOR_CONNECTION_STATE;
 		dialog = new JDialog(main, "");
-		dialog.setLocation(main.getLocation());
+		dialog.setLocation(Main.getPopUpLocation(this));
+		dialog.setSize(new Dimension(300,50));
 		dialog.setPreferredSize(new Dimension(300,50));
 		initialize();
 	}
