@@ -31,8 +31,10 @@ import javax.sound.sampled.FloatControl;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
@@ -475,10 +477,15 @@ public class Main extends JFrame {
 					case CommandString.SERVER_OPPONENT_NOT_READY:
 						if (!playerState.equals(PlayerState.EXPECT_SERVER_START_GAME))
 							return; // If not pressing ready yet -> do nothing
-						// The other client is not ready
+						// The other client is not ready 
 						// Wait
 						// Push WAIT_FOR_OPPONENT_READY State
-						GSM.changeState(new WaitForOpponentReadyUIState(Main.this));
+						GSM.pushState(new WaitForOpponentReadyUIState(Main.this));
+						gameSetupUI.b1.setIcon(createImageIcon("ready.png",10,10));
+						break;
+					
+					case CommandString.SERVER_OPPONENT_READY:
+						gameSetupUI.b2.setIcon(createImageIcon("ready.png",10,10));
 						break;
 
 					case CommandString.SERVER_START_GAME:
@@ -606,6 +613,9 @@ public class Main extends JFrame {
 								
 						} else if(input.indexOf("MARK") != -1) {
 							String index = input.substring(input.indexOf("_") + 1);
+							
+							//System.out.println("MARK index = "+index);
+							
 							int y = Integer.parseInt(index.substring(0, 1));
 							int x = Integer.parseInt(index.substring(2));
 							boolean[] hitSunk = boardGame.fireShot(y, x);
@@ -669,7 +679,30 @@ public class Main extends JFrame {
 							opponentName = input.substring(input.lastIndexOf("_") + 1);
 							gameSetupUI.p2.setText(opponentName);
 							
+							
+							
+						//	System.out.println("CLIENT_NAME input name = "+input.toString());
+							
+							
+							// sirawich 
+							
+						}/* else if (input.indexOf("")!=-1){
+							
+							String name = ((JButton) e.getComponent()).getName();
+							int index = Integer.parseInt(name);
+							profile.setIcon(imgP[index]);
+							profilePic = imgPP[index];
+							
+							
+							
+							main.player.setImage(profilePic);
+							
+							
+							
+							
 						}
+						
+						*/
 					}
 				}
 			}	

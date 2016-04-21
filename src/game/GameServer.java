@@ -301,6 +301,8 @@ public class GameServer implements Runnable, Serializable {
 									if(currentLock.getCounter() == 0) { //If not ready
 										System.out.println(Thread.currentThread().getName() + ": The other client is not ready");
 										out.println(CommandString.SERVER_OPPONENT_NOT_READY);
+										if(clientNumber == 1) print(CommandString.SERVER_OPPONENT_READY, 2);
+										else print(CommandString.SERVER_OPPONENT_READY, 1);
 									}
 									synchronized(currentLock) {
 										currentLock.incrementCounter();

@@ -79,9 +79,37 @@ public class GameUIState extends UI {
 	
 		
 		JButton logo = new JButton("");
-		logo.setIcon ( new ImageIcon ( "logo/logo.png" ) );
+		logo.setIcon ( new ImageIcon ( "logo/logo1.png" ) );
 		top.add(leftTop,BorderLayout.WEST);
 		top.add(logo, BorderLayout.CENTER);
+		
+		logo.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+
+				// logo.setIcon(new ImageIcon("logo/logo1.png"));
+
+				String logo_name = logo.getIcon().toString();
+				String num = logo_name.substring(9, 10);
+				int mynum = Integer.parseInt(num);
+
+				System.out.println("logo name = " + logo_name);
+				System.out.println("string num = " + num);
+
+				int r;
+				while (true) {
+					// random 1-7
+					r = (int) (Math.round(Math.random() * 7) + 1);
+					if (r != mynum) {
+						break;
+					}
+				}
+
+				logo.setIcon(new ImageIcon("logo/logo" + r + ".png"));
+
+			}
+		});
+
 		
 		
 		//top.add(lblPlaceYourShip,BorderLayout.SOUTH);
