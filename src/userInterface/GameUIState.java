@@ -491,13 +491,13 @@ public class GameUIState extends UI {
 	public void entered() {
 		System.out.println(Thread.currentThread().getName() + ": entered " + stateString);
 		main.replaceCurrentPanel(panel);
+		main.setEnabled(true);
 	}
 
 	@Override
 	public void leaving() {
 		System.out.println(Thread.currentThread().getName() + ": leaving " + stateString);
-		// TODO Auto-generated method stub
-		
+		main.setEnabled(false);
 	}
 
 

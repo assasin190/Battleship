@@ -192,6 +192,7 @@ public class MainMenuUIState extends UI {
 					profilePic = imgPP[index];
 					main.player.setImage(profilePic);
 					
+					
 					System.out.println("profile pic select : "+profilePic);
 					System.out.println("name : "+name);
 					
