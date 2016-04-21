@@ -20,10 +20,10 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.SwingConstants;
 
-public class EndGameDialogUIState extends UI {
+public class OpponentLeftTheGameDialogUIState extends UI {
 	public JLabel textLabel;
 	
-	public EndGameDialogUIState(Main main, String text) {
+	public OpponentLeftTheGameDialogUIState(Main main) {
 		super(main);
 		stateString = GameState.END_GAME_DIALOG_STATE;
 		dialog = new JDialog(main);
@@ -31,31 +31,29 @@ public class EndGameDialogUIState extends UI {
 		dialog.setPreferredSize(new Dimension(400, 300));
 		dialog.setLocation(Main.getPopUpLocation(this));
 		dialog.getContentPane().setBackground(Color.BLACK);
-		initialize(text);
+		initialize();
 		
 	}
 	
-	private void initialize(String text) {
-		JPanel panel = new JPanel();
-		panel.setBackground(Color.BLACK);
-		panel.setOpaque(false);
+	private void initialize() {
 		dialog.getContentPane().add(panel);
 		JPanel mainP = new JPanel();
 		mainP.setPreferredSize(new Dimension(400,200));
 		mainP.setLayout(new BorderLayout());
-		textLabel = new JLabel(text);
+		textLabel = new JLabel();
 		textLabel.setFont(new Font("Arial", Font.BOLD, 16));
-		textLabel.setForeground(Color.BLACK);
+		textLabel.setForeground(Color.WHITE);
 		textLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		textLabel.setText("The opponent has left the game. Press OK to return to the main menu");
 		mainP.add(textLabel, BorderLayout.CENTER);
 		panel.setLayout(new BorderLayout());
 		panel.add(mainP,BorderLayout.NORTH);
 		
 		JPanel gap1 = new JPanel();
-		gap1.setPreferredSize(new Dimension(20,50));
+		gap1.setPreferredSize(new Dimension(50,50));
 		
 		JPanel gap2 = new JPanel();
-		gap2.setPreferredSize(new Dimension(20,50));
+		gap2.setPreferredSize(new Dimension(50,50));
 		panel.add(gap1, BorderLayout.WEST);
 		panel.add(gap2, BorderLayout.EAST);
 		
@@ -65,33 +63,21 @@ public class EndGameDialogUIState extends UI {
 		button.setLayout(new BorderLayout());
 		panel.add(button,BorderLayout.CENTER);
 		
-		JButton cont = new JButton(Main.createImageIcon("btn-cont.png",150,50));
-		cont.setBorderPainted(false);
+		JButton cont = new JButton(new ImageIcon("btn-cont.png"));
+		cont.setPreferredSize(new Dimension(150,60));
 		cont.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				//Request to start a new game
-				main.client.requestNewGame();
+				//Return to main menu
+				main.returnToMainMenu();
 				
 			}
 		});
 		
-		
-		JButton exit =new JButton(Main.createImageIcon("btn-jexit.png",150,50));
-		exit.setBorderPainted(false);
-		exit.addActionListener(new ActionListener(){
-			public void actionPerformed(ActionEvent e){
-				System.exit(0);
-			}
-			
-		});
-		
-		
-		button.add(cont, BorderLayout.WEST);
-		button.add(exit, BorderLayout.EAST);
+		button.add(cont, BorderLayout.CENTER);
 		
 		JPanel south = new JPanel();
-		south.setPreferredSize(new Dimension(400,20));
+		south.setPreferredSize(new Dimension(400,40));
 		panel.add(south, BorderLayout.SOUTH);
 		
 		dialog.pack();

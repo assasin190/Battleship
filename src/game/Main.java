@@ -236,6 +236,13 @@ public class Main extends JFrame {
 		repaint();
 		revalidate();
 	}
+	
+	public void returnToMainMenu() {
+		while(!GSM.stackedGameState.isEmpty()) {
+			GSM.popState();
+		}
+		GSM.setState(new MainMenuUIState(this));
+	}
 
 	public static Point getPopUpLocation(UI ui) {
 
@@ -383,6 +390,7 @@ public class Main extends JFrame {
 			out.println(CommandString.CLIENT_REQUEST_NEW_GAME);
 			playerState = PlayerState.EXPECT_SERVER_START_GAME;
 			myTurn = false;
+			setupClip.start();
 			GSM.popState(); //Pop EndGameDialogUIState
 		}
 		
@@ -433,10 +441,7 @@ public class Main extends JFrame {
 				while (true) {
 					String input = in.readLine();
 					System.out.println(Thread.currentThread().getName() + ": " + input + " received");
-					if (input != null)
-						publish(input);
-					else
-						; // TODO Raise NullMessageException
+					publish(input);
 				}
 
 			}
@@ -511,7 +516,10 @@ public class Main extends JFrame {
 						playerState = PlayerState.START_GAME_SETUP;
 =======
 				for(String input : inputList) { //Process every input
-					if(input == null); //TODO Raise NullMessageException
+					if(input == null) {
+						//Opponent has left the game
+						GSM.pushState(new OpponentLeftTheGameDialogUIState(Main.this));
+					}
 					switch(input) {
 						case CommandString.SERVER_OTHER_CLIENT_NOT_AVAILABLE: //If another client has not connected to the server -> wait until another client's connection is accepted
 							if(!(playerState.equals(PlayerState.NULL_STATE))) break; //TODO Raise SynchronizeErrorException
