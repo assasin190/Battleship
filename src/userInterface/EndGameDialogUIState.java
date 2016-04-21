@@ -79,6 +79,12 @@ public class EndGameDialogUIState extends UI {
 		
 		JButton exit = new JButton(new ImageIcon("btn-jexit.png"));
 		exit.setPreferredSize(new Dimension(150,60));
+		exit.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				System.exit(0);
+			}
+			
+		});
 		
 		
 		button.add(cont, BorderLayout.WEST);
