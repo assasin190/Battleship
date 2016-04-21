@@ -52,7 +52,7 @@ public class GameUIState extends UI {
 	public Timer timer;
 	public SquareLabel[][] boardLabel;
 	public SquareLabel[][] myBoardLabel;
-	public JLabel lblTimer ;
+	public JLabel lblTimer;
 	public JLabel P1Score;
 	
 	public GameUIState(Main main) {
@@ -401,9 +401,11 @@ public class GameUIState extends UI {
 		profileServer.setPreferredSize(new Dimension(60, 60));
 		server.add(profileServer, BorderLayout.EAST);
 		JLabel P2 = new JLabel();
-		P2.setIcon ( new ImageIcon ( "profile.png" ) );
+		P2.setIcon(Main.createImageIcon(main.client.opponentPic, 60, 60));
+		System.out.print("test name" + main.client.opponentPic);
+	
 		profileServer.add(P2);
-		
+
 		
 		JPanel vsPanel = new JPanel();
 		vsPanel.setPreferredSize(new Dimension(70, 90));

@@ -55,6 +55,7 @@ public class Main extends JFrame {
 	private Socket socket;
 	public Player player;
 	public Image background;
+	public String picImage;
 	Clip battleClip, mainmenuClip, setupClip;
 
 	/**
@@ -327,7 +328,7 @@ public class Main extends JFrame {
 		protected boolean myTurn;
 		protected int accumulativeScore;
 		protected int currentScore;
-		public String opponentName;
+		public String opponentName,opponentPic;
 		public Timer timer_turn_duration;
 		// UI field related to GameClient
 
@@ -466,6 +467,8 @@ public class Main extends JFrame {
 							//Start the game setup
 							//Pop UI state until MAIN_MENU_STATE
 							out.println("CLIENT_NAME_" + player.getName());
+							out.println("CLIENT_PIC_" + picImage);
+							System.out.print("SENDING" +picImage);
 							GSM.popStateUntil(GameState.MAIN_MENU_STATE);
 							//Change UI state -> GAME_SETUP_STATE
 							gameSetupUI = new GameSetupUIState(Main.this);
@@ -682,28 +685,13 @@ public class Main extends JFrame {
 							opponentName = input.substring(input.lastIndexOf("_") + 1);
 							gameSetupUI.p2.setText(opponentName);
 							
+	
 							
-							
-						//	System.out.println("CLIENT_NAME input name = "+input.toString());
-							
-							
-							// sirawich 
-							
-						}/* else if (input.indexOf("")!=-1){
-							
-							String name = ((JButton) e.getComponent()).getName();
-							int index = Integer.parseInt(name);
-							profile.setIcon(imgP[index]);
-							profilePic = imgPP[index];
-							
-							
-							
-							main.player.setImage(profilePic);
-							
+						} else if (input.indexOf("CLIENT_PIC") != -1){
+							opponentPic = input.substring(input.lastIndexOf("_") + 1);
+							System.out.print("OPPO PIC" +opponentPic);
 							
 						}
-						
-						*/
 					}
 				}
 			}	

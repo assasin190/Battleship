@@ -345,6 +345,9 @@ public class GameServer implements Runnable, Serializable {
 								} else if(input.indexOf("CLIENT_NAME") != -1) {
 									if(clientNumber == 1) print(input, 2);
 									else print(input, 1);
+								} else if(input.indexOf("CLIENT_PIC") != -1) {
+									if(clientNumber == 1) print(input, 2);
+									else print(input, 1);
 								}
 								
 						}
