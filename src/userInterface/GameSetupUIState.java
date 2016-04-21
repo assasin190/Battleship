@@ -605,6 +605,15 @@ public class GameSetupUIState extends UI {
 		bottom.setOpaque(false);
 		panel.add(bottom, BorderLayout.SOUTH);
 	}
+	
+	public SquareLabel[] searchForHighlightableLabel(int y, int x, String direction) {
+		SquareLabel[] highlightable = new SquareLabel[4];
+		if(myBoardLabel[y][x].getSquare().isOccupied()) return null;
+		highlightable[0] = myBoardLabel[y][x];
+		int index = 1, failedAttempt = 0;
+		return checkNext(y, x, index, failedAttempt, direction, highlightable);
+		
+	}
 
 	public SquareLabel[] searchForHighlightableLabel(SquareLabel startingLabel) {
 		int y = startingLabel.getYIndex();
