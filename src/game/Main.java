@@ -33,6 +33,7 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.ImageIcon;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
@@ -472,10 +473,15 @@ public class Main extends JFrame {
 					case CommandString.SERVER_OPPONENT_NOT_READY:
 						if (!playerState.equals(PlayerState.EXPECT_SERVER_START_GAME))
 							return; // If not pressing ready yet -> do nothing
-						// The other client is not ready
+						// The other client is not ready 
 						// Wait
 						// Push WAIT_FOR_OPPONENT_READY State
 						GSM.pushState(new WaitForOpponentReadyUIState(Main.this));
+						gameSetupUI.b1.setIcon(createImageIcon("ready.png",10,10));
+						break;
+					
+					case CommandString.SERVER_OPPONENT_READY:
+						gameSetupUI.b2.setIcon(createImageIcon("ready.png",10,10));
 						break;
 
 					case CommandString.SERVER_START_GAME:
