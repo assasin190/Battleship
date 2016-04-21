@@ -340,12 +340,16 @@ public class Main extends JFrame {
 		protected GameClient(Socket socket) {
 			this.socket = socket;
 			playerState = PlayerState.NULL_STATE;
+			initialize();
+
+		}
+		
+		protected void initialize() {
 			myTurn = false;
 			currentScore = 0;
-			accumulativeScore =0;
+			accumulativeScore = 0;
 			// Create a board game
 			boardGame = new BoardGame();
-
 		}
 
 		@Override
@@ -471,6 +475,7 @@ public class Main extends JFrame {
 							//Server is ready to start game setup
 							//Start the game setup
 							//Pop UI state until MAIN_MENU_STATE
+							initialize();
 							out.println("CLIENT_NAME_" + player.getName());
 							out.println("CLIENT_PIC_" + picImage);
 							System.out.print("SENDING" +picImage);
@@ -573,6 +578,7 @@ public class Main extends JFrame {
 						break;
 						
 					case CommandString.SERVER_RESET_GAME: //Somebody reset the game
+						initialize();
 						gameSetupUI = new GameSetupUIState(Main.this);
 						GSM.changeState(gameSetupUI);
 						timer_turn_duration.stop();
