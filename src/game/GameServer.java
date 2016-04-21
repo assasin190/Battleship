@@ -280,7 +280,10 @@ public class GameServer implements Runnable, Serializable {
 								if(clientNumber == 1) print(CommandString.SERVER_INDICATE_YOU_WIN, 2);
 								else print(CommandString.SERVER_INDICATE_YOU_WIN, 1);
 							default:
-								if(input.indexOf("MARK") != -1) { //If is a mark command
+								if(input.indexOf("RETURN_MARK") != -1) {
+									if(clientNumber == 1) print(input, 2);
+									else print(input, 1);
+								} else if(input.indexOf("MARK") != -1) { //If is a mark command
 									if(clientNumber == 1) print(input, 2);
 									else print(input, 1);
 								}

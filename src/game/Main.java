@@ -621,7 +621,6 @@ public class Main extends JFrame {
 										
 								    	System.out.println("random:" + random_y + ", " + random_x);
 										mark(random_y,random_x);
-										Main.this.client.mark(random_y, random_x);
 										
 										gameUI.lblTimer.setText("END");
 										timer_turn_duration.stop();
@@ -669,9 +668,9 @@ public class Main extends JFrame {
 							SquareLabel hitSquareLabel = markedSquare.getSquareLabel();
 							markedSquare.marked = true;
 							if (hit) { // If hit
-								currentScore++;
 								// Update UI (hit)
 								hitSquareLabel.setIcon(createImageIcon("effect/hit.png", 37, 37));
+								gameUI.P1Score.setText(++currentScore + "");
 							} else { // If not hit
 								boardGame.board[y][x].marked = true;
 								// Update UI (not hit)
@@ -711,35 +710,9 @@ public class Main extends JFrame {
 								//Update UI (not hit)
 								hitSquareLabel.setIcon(createImageIcon("effect/miss.png", 37, 37));
 							}
-							if(currentScore == 16) {
-								//Win
-								out.println(CommandString.CLIENT_WIN);
-								JOptionPane.showMessageDialog(Main.this, "Congratulations! " + player.getName() + " win the game.");
-							}
-							//TODO check if the player won the game
-							out.println("RETURN_MARK_" + y + "," + x + "_" + hit + "," + sunk);
-							//If the player already loses the game
-							/*
-							if(lose) {
-								out.println(CommandString.CLIENT_LOSE);
-								//TEST
-								JOptionPane.showMessageDialog(Main.this, player.getName()+" loses the game.");
-							}
-							*/
-							//It is your turn, change the state to playing
-							playerState = PlayerState.IDLE;
-							myTurn = true;
-							
 							// TODO check if the player won the game
 							out.println("RETURN_MARK_" + y + "," + x + "_" + hit + "," + sunk);
-							// If the player already loses the game
-							/*
-							 * if(lose) {
-							 * out.println(CommandString.CLIENT_LOSE); //TEST
-							 * JOptionPane.showMessageDialog(Main.this,
-							 * player.getName()+" loses the game."); }
-							 */
-							// It is your turn, change the state to playing
+							
 							playerState = PlayerState.IDLE;
 							myTurn = true;
 
@@ -761,7 +734,6 @@ public class Main extends JFrame {
 										
 								    	System.out.println("random:" + random_y + ", " + random_x);
 										mark(random_y,random_x);
-										Main.this.client.mark(random_y, random_x);
 										
 										gameUI.lblTimer.setText("END");
 										timer_turn_duration.stop();
