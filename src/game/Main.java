@@ -325,12 +325,11 @@ public class Main extends JFrame {
 		protected boolean myTurn;
 		protected int historicalScore;
 		protected int currentScore;
-		protected String opponentName;
+		public String opponentName;
 		public Timer timer_turn_duration;
 		// UI field related to GameClient
 
 		// Global serializable field
-		public Player player;
 		public BoardGame boardGame;
 		protected boolean isWithLocalServer = false;
 		private String playerState;
@@ -452,6 +451,8 @@ public class Main extends JFrame {
 							//Set playerState EXPECT_SERVER_GAME_SETUP
 							playerState = PlayerState.EXPECT_SERVER_GAME_SETUP;
 							//Wait for the player to press Ready...
+							//System.out.println("name :" + player.name);
+							//out.println("CLIENT_NAME_" + player.getName());
 							break;
 							
 						case CommandString.SERVER_START_GAME_SETUP:
@@ -459,6 +460,7 @@ public class Main extends JFrame {
 							//Server is ready to start game setup
 							//Start the game setup
 							//Pop UI state until MAIN_MENU_STATE
+							out.println("CLIENT_NAME_" + player.getName());
 							GSM.popStateUntil(GameState.MAIN_MENU_STATE);
 							//Change UI state -> GAME_SETUP_STATE
 							gameSetupUI = new GameSetupUIState(Main.this);
@@ -466,7 +468,6 @@ public class Main extends JFrame {
 							setupClip.start();
 							GSM.changeState(gameSetupUI);
 							playerState = PlayerState.START_GAME_SETUP;
-							out.println("CLIENT_NAME_" + player.getName());
 
 					case CommandString.SERVER_OPPONENT_NOT_READY:
 						if (!playerState.equals(PlayerState.EXPECT_SERVER_START_GAME))
@@ -664,8 +665,9 @@ public class Main extends JFrame {
 							timer_turn_duration.start();
 							
 						} else if (input.indexOf("CLIENT_NAME") != -1) {
-							opponentName = input.substring(input.indexOf("_") + 1);
-							System.out.println(opponentName);
+							opponentName = input.substring(input.lastIndexOf("_") + 1);
+							gameSetupUI.p2.setText(opponentName);
+							
 						}
 					}
 				}

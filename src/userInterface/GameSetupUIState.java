@@ -59,6 +59,7 @@ public class GameSetupUIState extends UI {
 	public JButton readyButton;
 	public JButton cancelButton;
 	public JLabel lblPressReady;
+	public JLabel p2;
 
 	public GameSetupUIState(Main main) {
 		super(main);
@@ -379,7 +380,7 @@ public class GameSetupUIState extends UI {
 		JButton b1 = new JButton("READY");
 		b1.setEnabled(false);
 		b1.setFont(new Font("Lucida Grande", Font.PLAIN, 9));
-		JLabel p2 = new JLabel("ENEMY");
+		p2 = new JLabel("");
 		p2.setHorizontalAlignment(SwingConstants.CENTER);
 		p2.setFont(new Font("Avenir", Font.PLAIN, 10));
 		JButton b2 = new JButton("READY");
@@ -407,7 +408,6 @@ public class GameSetupUIState extends UI {
 		JPanel namePanel = new JPanel();
 		namePanel.setPreferredSize(new Dimension(190, 30));
 		namePanel.setLayout(new BorderLayout(0, 0));
-		System.out.println("name = : " + main.player.getName());
 		JLabel name = new JLabel(main.player.getName());
 		name.setFont(new Font("Avenir", Font.PLAIN, 13));
 		name.setHorizontalAlignment(SwingConstants.CENTER);
