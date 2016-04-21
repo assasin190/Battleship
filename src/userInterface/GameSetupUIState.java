@@ -469,6 +469,54 @@ public class GameSetupUIState extends UI {
 		randomButton.setFont(new Font("Avenir", Font.PLAIN, 13));
 		randomButton.setPreferredSize(new Dimension(190, 30));
 		buttonPanel.add(randomButton, BorderLayout.SOUTH);
+		// sirawich
+		randomButton.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				int y ;
+				int x ; 
+				String direction = null;
+				//Clear all ship
+				for(int i = 0; i <= 3; i++) {
+					SquareLabel[] position = null;
+					while(position == null) {
+						if(Math.random()<0.5) {
+							direction = "down";
+							y = (int) Math.round(Math.random()*4);
+							x = (int) Math.round(Math.random()*7);
+							position = searchForHighlightableLabel(y, x, direction);
+						} else {
+							direction = "right";
+							y = (int) Math.round(Math.random()*7);
+							x = (int) Math.round(Math.random()*4);
+							position = searchForHighlightableLabel(y, x, direction);
+						}
+					}
+					Ship ship = new Ship(i, direction);
+					//Set ship on board game
+					main.client.boardGame.setShip(ship, i, position);
+					int j = 1;
+					for(Square square: ship.getOccupancy()) {
+						SquareLabel squareLabel = square.getSquareLabel();
+						//TODO set ship icon on the board game
+						//label.setText(shipNumber + "");
+						//label.setIcon(new ImageIcon("ship1.png"));
+						if(direction.equals("right")){
+							squareLabel.setIcon(new ImageIcon("ship/horizontal/ship"+(i+1)+""+(j++)+".png"));
+
+						}else{
+							squareLabel.setIcon(new ImageIcon("ship/vertical/ship"+(i+1)+""+(j++)+".png"));
+						}
+						// label.setIcon(new
+						// ImageIcon("ship"+(shipNumber+1)+".png"));
+						// //PLACESHIP
+						cancelButton.setEnabled(true);
+					}
+				}
+			}
+			
+		});
 
 		/* SHIP PANEL */
 
