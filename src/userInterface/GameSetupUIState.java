@@ -469,6 +469,7 @@ public class GameSetupUIState extends UI {
 				// Check if all ship has been set
 				main.client.boardGame.clearAllShip();
 				cancelButton.setEnabled(false);
+				readyButton.setEnabled(true);
 			}
 		});
 
@@ -508,6 +509,7 @@ public class GameSetupUIState extends UI {
 				int x;
 				String direction = null;
 				// Clear all ship
+				main.client.boardGame.clearAllShip();
 				for (int i = 0; i <= 3; i++) {
 					SquareLabel[] position = null;
 					while (position == null) {
