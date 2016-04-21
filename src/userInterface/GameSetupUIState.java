@@ -131,7 +131,7 @@ public class GameSetupUIState extends UI {
 
 		// Top logo
 		JButton logo = new JButton("");
-		logo.setIcon(new ImageIcon("logo/logo.png"));
+		logo.setIcon(new ImageIcon("logo/logo1.png"));
 
 		logo.addMouseListener(new MouseAdapter() {
 			@Override
@@ -149,7 +149,7 @@ public class GameSetupUIState extends UI {
 				int r;
 				while (true) {
 					// random 1-7
-					r = (int) (Math.round(Math.random() * 6) + 1);
+					r = (int) (Math.round(Math.random() * 7) + 1);
 					if (r != mynum) {
 						break;
 					}
