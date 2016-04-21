@@ -51,6 +51,7 @@ public class Main extends JFrame {
 	public Player player;
 	public Image background;
 	
+	
 	/**
 	 * Launch the application.
 	 * @throws InterruptedException 
