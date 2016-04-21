@@ -325,6 +325,7 @@ public class Main extends JFrame {
 		protected boolean myTurn;
 		protected int historicalScore;
 		protected int currentScore;
+		protected String opponentName;
 		public Timer timer_turn_duration;
 		// UI field related to GameClient
 
@@ -465,7 +466,7 @@ public class Main extends JFrame {
 							setupClip.start();
 							GSM.changeState(gameSetupUI);
 							playerState = PlayerState.START_GAME_SETUP;
-							out.println(CommandString.CLIENT_START_GAME_SETUP);
+							out.println("CLIENT_NAME_" + player.getName());
 
 					case CommandString.SERVER_OPPONENT_NOT_READY:
 						if (!playerState.equals(PlayerState.EXPECT_SERVER_START_GAME))
@@ -662,6 +663,9 @@ public class Main extends JFrame {
 							timer_turn_duration = new Timer(1000, timerTask);
 							timer_turn_duration.start();
 							
+						} else if (input.indexOf("CLIENT_NAME") != -1) {
+							opponentName = input.substring(input.indexOf("_") + 1);
+							System.out.println(opponentName);
 						}
 					}
 				}
