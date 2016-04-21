@@ -20,7 +20,7 @@ public abstract class UI implements GameState{
 	 */
 	
 	public Main main;
-	public PanelThatCanSetBackground panel;
+	public JPanel panel;
 	public JDialog dialog;
 	public String stateString;
 	
@@ -36,13 +36,15 @@ public abstract class UI implements GameState{
 	}
 	
 	//Use this method to create a JPanel with custom background paint
-	public static JPanel createJPanelWithBackground(Image backgroundImg) {
+	public static JPanel createJPanelWithBackground(Image backgroundImage) {
 		return new JPanel() {
+			
 			@Override
 			public void paintComponent(Graphics g) {
 				super.paintComponent(g);
-				((Graphics2D)g.create()).drawImage(backgroundImg, 0, 0, 1024, 768, this);
+				((Graphics2D)g.create()).drawImage(backgroundImage, 0, 0, 1024, 768, this);
 			}
+			
 		};
 	}
 	

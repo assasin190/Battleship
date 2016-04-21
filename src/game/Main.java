@@ -20,11 +20,13 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.List;
 
+import javax.imageio.ImageIO;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
+import javax.swing.ImageIcon;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -40,12 +42,13 @@ import userInterface.*;
 public class Main extends JFrame {
 	//public JFrame frame;
 	public final GameStateManager GSM = new GameStateManager();
-	public PanelThatCanSetBackground currentStatePanel;
+	public JPanel currentStatePanel;
 	public boolean isClient;
 	boolean start = true;
 	public GameClient client;
 	private Socket socket;
 	public Player player;
+	public Image background;
 	
 	/**
 	 * Launch the application.
@@ -72,6 +75,7 @@ public class Main extends JFrame {
 		insertBGM("login.wav");
 		start = false;
 		player = new Player();
+		background = createImageIcon("Bg-play3.png", 1024, 768).getImage();
 		//Change UI state -> MAIN_MENU_STATE
 		GSM.setState(new MainMenuUIState(this));
 	}
@@ -208,7 +212,7 @@ public class Main extends JFrame {
 		}
 	}
 	
-	public void replaceCurrentPanel(PanelThatCanSetBackground panel) {
+	public void replaceCurrentPanel(JPanel panel) {
 		//if currentStatePanel is not null, remove the currentStatePanel
 		if(currentStatePanel != null) {
 			getContentPane().remove(currentStatePanel);
@@ -217,6 +221,16 @@ public class Main extends JFrame {
 		getContentPane().add(panel);
 		repaint();
 		revalidate();
+	}
+	
+	public static ImageIcon createImageIcon(String path, int width, int height) {
+		Image img = null;
+		try {
+			img = ImageIO.read(new File(path));
+		} catch (IOException e) {
+		}
+		Image resizedImage = img.getScaledInstance(width, height, 0);
+		return new ImageIcon(resizedImage);
 	}
 	
 	private class SetupConnectionThread extends Thread {

@@ -20,6 +20,9 @@ public class CommandString {
 	public static final String SERVER_REQUEST_BOARD_EXCHANGE = "SERVER_REQUEST_BOARD_EXCHANGE";
 	public static final String CLIENT_SUBMIT_BOARD_EXCHANGE = "CLIENT_SUBMIT_EXCHANGE_REQUEST";
 	
+	public static final String MATCH_SERVER_OTHER_MATCHING_NOT_AVAILABLE = "MATCH_SERVER_OTHER_MATCHING_NOT_AVAILABLE";
+	public static final String MATCH_SERVER_OTHER_MATCHING_AVAILABLE = "MATCH_SERVER_OTHER_MATCHING_AVAILABLE";
+	
 	/*	Validate a command string
 		If the command string is valid, return true
 		else return false

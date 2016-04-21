@@ -31,53 +31,47 @@ import java.awt.Choice;
 import java.awt.Component;
 
 import javax.swing.JComboBox;
+import javax.swing.JDialog;
 import javax.swing.JButton;
 import javax.swing.SwingConstants;
 
-public class ChangeBgDialog extends UI {
+public class ChangeBgUIState extends UI {
 	public static final String[] IMAGES = new String[] { "Bg-play.png", "Bg-play2.png", "Bg-play3.png",
 			"Bg-play4.png" };
 
-	public static void main(String[] args) {
-		// Create a class object
-		JFrame frame = new JFrame();
-		//frame.getContentPane().add(new ChangeBgDialog());
-		frame.setPreferredSize(new Dimension(500, 400));
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.pack();
-		frame.setVisible(true);
-		frame.setSize(500, 80);
-		frame.setResizable(false);
-		
+	public ChangeBgUIState(Main main) {
+		super(main);
+		stateString = GameState.GameState.CHANGE_BG_STATE;
+		dialog = new JDialog(main, "Change Background");
+		dialog.setLocation(main.getLocation());
+		dialog.setPreferredSize(new Dimension(500,500));
+		initialize();
 
 	}
-
-	public ChangeBgDialog(Main main) {
-		super(main);
+	
+	private void initialize() {
 		ImageIcon bgIcon = createImageIcon(IMAGES[1], 1024, 768);
 		Image bgImg = bgIcon.getImage();
 		//panel = UI.createJPanelWithBackground(bgImg);
-		panel = new PanelThatCanSetBackground(bgImg);
-		panel.setLayout(new BorderLayout());
-
+		dialog.getContentPane().setLayout(new BorderLayout());
+		
 		JPanel title = new JPanel();
 		title.setPreferredSize(new Dimension(500, 80));
-		panel.add(title, BorderLayout.NORTH);
 		title.setLayout(new BorderLayout(0, 0));
-
 		JLabel lblChangeBattleshipBackground = new JLabel("CHANGE BACKGROUND");
 		lblChangeBattleshipBackground.setHorizontalAlignment(SwingConstants.CENTER);
 		lblChangeBattleshipBackground.setVerticalAlignment(SwingConstants.BOTTOM);
 		lblChangeBattleshipBackground.setFont(new Font("Arial", Font.BOLD, 16));
 		title.add(lblChangeBattleshipBackground);
+		dialog.getContentPane().add(title, BorderLayout.NORTH);
 
 		JPanel bgPanel = new JPanel();
 		bgPanel.setPreferredSize(new Dimension(500, 300));
-		panel.add(bgPanel, BorderLayout.SOUTH);
+		dialog.getContentPane().add(bgPanel, BorderLayout.SOUTH);
 
 		JPanel gap = new JPanel();
 		gap.setPreferredSize(new Dimension(500, 20));
-		panel.add(gap, BorderLayout.CENTER);
+		dialog.getContentPane().add(gap, BorderLayout.CENTER);
 
 		JButton bgButton[] = new JButton[4];
 
@@ -92,19 +86,13 @@ public class ChangeBgDialog extends UI {
 				public void mouseClicked(MouseEvent e) {
 					String name = ((JButton) e.getComponent()).getName();
 					int index = Integer.parseInt(name);
-
+					main.background = Main.createImageIcon(IMAGES[index], 1024, 768).getImage();
+					//Push this state and change MAIN_MENU_STATE to refresh the background
+					main.GSM.popState();
+					main.GSM.changeState(new MainMenuUIState(main));
 					
-					//MainMenuUI.bg = IMAGES[index];
-					
-					System.out.println("print in ChangeBgDialog");
-					//ImageIcon bgIcon = createImageIcon(IMAGES[index], 1024, 768);
-					//Image bgImg = bgIcon.getImage();
-					main.currentStatePanel.setBackground(IMAGES[index]);
-
+					//main.currentStatePanel.setBackground(IMAGES[index]);
 					//JPanel panel = UI.createJPanelWithBackground(bgImg);
-
-					
-					
 					//MainMenuUI.bg = IMAGES[index];
 
 					//MainMenuUI.this.revalidate();
@@ -115,7 +103,7 @@ public class ChangeBgDialog extends UI {
 				}
 			});
 		}
-
+		dialog.pack();
 	}
 
 	public static ImageIcon createImageIcon(String path, int width, int height) {
@@ -132,13 +120,13 @@ public class ChangeBgDialog extends UI {
 	@Override
 	public void entered() {
 		System.out.println(Thread.currentThread().getName() + ": entered " + stateString);
-		main.replaceCurrentPanel(panel);
-		
+		dialog.setVisible(true);
 	}
 
 	@Override
 	public void leaving() {
-		// TODO Auto-generated method stub
+		System.out.println(Thread.currentThread().getName() + ": leaving " + stateString);
+		dialog.dispose();
 		
 	}
 

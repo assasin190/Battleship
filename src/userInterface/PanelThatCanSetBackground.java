@@ -21,7 +21,7 @@ public class PanelThatCanSetBackground extends JPanel{
 		this.repaint();
 	}
 	public void setBackground(String backgroundImage){
-		ImageIcon bgIcon = ChangeBgDialog.createImageIcon(backgroundImage, 1024, 768);
+		ImageIcon bgIcon = ChangeBgUIState.createImageIcon(backgroundImage, 1024, 768);
 		Image bgImg = bgIcon.getImage();
 		this.backgroundImg = bgImg;
 		this.repaint();

@@ -25,8 +25,7 @@ import java.awt.Color;
 
 public class MainMenuUIState extends UI {
 	//public static String bg = "Bg-play.png";
-	public static String bg = "Bg-play3.png";
-	static ChangeBgDialog panelSetting;
+	static ChangeBgUIState panelSetting;
 	public ConnectToServerP2PUIState popUpDialog;
 	public JTextField nameField; // Player's name
 	public ImageIcon profilePic; // Player's profile photo
@@ -39,10 +38,13 @@ public class MainMenuUIState extends UI {
 	public MainMenuUIState(Main main) {
 		super(main);
 		stateString = GameState.MAIN_MENU_STATE;
-		ImageIcon bgIcon = createImageIcon(bg, 1024, 768);
-		Image bgImg = bgIcon.getImage();
+		initialize();
 	//	panel = UI.createJPanelWithBackground(bgImg);
-		panel = new PanelThatCanSetBackground(bgImg);
+	}
+	
+	protected void initialize() {
+		panel = UI.createJPanelWithBackground(main.background);
+		System.out.println(main.background.toString());
 		/*
 		panel = new JPanel() {
 			@Override
@@ -106,9 +108,14 @@ public class MainMenuUIState extends UI {
 		btnSetting.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				
+				//Push CHANGE_BG_STATE
+				main.GSM.pushState(new ChangeBgUIState(main));
+				
 				// ChangeBgDialog frame = new ChangeBgDialog();
 				// frame.setVisible(true);
-
+				
+				/*
 				JFrame frame = new JFrame();
 				panelSetting = new ChangeBgDialog(main);
 				frame.add(panelSetting.panel);
@@ -116,7 +123,7 @@ public class MainMenuUIState extends UI {
 				
 		
 				System.out.println("click setting");
-				
+				*/
 				
 				// open new jframe for bg setting
 
@@ -143,7 +150,7 @@ public class MainMenuUIState extends UI {
 		select.setHorizontalAlignment(SwingConstants.CENTER);
 		northMenu.add(select, BorderLayout.SOUTH);
 
-		ImageIcon P = createImageIcon("avatar.png", 200, 200);
+		ImageIcon P = Main.createImageIcon("avatar.png", 200, 200);
 
 		JPanel player = new JPanel();
 		player.setOpaque(false);
@@ -164,9 +171,9 @@ public class MainMenuUIState extends UI {
 		ImageIcon imgPP[] = new ImageIcon[6];
 
 		for (int i = 0; i < 6; i++) {
-			img[i] = createImageIcon("p" + (i + 1) + ".png", 50, 50);
-			imgP[i] = createImageIcon("p" + (i + 1) + ".png", 200, 200);
-			imgPP[i] = createImageIcon("p" + (i + 1) + ".png", 80, 80); //variable for setup profile pic 
+			img[i] = Main.createImageIcon("p" + (i + 1) + ".png", 50, 50);
+			imgP[i] = Main.createImageIcon("p" + (i + 1) + ".png", 200, 200);
+			imgPP[i] = Main.createImageIcon("p" + (i + 1) + ".png", 80, 80); //variable for setup profile pic 
 			btnP[i] = new JButton(img[i]);
 			btnP[i].setName(i + "");
 			selectPlayer.add(btnP[i]);
@@ -223,7 +230,7 @@ public class MainMenuUIState extends UI {
 		gapButton.setPreferredSize(new Dimension(200, 20));
 		// buttonPanel.add(gapButton,BorderLayout.CENTER);
 
-		JButton clientBtn = new JButton(createImageIcon("btn-client.png", 200, 70));
+		JButton clientBtn = new JButton(Main.createImageIcon("btn-client.png", 200, 70));
 		clientBtn.setBorderPainted(false);
 		clientBtn.addActionListener(new ActionListener() {
 			@Override
@@ -237,7 +244,7 @@ public class MainMenuUIState extends UI {
 			}
 		});
 
-		JButton serverBtn = new JButton(createImageIcon("btn-server.png", 200, 70));
+		JButton serverBtn = new JButton(Main.createImageIcon("btn-server.png", 200, 70));
 		serverBtn.setBorderPainted(false);
 		serverBtn.addActionListener(new ActionListener() {
 			@Override
@@ -255,20 +262,6 @@ public class MainMenuUIState extends UI {
 		
 		buttonPanel.add(clientBtn);
 		buttonPanel.add(serverBtn);
-	}
-
-
-	
-	
-
-	public static ImageIcon createImageIcon(String path, int width, int height) {
-		Image img = null;
-		try {
-			img = ImageIO.read(new File(path));
-		} catch (IOException e) {
-		}
-		Image resizedImage = img.getScaledInstance(width, height, 0);
-		return new ImageIcon(resizedImage);
 	}
 
 	@Override

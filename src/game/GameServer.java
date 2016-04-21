@@ -36,11 +36,6 @@ public class GameServer implements Runnable, Serializable {
 		}
 		
 	}
-	
-	protected GameServer(Main.GameClient localClient){
-		isWithLocalClient = true;
-		this.localClient = localClient;
-	}
 
 	@Override
 	public void run() {

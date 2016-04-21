@@ -68,17 +68,10 @@ public class GameSetupUIState extends UI {
 
 	public void initialize() {
 
-		ImageIcon bgIcon = createImageIcon("bg.png", 1024, 768);
-		Image img = bgIcon.getImage();
+		ImageIcon bgIcon = Main.createImageIcon("bg.png", 1024, 768);
+		Image bgImg = bgIcon.getImage();
 
-		panel = new JPanel() {
-			public void paintComponent(Graphics g) {
-				super.paintComponent(g);
-				Graphics2D g2d = (Graphics2D) g.create();
-				g2d.drawImage(img, 0, 0, 1024, 768, this);
-
-			}
-		};
+		panel = UI.createJPanelWithBackground(bgImg);
 		panel.setLayout(new BorderLayout(0, 0));
 		panel.setPreferredSize(new Dimension(1024, 768));
 
@@ -781,16 +774,6 @@ public class GameSetupUIState extends UI {
 
 	public boolean isShipPlacingEnabled() {
 		return shipPlacingEnabled;
-	}
-
-	public static ImageIcon createImageIcon(String path, int width, int height) {
-		Image img = null;
-		try {
-			img = ImageIO.read(new File(path));
-		} catch (IOException e) {
-		}
-		Image resizedImage = img.getScaledInstance(width, height, 0);
-		return new ImageIcon(resizedImage);
 	}
 
 	@Override
