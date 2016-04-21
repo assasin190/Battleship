@@ -691,8 +691,6 @@ public class Main extends JFrame {
 							opponentPic = input.substring(input.lastIndexOf("_") + 1);
 							System.out.print("OPPO PIC" +opponentPic);
 							
-							
-							
 						}
 					}
 				}

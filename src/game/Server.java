@@ -1,5 +1,10 @@
 package game;
 
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.EventQueue;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -10,6 +15,12 @@ import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.SwingConstants;
+
 public class Server {
 	public ArrayList<Socket> socketList;
 	public ArrayList<GameServer> gameServerList;
@@ -19,11 +30,24 @@ public class Server {
 	public Socket firstClientMatching;
 	public Socket secondClientMatching;
 	public int port;
+	public int currentNumberPlayer;
+	public MainPanel mainPanel;
 	
 	public static void main(String [] args) throws IOException {
 		Server server = new Server();
 		server.executor.execute(server.new SocketConnectionThread());
-		
+		EventQueue.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				JFrame frame = new JFrame();
+				frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+				frame.setResizable(false);
+				server.mainPanel = server.new MainPanel();
+				frame.add(server.mainPanel);
+				frame.pack();
+				frame.setVisible(true);
+			}
+		});
 	}
 	
 	public Server() throws IOException {
@@ -32,6 +56,7 @@ public class Server {
 		executor = Executors.newFixedThreadPool(20);
 		serverSocket = new ServerSocket(8000);
 		port = 8001;
+		currentNumberPlayer = 0;
 		matchingLock = new CustomLock();
 	}
 	
@@ -85,11 +110,13 @@ public class Server {
 					if(firstClientMatching == null) {
 						System.out.println(Thread.currentThread().getName() + ": first client connected");
 						firstClientMatching = socket;
+						setCurrentNumberPanel(++currentNumberPlayer);
 						executor.execute(new SocketInputThread(socket));
 					} else { //Second client connection -> Match
 						System.out.println(Thread.currentThread().getName() + ": second client connected");
 						PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
 						out.println("PORTNUM_" + port++);
+						setCurrentNumberPanel(++currentNumberPlayer);
 						//Clear first client matching and wait for the next connection
 						firstClientMatching = null;
 						System.out.println(Thread.currentThread().getName() + ": firstClientMatching cleared");
@@ -99,5 +126,34 @@ public class Server {
 				}
 			}
 		}	
+	}
+	
+	private void setCurrentNumberPanel(int number) {
+		mainPanel.currentNumberPlayerLabel.setText(number + "");
+		mainPanel.repaint();
+		mainPanel.revalidate();
+	}
+	
+	class MainPanel extends JPanel {
+		JLabel currentNumberPlayerLabel;
+		JButton resetButton;
+		
+		public MainPanel() {
+			setLayout(new BorderLayout());
+			currentNumberPlayerLabel = new JLabel(currentNumberPlayer + "");
+			currentNumberPlayerLabel.setHorizontalAlignment(SwingConstants.CENTER);
+			add(currentNumberPlayerLabel, BorderLayout.CENTER);
+			resetButton = new JButton("Reset");
+			resetButton.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					// TODO Auto-generated method stub
+					
+				}
+				
+			});
+			add(resetButton, BorderLayout.EAST);
+			setPreferredSize(new Dimension(150,60));
+		}
 	}
 }
