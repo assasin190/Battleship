@@ -37,6 +37,7 @@ public class EndGameDialogUIState extends UI {
 	
 	private void initialize(String text) {
 		JPanel panel = new JPanel();
+		panel.setBackground(Color.BLACK);
 		panel.setOpaque(false);
 		dialog.getContentPane().add(panel);
 		JPanel mainP = new JPanel();
