@@ -381,6 +381,7 @@ public class Main extends JFrame {
 			out.println(CommandString.CLIENT_REQUEST_NEW_GAME);
 			playerState = PlayerState.EXPECT_SERVER_START_GAME;
 			myTurn = false;
+			GSM.popState(); //Pop EndGameDialogUIState
 		}
 		
 		public void resetGame() {
@@ -581,7 +582,7 @@ public class Main extends JFrame {
 						initialize();
 						gameSetupUI = new GameSetupUIState(Main.this);
 						GSM.changeState(gameSetupUI);
-						timer_turn_duration.stop();
+						if(timer_turn_duration != null) timer_turn_duration.stop();
 						playerState = PlayerState.START_GAME_SETUP;
 						
 					default:
@@ -701,12 +702,16 @@ public class Main extends JFrame {
 						} else if (input.indexOf("CLIENT_NAME") != -1) {
 							opponentName = input.substring(input.lastIndexOf("_") + 1);
 							gameSetupUI.p2.setText(opponentName);
+							Main.this.repaint();
+							Main.this.revalidate();
 							
 	
 							
 						} else if (input.indexOf("CLIENT_PIC") != -1){
 							opponentPic = input.substring(input.lastIndexOf("_") + 1);
 							System.out.print("OPPO PIC" +opponentPic);
+							Main.this.repaint();
+							Main.this.revalidate();
 							
 						}
 					}
