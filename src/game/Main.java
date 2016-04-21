@@ -56,6 +56,7 @@ public class Main extends JFrame {
 	public Player player;
 	public Image background;
 	Clip battleClip, mainmenuClip, setupClip;
+	public int point_opponent = 0;
 
 	/**
 	 * Launch the application.
@@ -341,7 +342,7 @@ public class Main extends JFrame {
 			playerState = PlayerState.NULL_STATE;
 			myTurn = false;
 			currentScore = 0;
-			accumulativeScore =0;
+			accumulativeScore = 0;
 			// Create a board game
 			boardGame = new BoardGame();
 
@@ -363,7 +364,8 @@ public class Main extends JFrame {
 
 		public void startGameSetup() {
 			out.println(CommandString.CLIENT_GAME_SETUP_READY);
-			System.out.println(Thread.currentThread().getName() + ": " + CommandString.CLIENT_GAME_SETUP_READY + " sent");
+			System.out
+					.println(Thread.currentThread().getName() + ": " + CommandString.CLIENT_GAME_SETUP_READY + " sent");
 		}
 
 		public void startGame() {
@@ -372,7 +374,7 @@ public class Main extends JFrame {
 					.println(Thread.currentThread().getName() + ": " + CommandString.CLIENT_GAME_START_READY + " sent");
 			playerState = PlayerState.EXPECT_SERVER_START_GAME;
 		}
-		
+
 		public void requestNewGame() {
 			out.println(CommandString.CLIENT_REQUEST_NEW_GAME);
 			playerState = PlayerState.EXPECT_SERVER_START_GAME;
@@ -407,7 +409,6 @@ public class Main extends JFrame {
 			this.boardGame = boardGame;
 		}
 
-
 		class BackgroundInputReader extends SwingWorker<Void, String> {
 
 			/*
@@ -434,58 +435,81 @@ public class Main extends JFrame {
 				// Client game logic
 				System.out.println(Thread.currentThread().getName() + ": process invoked");
 				System.out.println(Thread.currentThread().getName() + ": the size of inputList is " + inputList.size());
-				for(String input : inputList) { //Process every input
-					if(input == null); //TODO Raise NullMessageException
-					switch(input) {
-						case CommandString.SERVER_OTHER_CLIENT_NOT_AVAILABLE: //If another client has not connected to the server -> wait until another client's connection is accepted
-							if(!(playerState.equals(PlayerState.NULL_STATE))) break; //TODO Raise SynchronizeErrorException
-							System.out.println(Thread.currentThread().getName() + ": The other client is not available. waiting...");
-							//Push UI state -> WAIT_FOR_CONNECTION_STATE
-							GSM.pushState(new WaitForConnectionUIState(Main.this));
-							//Wait
-							//When another client connects, the server returns a string SERVER_ANOTHER_CLIENT_AVAILABLE to all clients
-							break;
-							
-						case CommandString.SERVER_OTHER_CLIENT_AVAILABLE:
-							if(!playerState.equals(PlayerState.NULL_STATE) || !playerState.equals(PlayerState.EXPECT_SERVER_OTHER_CLIENT_AVAILABLE)); //Raise SynchronizationErrorException
-							//The other client has connected
-							//Pop UI state UNTIL MAIN_GAME_STATE
-							GSM.popStateUntil(GameState.MAIN_MENU_STATE);
-							//Push GAME_SETUP_READY_STATE
-							GSM.pushState(new GameSetupReadyUIState(Main.this));
-							//Set playerState EXPECT_SERVER_GAME_SETUP
-							playerState = PlayerState.EXPECT_SERVER_GAME_SETUP;
-							//Wait for the player to press Ready...
-							//System.out.println("name :" + player.name);
-							//out.println("CLIENT_NAME_" + player.getName());
-							break;
-							
-						case CommandString.SERVER_START_GAME_SETUP:
-							if(!playerState.equals(PlayerState.EXPECT_SERVER_GAME_SETUP)); //Raise SynchronizationErrorException
-							//Server is ready to start game setup
-							//Start the game setup
-							//Pop UI state until MAIN_MENU_STATE
-							out.println("CLIENT_NAME_" + player.getName());
-							GSM.popStateUntil(GameState.MAIN_MENU_STATE);
-							//Change UI state -> GAME_SETUP_STATE
-							gameSetupUI = new GameSetupUIState(Main.this);
-							mainmenuClip.stop();
-							setupClip.start();
-							GSM.changeState(gameSetupUI);
-							playerState = PlayerState.START_GAME_SETUP;
+				for (String input : inputList) { // Process every input
+					if (input == null)
+						; // TODO Raise NullMessageException
+					switch (input) {
+					case CommandString.SERVER_OTHER_CLIENT_NOT_AVAILABLE: // If
+																			// another
+																			// client
+																			// has
+																			// not
+																			// connected
+																			// to
+																			// the
+																			// server
+																			// ->
+																			// wait
+																			// until
+																			// another
+																			// client's
+																			// connection
+																			// is
+																			// accepted
+						if (!(playerState.equals(PlayerState.NULL_STATE)))
+							break; // TODO Raise SynchronizeErrorException
+						System.out.println(
+								Thread.currentThread().getName() + ": The other client is not available. waiting...");
+						// Push UI state -> WAIT_FOR_CONNECTION_STATE
+						GSM.pushState(new WaitForConnectionUIState(Main.this));
+						// Wait
+						// When another client connects, the server returns a
+						// string SERVER_ANOTHER_CLIENT_AVAILABLE to all clients
+						break;
+
+					case CommandString.SERVER_OTHER_CLIENT_AVAILABLE:
+						if (!playerState.equals(PlayerState.NULL_STATE)
+								|| !playerState.equals(PlayerState.EXPECT_SERVER_OTHER_CLIENT_AVAILABLE))
+							; // Raise SynchronizationErrorException
+						// The other client has connected
+						// Pop UI state UNTIL MAIN_GAME_STATE
+						GSM.popStateUntil(GameState.MAIN_MENU_STATE);
+						// Push GAME_SETUP_READY_STATE
+						GSM.pushState(new GameSetupReadyUIState(Main.this));
+						// Set playerState EXPECT_SERVER_GAME_SETUP
+						playerState = PlayerState.EXPECT_SERVER_GAME_SETUP;
+						// Wait for the player to press Ready...
+						// System.out.println("name :" + player.name);
+						// out.println("CLIENT_NAME_" + player.getName());
+						break;
+
+					case CommandString.SERVER_START_GAME_SETUP:
+						if (!playerState.equals(PlayerState.EXPECT_SERVER_GAME_SETUP))
+							; // Raise SynchronizationErrorException
+						// Server is ready to start game setup
+						// Start the game setup
+						// Pop UI state until MAIN_MENU_STATE
+						out.println("CLIENT_NAME_" + player.getName());
+						GSM.popStateUntil(GameState.MAIN_MENU_STATE);
+						// Change UI state -> GAME_SETUP_STATE
+						gameSetupUI = new GameSetupUIState(Main.this);
+						mainmenuClip.stop();
+						setupClip.start();
+						GSM.changeState(gameSetupUI);
+						playerState = PlayerState.START_GAME_SETUP;
 
 					case CommandString.SERVER_OPPONENT_NOT_READY:
 						if (!playerState.equals(PlayerState.EXPECT_SERVER_START_GAME))
 							return; // If not pressing ready yet -> do nothing
-						// The other client is not ready 
+						// The other client is not ready
 						// Wait
 						// Push WAIT_FOR_OPPONENT_READY State
 						GSM.pushState(new WaitForOpponentReadyUIState(Main.this));
-						gameSetupUI.b1.setIcon(createImageIcon("ready.png",10,10));
+						gameSetupUI.b1.setIcon(createImageIcon("ready.png", 10, 10));
 						break;
-					
+
 					case CommandString.SERVER_OPPONENT_READY:
-						gameSetupUI.b2.setIcon(createImageIcon("ready.png",10,10));
+						gameSetupUI.b2.setIcon(createImageIcon("ready.png", 10, 10));
 						break;
 
 					case CommandString.SERVER_START_GAME:
@@ -497,9 +521,10 @@ public class Main extends JFrame {
 							GSM.popStateUntil(GameState.GAME_SETUP_STATE);
 							setupClip.close();
 							battleClip.start();
-							FloatControl gainControl = 
-								    (FloatControl) battleClip.getControl(FloatControl.Type.MASTER_GAIN);
-								gainControl.setValue(-5.0f); // Reduce volume by 10 decibels.
+							FloatControl gainControl = (FloatControl) battleClip
+									.getControl(FloatControl.Type.MASTER_GAIN);
+							gainControl.setValue(-5.0f); // Reduce volume by 10
+															// decibels.
 							// Change UI state -> GAME_STATE
 							gameUI = new GameUIState(Main.this);
 							GSM.changeState(gameUI);
@@ -508,7 +533,8 @@ public class Main extends JFrame {
 						}
 						// TODO
 						break;
-					case CommandString.SERVER_GRANT_TURN: // Server give you a turn
+					case CommandString.SERVER_GRANT_TURN: // Server give you a
+															// turn
 						if (playerState.equals(PlayerState.IDLE)) {
 							playerState = PlayerState.PLAYING;
 							myTurn = true;
@@ -521,20 +547,35 @@ public class Main extends JFrame {
 								public void actionPerformed(ActionEvent e) {
 
 									if (countdown == 0) {
-										
-										// time up    expire random mark(y,x)
+
+										// time up expire random mark(y,x)
 										Random r = new Random();
-								    	int Low = 0;
-								    	int High = 8;
-								    	int random_x = r.nextInt(High-Low) + Low;
-								    	int random_y = r.nextInt(High-Low) + Low;
-										
-								    	System.out.println("random:" + random_y + ", " + random_x);
-										mark(random_y,random_x);
-										
+										int Low = 0;
+										int High = 8;
+										int random_x = r.nextInt(High - Low) + Low;
+										int random_y = r.nextInt(High - Low) + Low;
+
+										System.out.println("random:" + random_y + ", " + random_x);
+										mark(random_y, random_x);
+
 										gameUI.lblTimer.setText("END");
 										timer_turn_duration.stop();
-						
+										
+										
+										
+										// sirawich
+										point_opponent = 0;
+										for (int i = 0; i < 7; i++) {
+											for (int j = 0; j < 7; j++) {
+												// if(client.boardGame.board[i][j].isMarked()){
+												if (client.boardGame.myBoard[i][j].isMarked()) {
+													point_opponent += 1;
+												}
+											}
+										}
+										// P2Score
+										gameUI.P2Score.setText("" + point_opponent);
+										
 
 										// System.out.println("end");
 									} else {
@@ -546,24 +587,32 @@ public class Main extends JFrame {
 
 								}
 							};
+							
+							
+							
+							
+							
 							timer_turn_duration = new Timer(1000, timerTask);
 							timer_turn_duration.start();
 							break;
 						}
 
-					case CommandString.SERVER_INDICATE_YOU_WIN: //You won the game
-						
+					case CommandString.SERVER_INDICATE_YOU_WIN: // You won the
+																// game
+
 						break;
-						
-					case CommandString.SERVER_INDICATE_YOU_LOSE: //You lose the game
+
+					case CommandString.SERVER_INDICATE_YOU_LOSE: // You lose the
+																	// game
 						GSM.pushState(new EndGameDialogUIState(Main.this, "You lose."));
 						timer_turn_duration.stop();
-						//Add current score to accumulative score and reset current score
+						// Add current score to accumulative score and reset
+						// current score
 						accumulativeScore += currentScore;
 						currentScore = 0;
 						battleClip.close();
 						break;
-						
+
 					default:
 						if (input.indexOf("RETURN_MARK") != -1) {
 							String index = input.substring(input.indexOf("_", input.indexOf("_") + 1) + 1,
@@ -577,6 +626,9 @@ public class Main extends JFrame {
 							SquareLabel hitSquareLabel = markedSquare.getSquareLabel();
 							markedSquare.marked = true;
 							if (hit) { // If hit
+
+								// call method to increase point
+
 								// Update UI (hit)
 								hitSquareLabel.setIcon(createImageIcon("effect/hit.png", 37, 37));
 								gameUI.P1Score.setText(++currentScore + "");
@@ -598,24 +650,25 @@ public class Main extends JFrame {
 									// TODO Auto-generated catch block
 									e1.printStackTrace();
 								}
-								
+
 							}
 							if (currentScore == 16) {
 								// Win
 								out.println(CommandString.CLIENT_WIN);
 								GSM.pushState(new EndGameDialogUIState(Main.this, "Congratulations, You win!"));
 								timer_turn_duration.stop();
-								//Add current score to accumulative score and reset current score
+								// Add current score to accumulative score and
+								// reset current score
 								accumulativeScore += currentScore;
 								currentScore = 0;
 								battleClip.close();
 							}
-								
-						} else if(input.indexOf("MARK") != -1) {
+
+						} else if (input.indexOf("MARK") != -1) {
 							String index = input.substring(input.indexOf("_") + 1);
-							
-							//System.out.println("MARK index = "+index);
-							
+
+							// System.out.println("MARK index = "+index);
+
 							int y = Integer.parseInt(index.substring(0, 1));
 							int x = Integer.parseInt(index.substring(2));
 							boolean[] hitSunk = boardGame.fireShot(y, x);
@@ -624,19 +677,19 @@ public class Main extends JFrame {
 							boolean lose = hitSunk[2];
 							Square markedSquare = boardGame.myBoard[y][x];
 							SquareLabel hitSquareLabel = boardGame.myBoard[y][x].getSquareLabel();
-							//TODO Update UI
-							if(hit) { //If hit
-								//Update UI (hit)
+							// TODO Update UI
+							if (hit) { // If hit
+								// Update UI (hit)
 								hitSquareLabel.setIcon(createImageIcon("effect/hit.png", 37, 37));
 								repaint();
 								revalidate();
-							} else { //If not hit
-								//Update UI (not hit)
+							} else { // If not hit
+								// Update UI (not hit)
 								hitSquareLabel.setIcon(createImageIcon("effect/miss.png", 37, 37));
 							}
 							// TODO check if the player won the game
 							out.println("RETURN_MARK_" + y + "," + x + "_" + hit + "," + sunk);
-							
+
 							playerState = PlayerState.IDLE;
 							myTurn = true;
 
@@ -648,23 +701,39 @@ public class Main extends JFrame {
 								public void actionPerformed(ActionEvent e) {
 
 									if (countdown == 0) {
-										
-										// time up    expire random mark(y,x)
+
+										// time up expire random mark(y,x)
 										Random r = new Random();
-								    	int Low = 0;
-								    	int High = 8;
-								    	int random_x;
-								    	int random_y;
-								    	while(true) {
-									    	random_x = r.nextInt(High-Low) + Low;
-									    	random_y = r.nextInt(High-Low) + Low;
-									    	if(!client.boardGame.board[random_y][random_x].isMarked()) break;
-								    	}
-								    	mark(random_y,random_x);
-										
+										int Low = 0;
+										int High = 8;
+										int random_x;
+										int random_y;
+										while (true) {
+											random_x = r.nextInt(High - Low) + Low;
+											random_y = r.nextInt(High - Low) + Low;
+											if (!client.boardGame.board[random_y][random_x].isMarked())
+												break;
+										}
+										mark(random_y, random_x);
+
 										gameUI.lblTimer.setText("END");
 										timer_turn_duration.stop();
-						
+
+										// sirawich
+										point_opponent = 0;
+										for (int i = 0; i < 7; i++) {
+											for (int j = 0; j < 7; j++) {
+												// if(client.boardGame.board[i][j].isMarked()){
+												if (client.boardGame.myBoard[i][j].isMarked()) {
+													point_opponent += 1;
+												}
+											}
+										}
+										// P2Score
+										gameUI.P2Score.setText("" + point_opponent);
+
+										// System.out.println("point oppo is =
+										// "+point_opponent);
 
 										// System.out.println("end");
 									} else {
@@ -677,38 +746,38 @@ public class Main extends JFrame {
 							};
 							timer_turn_duration = new Timer(1000, timerTask);
 							timer_turn_duration.start();
-							
+
 						} else if (input.indexOf("CLIENT_NAME") != -1) {
 							opponentName = input.substring(input.lastIndexOf("_") + 1);
 							gameSetupUI.p2.setText(opponentName);
-							
-							
-							
-						//	System.out.println("CLIENT_NAME input name = "+input.toString());
-							
-							
-							// sirawich 
-							
-						}/* else if (input.indexOf("")!=-1){
-							
-							String name = ((JButton) e.getComponent()).getName();
-							int index = Integer.parseInt(name);
-							profile.setIcon(imgP[index]);
-							profilePic = imgPP[index];
-							
-							
-							
-							main.player.setImage(profilePic);
-							
-							
-							
-							
-						}
-						
-						*/
+
+							// System.out.println("CLIENT_NAME input name =
+							// "+input.toString());
+
+							// sirawich
+
+						} /*
+							 * else if (input.indexOf("")!=-1){
+							 * 
+							 * String name = ((JButton)
+							 * e.getComponent()).getName(); int index =
+							 * Integer.parseInt(name);
+							 * profile.setIcon(imgP[index]); profilePic =
+							 * imgPP[index];
+							 * 
+							 * 
+							 * 
+							 * main.player.setImage(profilePic);
+							 * 
+							 * 
+							 * 
+							 * 
+							 * }
+							 * 
+							 */
 					}
 				}
-			}	
+			}
 		}
 	}
 }
