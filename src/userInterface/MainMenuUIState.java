@@ -268,6 +268,8 @@ public class MainMenuUIState extends UI {
 		connectBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				main.player.setImage(profilePic);
+				main.player.setName(nameField.getText());
 				main.connect();
 			}
 		});
