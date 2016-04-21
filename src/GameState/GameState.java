@@ -11,6 +11,7 @@ public interface GameState {
 	public static final String GAME_SETUP_READY_STATE = "GAME_SETUP_READY_STATE";
 	public static final String WAIT_FOR_OPPONENT_READY_STATE = "WAIT_FOR_OPPONENT_READY_STATE";
 	public static final String GAME_STATE = "GAME_STATE";
+	public static final String END_GAME_DIALOG_STATE = "END_GAME_DIALOG_STATE";
 	
 	public void entered();	//TODO implements function called after entered the state
 	public void leaving();   //TODO implements function called right before leaving the state
