@@ -111,57 +111,9 @@ public class GameSetupUIState extends UI {
 			public void actionPerformed(ActionEvent e) {
 
 				JFrame mainFrame = new JFrame("Help");
-				mainFrame.setSize(1200, 1200);
-				mainFrame.setLayout(new GridLayout(5, 1));
-				
-				
-				
-			    JTextArea txt1 = new JTextArea();
-			    JTextArea txt2 = new JTextArea();
-			    JTextArea txt3 = new JTextArea();
-			    JTextArea txt4 = new JTextArea();
-			    JTextArea txt5 = new JTextArea();
-			    
-
-		     
-		        Font font = new Font("Verdana", Font.BOLD, 25);
-		        txt1.setFont(font);
-		        txt1.setForeground(Color.darkGray);
-		        
-		        txt2.setFont(font);
-		        txt2.setForeground(Color.darkGray);
-		        
-		        txt3.setFont(font);
-		        txt3.setForeground(Color.darkGray);
-		        
-		        txt4.setFont(font);
-		        txt4.setForeground(Color.darkGray);
-		        
-		        txt5.setFont(font);
-		        txt5.setForeground(Color.darkGray);
-		        
-		        
-		        
-
-		        txt1.setText("\n \n 1. A player has to place all 4 ships on the left board"+"\n"+" at the beginning, then click on ready button.");
-		        txt2.setText("\n \n 2. The first player who begins the game will be randomly chosen." );
-		        txt3.setText("\n \n 3. Each turn, a player has 10 seconds to select where to fire a shot the opposite"+"\n"+" player�s ship. If the player do not shot his enemy�s ship within 10 seconds,"
-						+"\n"+ " there will be automatically randomly shot the opposite�s side." );
-		        txt4.setText("\n \n 4. The result of each turn, hit or miss, will be shown at the right board." );
-		        txt5.setText("\n \n 5. The game will end after a player can shoot all 4 ships (whole ship) of "+"\n"+"opposite�s side." );
-				
-				
-				
-				
-				
-				
-				mainFrame.add(txt1);
-				mainFrame.add(txt2);
-				mainFrame.add(txt3);
-				mainFrame.add(txt4);
-				mainFrame.add(txt5);
-				
-				
+				mainFrame.setSize(600, 400);
+				JLabel help = new JLabel(new ImageIcon("bg/howtoplay.png"));
+				mainFrame.add(help);
 				mainFrame.setResizable(false);
 				mainFrame.setLocationRelativeTo(null);
 				mainFrame.setVisible(true);
@@ -267,9 +219,6 @@ public class GameSetupUIState extends UI {
 											// nothing
 								// Check if any of the label in highlighting is
 								// occupied
-								if (main.client.boardGame.checkOccupation(highlighting)) { // If one of them already occupied, do nothing
-									return;
-								}
 								//Create a ship on those squares
 								Ship ship = new Ship(shipNumber, shipPlacingDirection);
 								//Set ship on board game
