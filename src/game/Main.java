@@ -606,9 +606,12 @@ public class Main extends JFrame {
 								SquareLabel hitSquareLabel = markedSquare.getSquareLabel();
 								markedSquare.marked = true;
 								if(hit) { //If hit
-									currentScore++;
+									System.out.println(Thread.currentThread().getName() + "HIT!");
+									gameUI.P1Score.setText(currentScore++ + "");
 									//Update UI (hit)
 									hitSquareLabel.setIcon(createImageIcon("effect/hit.png", 37, 37));
+									repaint();
+									revalidate();
 								} else { //If not hit
 									boardGame.board[y][x].marked = true;
 									//Update UI (not hit)

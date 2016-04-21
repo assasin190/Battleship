@@ -53,6 +53,7 @@ public class GameUIState extends UI {
 	public SquareLabel[][] boardLabel;
 	public SquareLabel[][] myBoardLabel;
 	public JLabel lblTimer ;
+	public JLabel P1Score;
 	
 	public GameUIState(Main main) {
 		super(main);
@@ -328,7 +329,7 @@ public class GameUIState extends UI {
 		client.add(scoreClient, BorderLayout.EAST);
 		scoreClient.setLayout(new BorderLayout(0, 0));
 		
-		JLabel P1Score = new JLabel("XX");
+		P1Score = new JLabel("0");
 		P1Score.setHorizontalAlignment(SwingConstants.CENTER);
 		scoreClient.add(P1Score, BorderLayout.CENTER);
 		
