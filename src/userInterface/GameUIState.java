@@ -79,9 +79,11 @@ public class GameUIState extends UI {
 	
 		
 		JButton logo = new JButton("");
-		logo.setIcon ( new ImageIcon ( "logo.png" ) );
+		logo.setIcon ( new ImageIcon ( "logo/logo.png" ) );
 		top.add(leftTop,BorderLayout.WEST);
 		top.add(logo, BorderLayout.CENTER);
+		
+		
 		//top.add(lblPlaceYourShip,BorderLayout.SOUTH);
 		top.add(rightTop,BorderLayout.EAST);
 		
