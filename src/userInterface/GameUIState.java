@@ -153,6 +153,8 @@ public class GameUIState extends UI {
 							SquareLabel squareLabel = (SquareLabel) e.getSource();
 							int y = squareLabel.y;
 							int x = squareLabel.x;
+							System.out.println("Marked: " + boardLabel[y][x].getSquare().isMarked());
+							System.out.println("Occupied: " + boardLabel[y][x].getSquare().isOccupied());
 							if(boardLabel[y][x].getSquare().isMarked()) return; 
 							main.client.mark(y, x);
 							

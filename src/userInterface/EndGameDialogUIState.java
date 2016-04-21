@@ -4,6 +4,8 @@ import game.Main;
 
 
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JDialog;
 import javax.swing.JLabel;
@@ -15,22 +17,28 @@ import javax.swing.JButton;
 import javax.swing.SwingConstants;
 
 public class EndGameDialogUIState extends UI {
-	public JLabel text;
+	public JLabel textLabel;
 	
-	public EndGameDialogUIState(Main main) {
+	public EndGameDialogUIState(Main main, String text) {
 		super(main);
 		stateString = GameState.END_GAME_DIALOG_STATE;
 		dialog = new JDialog(main);
-		
 		dialog.setSize(400, 300);
 		dialog.setPreferredSize(new Dimension(400, 300));
-		initialize();
+		dialog.setLocation(Main.getPopUpLocation(this));
+		initialize(text);
+		
+	}
+	
+	private void initialize(String text) {
 		JPanel panel = new JPanel();
 		dialog.getContentPane().add(panel);
 		JPanel mainP = new JPanel();
 		mainP.setPreferredSize(new Dimension(400,200));
-		text = new JLabel("test test");
-		mainP.add(text);
+		mainP.setLayout(new BorderLayout());
+		textLabel = new JLabel(text);
+		textLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		mainP.add(textLabel, BorderLayout.CENTER);
 		panel.setLayout(new BorderLayout());
 		panel.add(mainP,BorderLayout.NORTH);
 		
@@ -50,6 +58,14 @@ public class EndGameDialogUIState extends UI {
 		
 		JButton cont = new JButton("Continue");
 		cont.setPreferredSize(new Dimension(150,50));
+		cont.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				//Request to start a new game
+				main.client.requestNewGame();
+				
+			}
+		});
 		
 		
 		JButton exit = new JButton("Exit");
@@ -62,12 +78,6 @@ public class EndGameDialogUIState extends UI {
 		JPanel south = new JPanel();
 		south.setPreferredSize(new Dimension(400,50));
 		panel.add(south, BorderLayout.SOUTH);
-		
-		
-	}
-	
-	private void initialize() {
-		
 		
 		dialog.pack();
 	}
