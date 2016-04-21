@@ -501,8 +501,7 @@ public class Main extends JFrame {
 						}
 						// TODO
 						break;
-					case CommandString.SERVER_GRANT_TURN: // Server give you a
-															// turn
+					case CommandString.SERVER_GRANT_TURN: // Server give you a turn
 						if (playerState.equals(PlayerState.IDLE)) {
 							playerState = PlayerState.PLAYING;
 							myTurn = true;
@@ -535,7 +534,6 @@ public class Main extends JFrame {
 										gameUI.lblTimer.setText(countdown + "");
 
 										// call start timer of GameUIState
-										System.out.println("countdown = " + countdown);
 										countdown--;
 									}
 

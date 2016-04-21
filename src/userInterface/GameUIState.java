@@ -354,8 +354,7 @@ public class GameUIState extends UI {
 		server.setLayout(new BorderLayout(0, 0));
 		serverPanel.add(server, BorderLayout.SOUTH);
 		
-		JLabel lblServer = new JLabel(main.client.opponent
-				Name);
+		JLabel lblServer = new JLabel(main.client.opponentName);
 		lblServer.setVerticalAlignment(SwingConstants.TOP);
 		lblServer.setFont(new Font("Avenir", Font.PLAIN, 12));
 		lblServer.setHorizontalAlignment(SwingConstants.CENTER);
@@ -462,13 +461,13 @@ public class GameUIState extends UI {
 	public void entered() {
 		System.out.println(Thread.currentThread().getName() + ": entered " + stateString);
 		main.replaceCurrentPanel(panel);
+		main.setEnabled(true);
 	}
 
 	@Override
 	public void leaving() {
 		System.out.println(Thread.currentThread().getName() + ": leaving " + stateString);
-		// TODO Auto-generated method stub
-		
+		main.setEnabled(false);
 	}
 
 
