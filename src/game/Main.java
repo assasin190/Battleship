@@ -31,6 +31,7 @@ import javax.sound.sampled.FloatControl;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -603,6 +604,9 @@ public class Main extends JFrame {
 								
 						} else if(input.indexOf("MARK") != -1) {
 							String index = input.substring(input.indexOf("_") + 1);
+							
+							//System.out.println("MARK index = "+index);
+							
 							int y = Integer.parseInt(index.substring(0, 1));
 							int x = Integer.parseInt(index.substring(2));
 							boolean[] hitSunk = boardGame.fireShot(y, x);
@@ -668,7 +672,30 @@ public class Main extends JFrame {
 							opponentName = input.substring(input.lastIndexOf("_") + 1);
 							gameSetupUI.p2.setText(opponentName);
 							
+							
+							
+						//	System.out.println("CLIENT_NAME input name = "+input.toString());
+							
+							
+							// sirawich 
+							
+						}/* else if (input.indexOf("")!=-1){
+							
+							String name = ((JButton) e.getComponent()).getName();
+							int index = Integer.parseInt(name);
+							profile.setIcon(imgP[index]);
+							profilePic = imgPP[index];
+							
+							
+							
+							main.player.setImage(profilePic);
+							
+							
+							
+							
 						}
+						
+						*/
 					}
 				}
 			}	
