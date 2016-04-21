@@ -704,9 +704,7 @@ public class GameSetupUIState extends UI {
 				// Check if the next square exists
 				if (y + index <= 7) { // If exists
 					// Check occupancy
-					if (!myBoardLabel[y + index][x].getSquare().isOccupied()) { // If
-																				// not
-																				// occupied
+					if (!myBoardLabel[y + index][x].getSquare().isOccupied()) { // If not occupied
 						// Add the label to highlightable
 						highlightable[index] = myBoardLabel[y + index++][x];
 						highlightable = checkNext(y, x, index, failedAttempt, direction, highlightable);
@@ -721,9 +719,7 @@ public class GameSetupUIState extends UI {
 				// Check if the next square exists
 				if (x + index <= 7) { // If exists
 					// Check occupancy
-					if (!myBoardLabel[y][x + index].getSquare().isOccupied()) { // If
-																				// not
-																				// occupied
+					if (!myBoardLabel[y][x + index].getSquare().isOccupied()) { // If not occupied
 						// Add the label to highlightable
 						highlightable[index] = myBoardLabel[y][x + index++];
 						highlightable = checkNext(y, x, index, failedAttempt, direction, highlightable);
