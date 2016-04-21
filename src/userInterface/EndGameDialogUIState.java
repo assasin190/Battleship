@@ -4,6 +4,7 @@ import game.Main;
 
 
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -13,6 +14,9 @@ import javax.swing.JPanel;
 
 import GameState.GameState;
 import java.awt.BorderLayout;
+import java.awt.Color;
+
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.SwingConstants;
 
@@ -26,17 +30,22 @@ public class EndGameDialogUIState extends UI {
 		dialog.setSize(400, 300);
 		dialog.setPreferredSize(new Dimension(400, 300));
 		dialog.setLocation(Main.getPopUpLocation(this));
+		dialog.getContentPane().setBackground(Color.BLACK);
 		initialize(text);
 		
 	}
 	
 	private void initialize(String text) {
 		JPanel panel = new JPanel();
+		panel.setBackground(Color.BLACK);
+		panel.setOpaque(false);
 		dialog.getContentPane().add(panel);
 		JPanel mainP = new JPanel();
 		mainP.setPreferredSize(new Dimension(400,200));
 		mainP.setLayout(new BorderLayout());
 		textLabel = new JLabel(text);
+		textLabel.setFont(new Font("Arial", Font.BOLD, 16));
+		textLabel.setForeground(Color.WHITE);
 		textLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		mainP.add(textLabel, BorderLayout.CENTER);
 		panel.setLayout(new BorderLayout());
@@ -56,8 +65,8 @@ public class EndGameDialogUIState extends UI {
 		button.setLayout(new BorderLayout());
 		panel.add(button,BorderLayout.CENTER);
 		
-		JButton cont = new JButton("Continue");
-		cont.setPreferredSize(new Dimension(150,50));
+		JButton cont = new JButton(new ImageIcon("btn-cont.png"));
+		cont.setPreferredSize(new Dimension(150,60));
 		cont.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -68,15 +77,21 @@ public class EndGameDialogUIState extends UI {
 		});
 		
 		
-		JButton exit = new JButton("Exit");
-		exit.setPreferredSize(new Dimension(150,50));
+		JButton exit = new JButton(new ImageIcon("btn-jexit.png"));
+		exit.setPreferredSize(new Dimension(150,60));
+		exit.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				System.exit(0);
+			}
+			
+		});
 		
 		
 		button.add(cont, BorderLayout.WEST);
 		button.add(exit, BorderLayout.EAST);
 		
 		JPanel south = new JPanel();
-		south.setPreferredSize(new Dimension(400,50));
+		south.setPreferredSize(new Dimension(400,40));
 		panel.add(south, BorderLayout.SOUTH);
 		
 		dialog.pack();

@@ -55,6 +55,7 @@ public class Main extends JFrame {
 	private Socket socket;
 	public Player player;
 	public Image background;
+	public String picImage;
 	Clip battleClip, mainmenuClip, setupClip;
 	public int point_opponent = 0;
 
@@ -328,7 +329,7 @@ public class Main extends JFrame {
 		protected boolean myTurn;
 		protected int accumulativeScore;
 		protected int currentScore;
-		public String opponentName;
+		public String opponentName,opponentPic;
 		public Timer timer_turn_duration;
 		// UI field related to GameClient
 
@@ -340,12 +341,16 @@ public class Main extends JFrame {
 		protected GameClient(Socket socket) {
 			this.socket = socket;
 			playerState = PlayerState.NULL_STATE;
+			initialize();
+
+		}
+		
+		protected void initialize() {
 			myTurn = false;
 			currentScore = 0;
 			accumulativeScore = 0;
 			// Create a board game
 			boardGame = new BoardGame();
-
 		}
 
 		@Override
@@ -370,13 +375,19 @@ public class Main extends JFrame {
 
 		public void startGame() {
 			out.println(CommandString.CLIENT_GAME_START_READY);
-			System.out
-					.println(Thread.currentThread().getName() + ": " + CommandString.CLIENT_GAME_START_READY + " sent");
+			System.out.println(Thread.currentThread().getName() + ": " + CommandString.CLIENT_GAME_START_READY + " sent");
 			playerState = PlayerState.EXPECT_SERVER_START_GAME;
 		}
 
 		public void requestNewGame() {
 			out.println(CommandString.CLIENT_REQUEST_NEW_GAME);
+			playerState = PlayerState.EXPECT_SERVER_START_GAME;
+			myTurn = false;
+			GSM.popState(); //Pop EndGameDialogUIState
+		}
+		
+		public void resetGame() {
+			out.println(CommandString.CLIENT_RESET_GAME);
 			playerState = PlayerState.EXPECT_SERVER_START_GAME;
 			myTurn = false;
 		}
@@ -435,6 +446,7 @@ public class Main extends JFrame {
 				// Client game logic
 				System.out.println(Thread.currentThread().getName() + ": process invoked");
 				System.out.println(Thread.currentThread().getName() + ": the size of inputList is " + inputList.size());
+<<<<<<< HEAD
 				for (String input : inputList) { // Process every input
 					if (input == null)
 						; // TODO Raise NullMessageException
@@ -471,7 +483,7 @@ public class Main extends JFrame {
 						if (!playerState.equals(PlayerState.NULL_STATE)
 								|| !playerState.equals(PlayerState.EXPECT_SERVER_OTHER_CLIENT_AVAILABLE))
 							; // Raise SynchronizationErrorException
-						// The other client has connected
+						// The other client has connected 
 						// Pop UI state UNTIL MAIN_GAME_STATE
 						GSM.popStateUntil(GameState.MAIN_MENU_STATE);
 						// Push GAME_SETUP_READY_STATE
@@ -497,6 +509,50 @@ public class Main extends JFrame {
 						setupClip.start();
 						GSM.changeState(gameSetupUI);
 						playerState = PlayerState.START_GAME_SETUP;
+=======
+				for(String input : inputList) { //Process every input
+					if(input == null); //TODO Raise NullMessageException
+					switch(input) {
+						case CommandString.SERVER_OTHER_CLIENT_NOT_AVAILABLE: //If another client has not connected to the server -> wait until another client's connection is accepted
+							if(!(playerState.equals(PlayerState.NULL_STATE))) break; //TODO Raise SynchronizeErrorException
+							System.out.println(Thread.currentThread().getName() + ": The other client is not available. waiting...");
+							//Push UI state -> WAIT_FOR_CONNECTION_STATE
+							GSM.pushState(new WaitForConnectionUIState(Main.this));
+							//Wait
+							//When another client connects, the server returns a string SERVER_ANOTHER_CLIENT_AVAILABLE to all clients
+							break;
+							
+						case CommandString.SERVER_OTHER_CLIENT_AVAILABLE:
+							if(!playerState.equals(PlayerState.NULL_STATE) || !playerState.equals(PlayerState.EXPECT_SERVER_OTHER_CLIENT_AVAILABLE)); //Raise SynchronizationErrorException
+							//The other client has connected
+							//Pop UI state UNTIL MAIN_GAME_STATE
+							GSM.popStateUntil(GameState.MAIN_MENU_STATE);
+							//Push GAME_SETUP_READY_STATE
+							GSM.pushState(new GameSetupReadyUIState(Main.this));
+							//Set playerState EXPECT_SERVER_GAME_SETUP
+							playerState = PlayerState.EXPECT_SERVER_GAME_SETUP;
+							//Wait for the player to press Ready...
+							//System.out.println("name :" + player.name);
+							//out.println("CLIENT_NAME_" + player.getName());
+							break;
+							
+						case CommandString.SERVER_START_GAME_SETUP:
+							if(!playerState.equals(PlayerState.EXPECT_SERVER_GAME_SETUP)); //Raise SynchronizationErrorException
+							//Server is ready to start game setup
+							//Start the game setup
+							//Pop UI state until MAIN_MENU_STATE
+							initialize();
+							out.println("CLIENT_NAME_" + player.getName());
+							out.println("CLIENT_PIC_" + picImage);
+							System.out.print("SENDING" +picImage);
+							GSM.popStateUntil(GameState.MAIN_MENU_STATE);
+							//Change UI state -> GAME_SETUP_STATE
+							gameSetupUI = new GameSetupUIState(Main.this);
+							mainmenuClip.stop();
+							setupClip.start();
+							GSM.changeState(gameSetupUI);
+							playerState = PlayerState.START_GAME_SETUP;
+>>>>>>> e843ae408f5a62ef995352c8e12eba787a992da9
 
 					case CommandString.SERVER_OPPONENT_NOT_READY:
 						if (!playerState.equals(PlayerState.EXPECT_SERVER_START_GAME))
@@ -612,7 +668,18 @@ public class Main extends JFrame {
 						currentScore = 0;
 						battleClip.close();
 						break;
+<<<<<<< HEAD
 
+=======
+						
+					case CommandString.SERVER_RESET_GAME: //Somebody reset the game
+						initialize();
+						gameSetupUI = new GameSetupUIState(Main.this);
+						GSM.changeState(gameSetupUI);
+						if(timer_turn_duration != null) timer_turn_duration.stop();
+						playerState = PlayerState.START_GAME_SETUP;
+						
+>>>>>>> e843ae408f5a62ef995352c8e12eba787a992da9
 					default:
 						if (input.indexOf("RETURN_MARK") != -1) {
 							String index = input.substring(input.indexOf("_", input.indexOf("_") + 1) + 1,
@@ -750,6 +817,7 @@ public class Main extends JFrame {
 						} else if (input.indexOf("CLIENT_NAME") != -1) {
 							opponentName = input.substring(input.lastIndexOf("_") + 1);
 							gameSetupUI.p2.setText(opponentName);
+<<<<<<< HEAD
 
 							// System.out.println("CLIENT_NAME input name =
 							// "+input.toString());
@@ -775,6 +843,20 @@ public class Main extends JFrame {
 							 * }
 							 * 
 							 */
+=======
+							Main.this.repaint();
+							Main.this.revalidate();
+							
+	
+							
+						} else if (input.indexOf("CLIENT_PIC") != -1){
+							opponentPic = input.substring(input.lastIndexOf("_") + 1);
+							System.out.print("OPPO PIC" +opponentPic);
+							Main.this.repaint();
+							Main.this.revalidate();
+							
+						}
+>>>>>>> e843ae408f5a62ef995352c8e12eba787a992da9
 					}
 				}
 			}

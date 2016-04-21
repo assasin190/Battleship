@@ -10,8 +10,8 @@ public class GameServer implements Runnable, Serializable {
 	public ServerSocket serverSocket;
 	private Socket firstClientSocket;
 	private Socket secondClientSocket;
-	private SocketThread socketThread1;
-	private SocketThread socketThread2;
+	protected SocketThread socketThread1;
+	protected SocketThread socketThread2;
 	private OutputStream out;
 	private InputStream in;
 	//private ObjectInputStream ois;
@@ -249,6 +249,22 @@ public class GameServer implements Runnable, Serializable {
 				e.printStackTrace();
 			}
 		}
+		
+		public void resetServer() {
+			//Go past GAME_START_READY_LOCK
+			synchronized(currentLock) {
+				currentLock.incrementCounter();
+				currentLock.incrementCounter();
+				currentLock.notify();
+			}
+			if(clientNumber == 1) {
+				out.println(CommandString.SERVER_RESET_GAME);
+				print(CommandString.SERVER_RESET_GAME, 2);
+			} else {
+				out.println(CommandString.SERVER_RESET_GAME);
+				print(CommandString.SERVER_RESET_GAME, 1);
+			}
+		}
 		 
 		@Override
 		public void run() {
@@ -334,6 +350,21 @@ public class GameServer implements Runnable, Serializable {
 									currentLock.notify();
 								}
 								break;
+							
+							case CommandString.CLIENT_RESET_GAME:
+								//Go past GAME_START_READY_LOCK
+								synchronized(currentLock) {
+									currentLock.incrementCounter();
+									currentLock.incrementCounter();
+									currentLock.notify();
+								}
+								if(clientNumber == 1) {
+									out.println(CommandString.SERVER_RESET_GAME);
+									print(CommandString.SERVER_RESET_GAME, 2);
+								} else {
+									out.println(CommandString.SERVER_RESET_GAME);
+									print(CommandString.SERVER_RESET_GAME, 1);
+								}
 								
 							default:
 								if(input.indexOf("RETURN_MARK") != -1) {
@@ -343,6 +374,9 @@ public class GameServer implements Runnable, Serializable {
 									if(clientNumber == 1) print(input, 2);
 									else print(input, 1);
 								} else if(input.indexOf("CLIENT_NAME") != -1) {
+									if(clientNumber == 1) print(input, 2);
+									else print(input, 1);
+								} else if(input.indexOf("CLIENT_PIC") != -1) {
 									if(clientNumber == 1) print(input, 2);
 									else print(input, 1);
 								}

@@ -285,7 +285,20 @@ public class GameUIState extends UI {
 		lblTimer = new JLabel("END");
 		lblTimer.setHorizontalAlignment(SwingConstants.LEFT);
 		rightTopP2.add(lblTimer);
+<<<<<<< HEAD
 
+=======
+		
+		JButton reset = new JButton("RESET");
+		rightTopP2.add(reset);
+		reset.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				main.client.resetGame();
+			}
+		});
+		
+>>>>>>> e843ae408f5a62ef995352c8e12eba787a992da9
 		/////////////////////////////////// sirawich
 		/*
 		 * ActionListener timerTask = new ActionListener() {
@@ -408,15 +421,25 @@ public class GameUIState extends UI {
 		profileServer.setPreferredSize(new Dimension(60, 60));
 		server.add(profileServer, BorderLayout.EAST);
 		JLabel P2 = new JLabel();
+<<<<<<< HEAD
 		P2.setIcon(new ImageIcon("profile.png"));
 		profileServer.add(P2);
 
+=======
+		P2.setIcon(Main.createImageIcon(main.client.opponentPic, 60, 60));
+		System.out.print("test name" + main.client.opponentPic);
+	
+		profileServer.add(P2);
+
+		
+>>>>>>> e843ae408f5a62ef995352c8e12eba787a992da9
 		JPanel vsPanel = new JPanel();
 		vsPanel.setPreferredSize(new Dimension(70, 90));
 		vsPanel.setOpaque(false);
 		scorePanel.add(vsPanel, BorderLayout.CENTER);
 
 		JLabel lblVs = new JLabel("VS");
+		lblVs.setForeground(Color.WHITE);
 		lblVs.setHorizontalAlignment(SwingConstants.CENTER);
 		lblVs.setFont(new Font("Avenir", Font.PLAIN, 13));
 		vsPanel.add(lblVs);
