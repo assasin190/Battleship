@@ -483,7 +483,7 @@ public class GameSetupUIState extends UI {
 				// Check if all ship has been set
 				main.client.boardGame.clearAllShip();
 				cancelButton.setEnabled(false);
-				readyButton.setEnabled(true);
+				lblPressReady.setText("");
 			}
 		});
 
@@ -558,6 +558,8 @@ public class GameSetupUIState extends UI {
 						// ImageIcon("ship"+(shipNumber+1)+".png"));
 						// //PLACESHIP
 						cancelButton.setEnabled(true);
+						lblPressReady.setText("Press Ready !!");
+						readyButton.setEnabled(true);
 					}
 				}
 			}
