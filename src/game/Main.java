@@ -151,35 +151,10 @@ public class Main extends JFrame {
 	
 	//P2P/Server-Client client case
 	public void Connect(String serverAddr, String serverPort) {
-		/*	OLD IMPLEMENTATION
-		System.out.println(Thread.currentThread().getName() + ": P2P/Server-Client client mode running");
-		//Connect to the server
-		System.out.println("Main_thread: connecting to the server...");
-		//Push UI state -> WAIT_FOR_CONNECTION_STATE
-		//GSM.pushState(new WaitForConnectionUIState(this));
-		try {
-			socket = new Socket(serverAddr , 8080);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		System.out.println("Main_thread: connection accepted");
-		//Socket is accepted
-		//Pop WAIT_FOR_CONNECTION_STATE
-		GSM.popState();
-		//Pop CONNECT_TO_SERVER_P2P_STATE
-		GSM.popState();
-		//Start the local game
-		client = new GameClient(socket);
-		//Run the game
-		client.run();
-		// change UI state -> GAME_SETUP_STATE
-		GSM.changeState(new GameSetupUIState(this));
-		*/
-		
-		//NEW IMPLEMENTATION
 		System.out.println(Thread.currentThread().getName() + ": P2P/Server-Client client mode running");
 		//Connect to the server
 		System.out.println(Thread.currentThread().getName() + ": connecting to the server...");
+		//Connect to match server
 		try {
 			socket = new Socket(serverAddr , 8080);
 		} catch (IOException e) {
