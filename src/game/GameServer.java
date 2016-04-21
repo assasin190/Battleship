@@ -152,6 +152,7 @@ public class GameServer implements Runnable, Serializable {
 		}
 		currentPlayer.writeViaSocket(CommandString.SERVER_GRANT_TURN);
 		//START THE GAME
+		setupGame();
 	}
 	
 	private void print(String input, int forwardNumber) {
@@ -379,6 +380,8 @@ public class GameServer implements Runnable, Serializable {
 								} else if(input.indexOf("CLIENT_PIC") != -1) {
 									if(clientNumber == 1) print(input, 2);
 									else print(input, 1);
+								} else {
+									
 								}
 								
 						}
