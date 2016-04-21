@@ -48,9 +48,6 @@ public class ChangeBgUIState extends UI {
 		dialog.setMinimumSize(new Dimension(500,500));
 		dialog.setPreferredSize(new Dimension(500,500));
 		// sirawich
-		
-		
-		
 		Point p = main.getLocation();
 		
 		Point popUpLocation = Main.getPopUpLocation(this);

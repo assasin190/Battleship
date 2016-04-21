@@ -57,7 +57,7 @@ public class Main extends JFrame {
 	 */
 	public static void main(String[] args) throws InterruptedException {
 		SwingUtilities.invokeLater(new Runnable() {
-			@Override
+			@Override 	
 			public void run() {
 				Main main = new Main();
 				main.setVisible(true);
@@ -200,7 +200,6 @@ public class Main extends JFrame {
 	}
 	
 	public static Point getPopUpLocation(UI ui) {
-		//Point frame_location = ui.main.getLocation();
 		
 		// frame 
 		Dimension frame_size =ui.main.getSize();
@@ -216,23 +215,17 @@ public class Main extends JFrame {
 		int dialog_width = dialog_size.width;
 		int dialog_height = dialog_size.height;
 		
-		Point dialog =frame_point; // start at the same as frame
-		
-		
-						
-		System.out.println("mainFrame_width/2 = "+frame_size.getWidth()/2);
-		System.out.println("mainFrame_height/2 = "+frame_size.getHeight()/2);
-		System.out.println("dialog_width/2 = "+dialog_width/2);
-		System.out.println("dialog_height/2 = "+dialog_height/2);
+		//System.out.println("mainFrame_width/2 = "+frame_size.getWidth()/2);
+		//System.out.println("mainFrame_height/2 = "+frame_size.getHeight()/2);
+		//System.out.println("dialog_width/2 = "+dialog_width/2);
+		//System.out.println("dialog_height/2 = "+dialog_height/2);
 				
-		
 		int x_dialog= (frame_width/2)-(dialog_width/2)+frame_x;
 		int y_dialog= (frame_height/2)-(dialog_height/2)+frame_y;
 		Point result = new Point(x_dialog,y_dialog);
-				
 		
 		//System.out.println("sirawich point main x= : "+frame_location.getX()+" , y= "+frame_location.getY());
-		System.out.println("sirawich point dialog x= :" +x_dialog +", y = "+y_dialog);
+		//System.out.println("sirawich point dialog x= :" +x_dialog +", y = "+y_dialog);
 				
 		return result;
 	}
@@ -569,6 +562,31 @@ public class Main extends JFrame {
 							if(playerState.equals(PlayerState.IDLE)) {
 								playerState = PlayerState.PLAYING;
 								myTurn = true;
+								
+								//Sirawich
+								ActionListener timerTask = new ActionListener() {
+							         int countdown = 5;
+
+									@Override
+									public void actionPerformed(ActionEvent e) {
+							        	 if (countdown == 0) {
+								           gameUI.lblTimer.setText("END");
+								           timer_turn_duration.stop();
+								           // time up  expire random mark(y,x)
+								           //mark()
+								  
+								           // System.out.println("end");
+								           } else {
+								        	  gameUI.lblTimer.setText(countdown + "");
+								  
+								           // call start timer of GameUIState
+								        	  System.out.println("countdown = "+countdown);
+								        	  countdown--;
+								         }
+									}
+							   };
+						       timer_turn_duration = new Timer(1000, timerTask);
+						       timer_turn_duration.start();
 								break;
 							}
 						case CommandString.SERVER_INDICATE_YOU_WIN: //You won the game
@@ -627,37 +645,36 @@ public class Main extends JFrame {
 									//TEST
 									JOptionPane.showMessageDialog(Main.this, "You lose the game.");
 								}
+								
 								//It is your turn, change the state to playing
 								playerState = PlayerState.IDLE;
 								myTurn = true;
 								
 								//Sirawich
 								ActionListener timerTask = new ActionListener() {
-							         int countdown = 60;
+							         int countdown = 5;
 
 									@Override
 									public void actionPerformed(ActionEvent e) {
 
 							        	 if (countdown == 0) {
-								           gameUI.lblMinsec.setText("END");
+								           gameUI.lblTimer.setText("END");
 								           timer_turn_duration.stop();
-								           // time up  expire random mark(x,y)
+								           // time up  expire random mark(y,x)
 								           //mark()
 								  
 								           // System.out.println("end");
-								         } else {
-								        	  gameUI.lblMinsec.setText(countdown + "");
+								           } else {
+								        	  gameUI.lblTimer.setText(countdown + "");
 								  
 								           // call start timer of GameUIState
-								  
+								        	  System.out.println("countdown = "+countdown);
 								        	  countdown--;
-								         }
-										
+								         } 
 									}
 							   };
 						       timer_turn_duration = new Timer(1000, timerTask);
 						       timer_turn_duration.start();
-						       
 							}
 					}
 				}
