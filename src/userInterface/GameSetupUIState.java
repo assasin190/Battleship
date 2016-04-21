@@ -56,6 +56,9 @@ public class GameSetupUIState extends UI {
 	public boolean shipPlacingEnabled;
 	public String shipPlacingDirection;
 	public int shipNumber;
+	public JButton readyButton;
+	public JButton cancelButton;
+	public JLabel lblPressReady;
 
 	public GameSetupUIState(Main main) {
 		super(main);
@@ -263,14 +266,7 @@ public class GameSetupUIState extends UI {
 											// nothing
 								// Check if any of the label in highlighting is
 								// occupied
-								if (main.client.boardGame.checkOccupation(highlighting)) { // If
-																							// one
-																							// of
-																							// them
-																							// already
-																							// occupied,
-																							// do
-																							// nothing
+								if (main.client.boardGame.checkOccupation(highlighting)) { // If one of them already occupied, do nothing
 									return;
 								}
 								//Create a ship on those squares
@@ -295,9 +291,17 @@ public class GameSetupUIState extends UI {
 										// label.setIcon(new
 										// ImageIcon("ship"+(shipNumber+1)+".png"));
 										// //PLACESHIP
+										cancelButton.setEnabled(true);
 									}
 									// Re-invoke mouse exited on e
 									mouseExited(e);
+									if (main.client.boardGame.isAllShipSet()) {
+										//main.client.startGame();
+										readyButton.setEnabled(true);
+										lblPressReady.setText("Press Ready !!");
+										main.repaint();
+										main.revalidate();
+									}
 									setShipPlacingEnabled(false);
 								}
 							}
@@ -466,14 +470,14 @@ public class GameSetupUIState extends UI {
 		buttonPanel.add(keyButton, BorderLayout.CENTER);
 		keyButton.setLayout(new BorderLayout(0, 0));
 
-		JButton cancelButton = new JButton("Cancel");
-		cancelButton.setBackground(new Color(255, 0, 0));
+		cancelButton = new JButton("Cancel");
+		cancelButton.setEnabled(false);
 		cancelButton.setFont(new Font("Avenir", Font.PLAIN, 13));
 		cancelButton.setPreferredSize(new Dimension(95, 60));
 		keyButton.add(cancelButton, BorderLayout.WEST);
 
-		JButton readyButton = new JButton("Ready");
-		readyButton.setBackground(new Color(153, 204, 0));
+		readyButton = new JButton("Ready");
+		readyButton.setEnabled(false);
 		readyButton.setFont(new Font("Avenir", Font.PLAIN, 13));
 		readyButton.setPreferredSize(new Dimension(95, 60));
 		readyButton.addActionListener(new ActionListener() {
@@ -483,6 +487,7 @@ public class GameSetupUIState extends UI {
 				System.out.println(main.client.boardGame.isAllShipSet());
 				if (main.client.boardGame.isAllShipSet()) {
 					main.client.startGame();
+					
 
 				}
 			}
@@ -522,6 +527,9 @@ public class GameSetupUIState extends UI {
 				if (ship != null) { // If there are already ship1 set, clear the
 									// occupation
 					main.client.boardGame.clearOccupation(ship);
+					readyButton.setEnabled(false);
+					lblPressReady.setText("");
+					
 				}
 				// Enable ship placing mode
 				setShipPlacingEnabled(true);
@@ -541,6 +549,8 @@ public class GameSetupUIState extends UI {
 				if (ship != null) { // If there are already ship2 set, clear the
 									// occupation
 					main.client.boardGame.clearOccupation(ship);
+					readyButton.setEnabled(false);
+					lblPressReady.setText("");
 				}
 				// Enable ship placing mode
 				setShipPlacingEnabled(true);
@@ -560,6 +570,8 @@ public class GameSetupUIState extends UI {
 				if (ship != null) { // If there are already ship3 set, clear the
 									// occupation
 					main.client.boardGame.clearOccupation(ship);
+					readyButton.setEnabled(false);
+					lblPressReady.setText("");
 				}
 				// Enable ship placing mode
 				setShipPlacingEnabled(true);
@@ -579,6 +591,8 @@ public class GameSetupUIState extends UI {
 				if (ship != null) { // If there are already ship4 set, clear the
 									// occupation
 					main.client.boardGame.clearOccupation(ship);
+					readyButton.setEnabled(false);
+					lblPressReady.setText("");
 				}
 				// Enable ship placing mode
 				setShipPlacingEnabled(true);
@@ -595,8 +609,9 @@ public class GameSetupUIState extends UI {
 		toolTip.setLayout(new BorderLayout(0, 0));
 		toolTip.setOpaque(false);
 
-		JLabel lblPressReady = new JLabel("Press Ready !!");
-		lblPressReady.setFont(new Font("Avenir", Font.BOLD, 15));
+		lblPressReady = new JLabel("");
+		lblPressReady.setFont(new Font("Avenir", Font.BOLD, 30));
+		lblPressReady.setForeground(Color.WHITE);
 		lblPressReady.setHorizontalAlignment(SwingConstants.CENTER);
 		toolTip.add(lblPressReady);
 

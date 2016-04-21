@@ -46,6 +46,19 @@ public class ChangeBgUIState extends UI {
 		super(main);
 		stateString = GameState.GameState.CHANGE_BG_STATE;
 		dialog = new JDialog(main, "Change Background");
+<<<<<<< HEAD
+		dialog.setLocation(main.getLocation());
+		dialog.setMinimumSize(new Dimension(500,500));
+		dialog.setPreferredSize(new Dimension(500,500));
+		// sirawich
+		Point p = main.getLocation();
+		
+		Point popUpLocation = Main.getPopUpLocation(this);
+		
+		dialog.setLocation(popUpLocation);
+		
+		
+=======
 	
 		dialog.getContentPane().setBackground(Color.BLACK);
 		final Toolkit toolkit = Toolkit.getDefaultToolkit();
@@ -56,6 +69,7 @@ public class ChangeBgUIState extends UI {
 		dialog.setVisible(true);
 		dialog.setPreferredSize(new Dimension(600,400));
 		dialog.setResizable(false);
+>>>>>>> 7f3323ef7b72ff7b4bb97acada69d9d3d55df302
 		
 		initialize();
 	}
