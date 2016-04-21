@@ -546,13 +546,17 @@ public class Main extends JFrame {
 								boolean hit = Boolean.parseBoolean(sub.substring(sub.lastIndexOf("_") + 1));
 								System.out.println("hit: " + hit);
 								System.out.println("sunk: " + sunk);
+								Square markedSquare = boardGame.board[y][x];
+								SquareLabel hitSquareLabel = markedSquare.getSquareLabel();
+								markedSquare.marked = true;
 								if(hit) { //If hit
-									boardGame.board[y][x].marked = true;
 									score++;
 									//Update UI (hit)
+									hitSquareLabel.setIcon(createImageIcon("effect/hit.png", 37, 37));
 								} else { //If not hit
 									boardGame.board[y][x].marked = true;
 									//Update UI (not hit)
+									hitSquareLabel.setIcon(createImageIcon("effect/miss.png", 37, 37));
 								}
 								//TODO if enemy ship sunk
 								
@@ -570,9 +574,11 @@ public class Main extends JFrame {
 								if(hit) {
 									markedSquare.marked = true;
 									//Update hit UI
+									hitSquareLabel.setIcon(createImageIcon("effect/hit2.png", 30, 30));
 								} else {
 									markedSquare.marked = true;
 									//Update miss UI
+									hitSquareLabel.setIcon(createImageIcon("effect/miss2.png", 30, 30));
 								}
 								//TODO check if the player won the game
 								out.println("RETURN_MARK_" + y + "," + x + "_" + hit + "," + sunk);

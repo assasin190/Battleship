@@ -509,9 +509,9 @@ public class GameSetupUIState extends UI {
 		shipPanel.setPreferredSize(new Dimension(300, 150));
 		player2.add(shipPanel, BorderLayout.SOUTH);
 		shipPanel.setLayout(new GridLayout(4, 0, 0, 0));
-		JButton ship1 = new JButton("ship1");
+		JButton ship1 = new JButton("");
 		ship1.setName("ship1");
-		ship1.setIcon(new ImageIcon("ship1.png"));
+		ship1.setIcon(new ImageIcon("ship/ship1.png"));
 		ship1.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -528,9 +528,9 @@ public class GameSetupUIState extends UI {
 				setShipPlacingEnabled(true);
 			}
 		});
-		JButton ship2 = new JButton("ship2");
+		JButton ship2 = new JButton("");
 		ship2.setName("ship2");
-		ship2.setIcon(new ImageIcon("ship2.png"));
+		ship2.setIcon(new ImageIcon("ship/ship2.png"));
 		ship2.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -547,9 +547,9 @@ public class GameSetupUIState extends UI {
 				setShipPlacingEnabled(true);
 			}
 		});
-		JButton ship3 = new JButton("ship3");
+		JButton ship3 = new JButton("");
 		ship3.setName("ship3");
-		ship3.setIcon(new ImageIcon("ship3.png"));
+		ship3.setIcon(new ImageIcon("ship/ship3.png"));
 		ship3.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -566,9 +566,9 @@ public class GameSetupUIState extends UI {
 				setShipPlacingEnabled(true);
 			}
 		});
-		JButton ship4 = new JButton("ship4");
+		JButton ship4 = new JButton("");
 		ship4.setName("ship4");
-		ship4.setIcon(new ImageIcon("ship4.png"));
+		ship4.setIcon(new ImageIcon("ship/ship4.png"));
 		ship4.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
