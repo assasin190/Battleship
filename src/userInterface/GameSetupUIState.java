@@ -66,7 +66,8 @@ public class GameSetupUIState extends UI {
 		shipPlacingEnabled = false;
 		shipPlacingDirection = "down"; // SHIPDIRECTION
 		shipNumber = 0;
-		main.insertBGM("login.wav");
+		main.start=false;
+	//	main.insertBGM("login.wav");
 		initialize();
 	}
 
@@ -470,10 +471,18 @@ public class GameSetupUIState extends UI {
 		buttonPanel.add(keyButton, BorderLayout.CENTER);
 		keyButton.setLayout(new BorderLayout(0, 0));
 
-		cancelButton = new JButton("Cancel");
+		cancelButton = new JButton("Reset");
 		cancelButton.setEnabled(false);
 		cancelButton.setFont(new Font("Avenir", Font.PLAIN, 13));
 		cancelButton.setPreferredSize(new Dimension(95, 60));
+		cancelButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				// Check if all ship has been set
+			 main.client.boardGame.clearAllShip();
+			 cancelButton.setEnabled(false);
+			}
+		});
+
 		keyButton.add(cancelButton, BorderLayout.WEST);
 
 		readyButton = new JButton("Ready");

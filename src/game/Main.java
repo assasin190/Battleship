@@ -50,6 +50,7 @@ public class Main extends JFrame {
 	private Socket socket;
 	public Player player;
 	public Image background;
+	Clip battleClip, mainmenuClip,setupClip;
 	
 	
 	/**
@@ -80,21 +81,14 @@ public class Main extends JFrame {
 		background = createImageIcon("bg/Bg-play.png", 1024, 768).getImage();
 		//Change UI state -> MAIN_MENU_STATE
 		GSM.setState(new MainMenuUIState(this));
+		createSound();
+		mainmenuClip.start();
+	
 	}
 	
 	/**
 	 * Initialize the contents of the frame.
 	 */
-	private void initialize() {
-		/*
-		frame = new JFrame();
-		frame.setBounds(100, 100, 1024, 768);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		currentStatePanel = new MainMenuUI(this);
-		frame.getContentPane().add(currentStatePanel);
-		*/
-	}
-	
 	//P2P Server case
 	public void startLocalServer() {
 		System.out.println(Thread.currentThread().getName() + ": P2P server mode running" );
@@ -158,7 +152,57 @@ public class Main extends JFrame {
 		client = new GameClient(socket);
 		client.run();
 	}
+	
+	public void createSound() {
 
+		File soundFile1 = new File("sound/menu.wav");
+		File soundFile2 = new File("sound/battle.wav");
+		File soundFile3 = new File("sound/setup.wav");
+
+		AudioInputStream audioIn1 = null;
+		AudioInputStream audioIn2 = null;
+		AudioInputStream audioIn3 = null;
+
+
+		try {
+
+		audioIn1 = AudioSystem.getAudioInputStream(soundFile1);
+		mainmenuClip = AudioSystem.getClip();
+		mainmenuClip.open(audioIn1);
+		
+		audioIn2 = AudioSystem.getAudioInputStream(soundFile2);
+		battleClip = AudioSystem.getClip();
+		battleClip.open(audioIn2);
+		
+		audioIn3 = AudioSystem.getAudioInputStream(soundFile3);
+		setupClip = AudioSystem.getClip();
+		setupClip.open(audioIn3);
+		
+		} catch (UnsupportedAudioFileException e) {
+
+		// TODO Auto-generated catch block
+
+		e.printStackTrace();
+
+		} catch (IOException e) {
+
+		// TODO Auto-generated catch block
+
+		e.printStackTrace();
+
+		} catch (LineUnavailableException e) {
+
+		// TODO Auto-generated catch block
+
+		e.printStackTrace();
+
+		}
+
+
+		}
+
+
+/*
 	public void insertBGM(String sound) {
 		File soundFile = new File(sound);
 		AudioInputStream audioIn = null;
@@ -179,6 +223,7 @@ public class Main extends JFrame {
 			e.printStackTrace();
 		}
 	}
+	*/
 	
 	public void replaceCurrentPanel(JPanel panel) {
 		//if currentStatePanel is not null, remove the currentStatePanel
@@ -531,6 +576,8 @@ public class Main extends JFrame {
 							GSM.popStateUntil(GameState.MAIN_MENU_STATE);
 							//Change UI state -> GAME_SETUP_STATE
 							gameSetupUI = new GameSetupUIState(Main.this);
+							mainmenuClip.stop();
+							setupClip.start();
 							GSM.changeState(gameSetupUI);
 							playerState = PlayerState.START_GAME_SETUP;
 							out.println(CommandString.CLIENT_START_GAME_SETUP);
@@ -551,8 +598,11 @@ public class Main extends JFrame {
 								//Pop UI state until GAME_SETUP_STATE
 								GSM.popStateUntil(GameState.GAME_SETUP_STATE);
 								//Change UI state -> GAME_STATE
+								setupClip.close();
+								battleClip.start();
 								gameUI = new GameUIState(Main.this);
 								GSM.changeState(gameUI);
+								//INSERT SOUND
 								playerState = PlayerState.IDLE;
 								break;	
 							}
@@ -567,11 +617,13 @@ public class Main extends JFrame {
 						case CommandString.SERVER_INDICATE_YOU_WIN: //You won the game
 							//TEST
 							JOptionPane.showMessageDialog(Main.this, "Congratulations! You win the game.");
+							battleClip.close();
 							break;
 							
 						case CommandString.SERVER_INDICATE_YOU_LOSE: //You lose the game
 							//TEST
-							JOptionPane.showMessageDialog(Main.this, "Congratulations! You win the game.");
+							JOptionPane.showMessageDialog(Main.this, "Congratulations! You lose the game.");
+							battleClip.close();
 							break;
 						default:
 							if(input.indexOf("RETURN_MARK") != -1) {

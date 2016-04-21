@@ -38,7 +38,7 @@ public class MainMenuUIState extends UI {
 	public MainMenuUIState(Main main) {
 		super(main);
 		stateString = GameState.MAIN_MENU_STATE;
-		main.insertBGM("menu.wav");
+		//main.insertBGM("menu.wav");
 		initialize();
 	//	panel = UI.createJPanelWithBackground(bgImg);
 	}

@@ -83,6 +83,12 @@ public class BoardGame implements Serializable{
 		}
 	}
 	
+	public void clearAllShip() {
+		for(Ship ship : ships) {
+			clearOccupation(ship);
+		}
+	}
+	
 	public boolean isAllShipSet() {
 		for(Ship ship : ships) {
 			if(ship == null) {
