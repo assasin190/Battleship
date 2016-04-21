@@ -44,7 +44,7 @@ import javax.swing.SwingWorker;
 import javax.swing.Timer;
 
 import game.*;
-import GameState.*;
+import gameState.*;
 import userInterface.*;
 
 public class Main extends JFrame {

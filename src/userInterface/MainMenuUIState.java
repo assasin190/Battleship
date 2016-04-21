@@ -12,10 +12,9 @@ import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
 
-import GameState.ConnectToServerP2PState;
-import GameState.GameState;
-import GameState.GameStateManager;
 import game.Main;
+import gameState.GameState;
+import gameState.GameStateManager;
 
 import java.awt.Font;
 import java.awt.Graphics;

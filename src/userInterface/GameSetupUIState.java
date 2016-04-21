@@ -34,7 +34,8 @@ import javax.swing.border.LineBorder;
 import game.Main;
 import game.Ship;
 import game.Square;
-import GameState.GameState;
+import gameState.GameState;
+
 import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

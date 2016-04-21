@@ -1,7 +1,7 @@
 package userInterface;
 
 import game.Main;
-
+import gameState.GameState;
 
 import java.awt.Dimension;
 import java.awt.Font;
@@ -12,7 +12,6 @@ import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import GameState.GameState;
 import java.awt.BorderLayout;
 import java.awt.Color;
 

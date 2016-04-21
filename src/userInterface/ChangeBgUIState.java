@@ -44,7 +44,7 @@ public class ChangeBgUIState extends UI {
 
 	public ChangeBgUIState(Main main) {
 		super(main);
-		stateString = GameState.GameState.CHANGE_BG_STATE;
+		stateString = gameState.GameState.CHANGE_BG_STATE;
 		dialog = new JDialog(main, "Change Background");
 		dialog.getContentPane().setBackground(Color.BLACK);
 		dialog.setVisible(true);

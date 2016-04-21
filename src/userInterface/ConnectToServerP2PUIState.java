@@ -14,9 +14,9 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import GameState.GameState;
-import GameState.GameStateManager;
 import game.Main;
+import gameState.GameState;
+import gameState.GameStateManager;
 
 public class ConnectToServerP2PUIState extends UI {
 	public JTextField ipTextField;

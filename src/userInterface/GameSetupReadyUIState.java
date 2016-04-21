@@ -11,8 +11,8 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
-import GameState.GameState;
 import game.Main;
+import gameState.GameState;
 
 public class GameSetupReadyUIState extends UI {
 	public JButton readyBtn;

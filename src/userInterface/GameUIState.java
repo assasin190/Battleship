@@ -27,11 +27,11 @@ import javax.swing.JFormattedTextField;
 import javax.swing.JTextPane;
 import javax.swing.border.LineBorder;
 
-import GameState.GameState;
-import GameState.GameStateManager;
 import game.BoardGame;
 import game.Main;
 import game.Main.GameClient;
+import gameState.GameState;
+import gameState.GameStateManager;
 import game.Ship;
 import game.Square;
 import userInterface.SquareLabel;

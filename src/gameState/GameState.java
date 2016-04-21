@@ -1,4 +1,4 @@
-package GameState;
+package gameState;
 import game.Main;
 
 public interface GameState {

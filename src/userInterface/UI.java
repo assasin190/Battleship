@@ -7,8 +7,8 @@ import java.awt.Image;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 
-import GameState.GameState;
 import game.Main;
+import gameState.GameState;
 
 public abstract class UI implements GameState{
 	/* Abstract base class for all UI classes

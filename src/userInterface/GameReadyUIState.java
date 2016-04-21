@@ -10,8 +10,8 @@ import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
-import GameState.GameState;
 import game.Main;
+import gameState.GameState;
 
 public class GameReadyUIState extends UI {
 	public JButton readyBtn;
