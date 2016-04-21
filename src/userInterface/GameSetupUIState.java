@@ -68,10 +68,7 @@ public class GameSetupUIState extends UI {
 
 	public void initialize() {
 
-		ImageIcon bgIcon = Main.createImageIcon("bg.png", 1024, 768);
-		Image bgImg = bgIcon.getImage();
-
-		panel = UI.createJPanelWithBackground(bgImg);
+		panel = UI.createJPanelWithBackground(main.background);
 		panel.setLayout(new BorderLayout(0, 0));
 		panel.setPreferredSize(new Dimension(1024, 768));
 
@@ -202,9 +199,9 @@ public class GameSetupUIState extends UI {
 		center.add(leftCol, BorderLayout.WEST);
 
 		JPanel player1 = new JPanel();
-		//player1.setBackground(Color.PINK); // bg of battle table1
 		player1.setPreferredSize(new Dimension(300, 300));
-		player1 = UI.createJPanelWithBg("oceanbg.png",300,300);
+		// bg of battle table1
+		player1 = UI.createJPanelWithBg("bg/oceanbg.png",300,300);
 
 		JPanel topP1 = new JPanel(); // Panel for label "Place your ships!"
 		topP1.setPreferredSize(new Dimension(300, 100));
@@ -237,7 +234,7 @@ public class GameSetupUIState extends UI {
 				squareLabel.setIndex();
 				squareLabel.setMyBoardSquare();
 				squareLabel.setHorizontalAlignment(SwingConstants.CENTER);
-				squareLabel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+				squareLabel.setBorder(BorderFactory.createLineBorder(Color.CYAN));
 
 				squareLabel.addMouseListener(new MouseAdapter() {
 					// Mouse clicked
@@ -344,7 +341,7 @@ public class GameSetupUIState extends UI {
 							if (highlighting == null)
 								return; // If highlighting not exist, do nothing
 							for (SquareLabel label : highlighting) {
-								label.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+								label.setBorder(BorderFactory.createLineBorder(Color.CYAN));
 							}
 						}
 					}

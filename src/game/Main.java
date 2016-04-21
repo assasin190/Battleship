@@ -76,7 +76,7 @@ public class Main extends JFrame {
 		insertBGM("login.wav");
 		start = false;
 		player = new Player();
-		background = createImageIcon("Bg-play3.png", 1024, 768).getImage();
+		background = createImageIcon("bg/Bg-play.png", 1024, 768).getImage();
 		//Change UI state -> MAIN_MENU_STATE
 		GSM.setState(new MainMenuUIState(this));
 	}
