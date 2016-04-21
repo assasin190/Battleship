@@ -44,7 +44,7 @@ public class Main extends JFrame {
 	public final GameStateManager GSM = new GameStateManager();
 	public JPanel currentStatePanel;
 	public boolean isClient;
-	boolean start = true;
+	public boolean start = true;
 	public GameClient client;
 	private Socket socket;
 	public Player player;
@@ -72,8 +72,8 @@ public class Main extends JFrame {
 		setBounds(100, 100, 1024, 768);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setResizable(false);
-		insertBGM("login.wav");
-		start = false;
+		//insertBGM("login.wav");
+		//start = false;
 		player = new Player();
 		background = createImageIcon("bg/Bg-play.png", 1024, 768).getImage();
 		//Change UI state -> MAIN_MENU_STATE
@@ -534,7 +534,7 @@ public class Main extends JFrame {
 							}
 						case CommandString.SERVER_INDICATE_YOU_WIN: //You won the game
 							//TEST
-							JOptionPane.showMessageDialog(Main.this, "Congratulations! You win the game.");
+							JOptionPane.showMessageDialog(Main.this, "Congratulations!"+ player.getName()+" wins the game.");
 						default:
 							if(input.indexOf("RETURN_MARK") != -1) {
 								String index = input.substring(input.indexOf("_", input.indexOf("_") + 1) + 1, input.indexOf(",") + 2);
@@ -586,7 +586,7 @@ public class Main extends JFrame {
 								if(lose) {
 									out.println(CommandString.CLIENT_LOSE);
 									//TEST
-									JOptionPane.showMessageDialog(Main.this, "You lose the game.");
+									JOptionPane.showMessageDialog(Main.this, player.getName()+" loses the game.");
 								}
 								//It is your turn, change the state to playing
 								playerState = PlayerState.IDLE;

@@ -63,6 +63,7 @@ public class GameSetupUIState extends UI {
 		shipPlacingEnabled = false;
 		shipPlacingDirection = "down"; // SHIPDIRECTION
 		shipNumber = 0;
+		main.insertBGM("login.wav");
 		initialize();
 	}
 

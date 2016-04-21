@@ -113,7 +113,7 @@ public class GameUIState extends UI {
 		topP1.setPreferredSize(new Dimension(300, 100));
 		topP1.setOpaque(false);
 		
-		JLabel lblPlaceYourShip = new JLabel("PLACE YOUR SHIPS!");
+		JLabel lblPlaceYourShip = new JLabel("HIT THE OPPONENT SHIPS!");
 		lblPlaceYourShip.setForeground(Color.WHITE);
 		lblPlaceYourShip.setVerticalAlignment(SwingConstants.BOTTOM);
 		lblPlaceYourShip.setFont(new Font("Avenir", Font.BOLD, 20));
@@ -180,9 +180,6 @@ public class GameUIState extends UI {
         */
 
 			
-		
-		
-		
 		/*CENTER GAP*/
 		JPanel centerCol = new JPanel();
 		centerCol.setPreferredSize(new Dimension(124,300));
