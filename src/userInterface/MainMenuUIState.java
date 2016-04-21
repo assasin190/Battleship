@@ -262,6 +262,12 @@ public class MainMenuUIState extends UI {
 		
 		JButton connectBtn = new JButton(Main.createImageIcon("btn-connect.png", 200, 70));
 		connectBtn.setBorderPainted(false);
+		connectBtn.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				main.connect();
+			}
+		});
 		
 		buttonPanel.add(clientBtn);
 		buttonPanel.add(serverBtn);

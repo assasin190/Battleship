@@ -78,7 +78,7 @@ public class ConnectToServerP2PUIState extends UI {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				//OK -> Connect to the server
-				main.Connect(ipTextField.getText(), portTextField.getText());
+				main.connect(ipTextField.getText(), portTextField.getText());
 				/*	Push UI state -> WAIT_FOR_CONNECTION_STATE
 				   	Connect() will push WAIT_FOR_CONNECTION_STATE
 				 */
