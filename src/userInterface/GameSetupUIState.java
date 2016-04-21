@@ -130,7 +130,18 @@ public class GameSetupUIState extends UI {
 
 		// Top logo
 		JButton logo = new JButton("");
-		logo.setIcon(new ImageIcon("logo.png"));
+		logo.setIcon(new ImageIcon("logo/logo.png"));
+		int i = 1;
+		
+		logo.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				//logo.setIcon(new ImageIcon("logo/logo1.png"));
+				logo.setIcon(new ImageIcon("logo/logo"+i+".png"));
+			}
+		});
+		
+		
 		top.add(leftTop, BorderLayout.WEST);
 		top.add(logo, BorderLayout.CENTER);
 		top.add(rightTop, BorderLayout.EAST);
